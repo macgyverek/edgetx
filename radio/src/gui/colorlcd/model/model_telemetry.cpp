@@ -97,6 +97,9 @@ static TSStyle tsStyle;
 
 static void ts_num_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+#if defined(X10S_COMPACT_UI)
+  etx_font(obj, FONT_STD_INDEX);
+#endif
   etx_obj_add_style(obj, styles->text_align_center, LV_PART_MAIN);
   etx_font(obj, FONT_XS_INDEX, ETX_STATE_VALUE_SMALL_FONT);
 }
@@ -151,6 +154,9 @@ lv_obj_t* TSStyle::newId(lv_obj_t* parent, const char* id)
 
 static void ts_name_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+#if defined(X10S_COMPACT_UI)
+  etx_font(obj, FONT_STD_INDEX);
+#endif
   etx_obj_add_style(obj, styles->text_align_left, LV_PART_MAIN);
 }
 
@@ -177,6 +183,9 @@ lv_obj_t* TSStyle::newName(lv_obj_t* parent, const char* name)
 
 static void ts_value_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+#if defined(X10S_COMPACT_UI)
+  etx_font(obj, FONT_STD_INDEX);
+#endif
   etx_obj_add_style(obj, styles->text_align_left, LV_PART_MAIN);
   etx_txt_color(obj, COLOR_THEME_WARNING_INDEX, ETX_STATE_VALUE_STALE_WARN);
 }

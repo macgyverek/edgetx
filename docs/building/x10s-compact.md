@@ -36,3 +36,15 @@ menu retains its original appearance.
 Model/Radio Setup navigation buttons use a 24-pixel minimum instead of
 62-pixel tiles. Wrapped labels increase only their own button and row height
 as needed; rows have 2-pixel gaps. Quick-menu tiles remain unchanged.
+
+Flight Mode identifiers, switches, fade times and trim modes explicitly use
+the compact font, including custom labels that bypass standard UI styles.
+GVar values and active Logical Switch labels also retain the compact font.
+
+Header icons and the 45-pixel header keep their original dimensions. Single
+and double-line subpage titles are vertically centered. Tab title strips
+retain the original 21-pixel height with centered compact text. Telemetry
+sensor numbers, names and values also use the compact font.
+
+File/folder and dropdown choice symbols and labels are vertically aligned
+to the control center instead of a fixed top offset.

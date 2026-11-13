@@ -319,26 +319,42 @@ class LogicalSwitchButton : public ListLineButton
     etx_obj_add_style(lsFunc, styles->text_align_left, LV_PART_MAIN);
     lv_obj_set_pos(lsFunc, FN_X, FN_Y);
     lv_obj_set_size(lsFunc, FN_W, EdgeTxStyles::STD_FONT_HEIGHT);
+#if defined(X10S_COMPACT_UI)
+    etx_font(lsFunc, FONT_BOLD_INDEX, LV_STATE_USER_1);
+#else
     lv_obj_set_style_text_font(lsFunc, getFont(FONT(BOLD)), LV_STATE_USER_1);
+#endif
 
     lsV1 = etx_label_create(lvobj);
     etx_obj_add_style(lsV1, styles->text_align_center, LV_PART_MAIN);
     etx_font(lsV1, FONT_XS_INDEX, ETX_STATE_V1_SMALL_FONT);
     lv_obj_set_pos(lsV1, V1_X, V1_Y);
     lv_obj_set_size(lsV1, V1_W, EdgeTxStyles::STD_FONT_HEIGHT);
+#if defined(X10S_COMPACT_UI)
+    etx_font(lsV1, FONT_BOLD_INDEX, LV_STATE_USER_1);
+#else
     lv_obj_set_style_text_font(lsV1, getFont(FONT(BOLD)), LV_STATE_USER_1);
+#endif
 
     lsV2 = etx_label_create(lvobj);
     etx_obj_add_style(lsV2, styles->text_align_center, LV_PART_MAIN);
     lv_obj_set_pos(lsV2, V2_X, V2_Y);
     lv_obj_set_size(lsV2, V2_W, EdgeTxStyles::STD_FONT_HEIGHT);
+#if defined(X10S_COMPACT_UI)
+    etx_font(lsV2, FONT_BOLD_INDEX, LV_STATE_USER_1);
+#else
     lv_obj_set_style_text_font(lsV2, getFont(FONT(BOLD)), LV_STATE_USER_1);
+#endif
 
     lsAnd = etx_label_create(lvobj);
     etx_obj_add_style(lsAnd, styles->text_align_center, LV_PART_MAIN);
     lv_obj_set_pos(lsAnd, AND_X, AND_Y);
     lv_obj_set_size(lsAnd, AND_W, EdgeTxStyles::STD_FONT_HEIGHT);
+#if defined(X10S_COMPACT_UI)
+    etx_font(lsAnd, FONT_BOLD_INDEX, LV_STATE_USER_1);
+#else
     lv_obj_set_style_text_font(lsAnd, getFont(FONT(BOLD)), LV_STATE_USER_1);
+#endif
 
     lsDuration = etx_label_create(lvobj);
     etx_obj_add_style(lsDuration, styles->text_align_center, LV_PART_MAIN);

@@ -230,7 +230,11 @@ class PageGroup : public PageGroupBase
 
 #if VERSION_MAJOR == 2
   static LAYOUT_VAL_SCALED(PAGE_GROUP_TOP_BAR_H, 48)
+#if defined(X10S_COMPACT_UI)
+  static LAYOUT_VAL_SCALED(PAGE_GROUP_ALT_TITLE_H, 21)
+#else
   static constexpr coord_t PAGE_GROUP_ALT_TITLE_H = EdgeTxStyles::STD_FONT_HEIGHT;
+#endif
   static constexpr coord_t PAGE_GROUP_BACK_BTN_W = 0;
   static LAYOUT_VAL_SCALED(PAGE_GROUP_BACK_BTN_XO, 45)
 #else
@@ -261,7 +265,11 @@ class TabsGroup : public PageGroupBase
 
 #if VERSION_MAJOR == 2
   static LAYOUT_VAL_SCALED(TABS_GROUP_TOP_BAR_H, 48)
+#if defined(X10S_COMPACT_UI)
+  static LAYOUT_VAL_SCALED(TABS_GROUP_ALT_TITLE_H, 21)
+#else
   static constexpr coord_t TABS_GROUP_ALT_TITLE_H = EdgeTxStyles::STD_FONT_HEIGHT;
+#endif
 #else
   static LAYOUT_ORIENTATION_SCALED(TABS_GROUP_TOP_BAR_H, 45, 48)
   static LAYOUT_ORIENTATION(TABS_GROUP_ALT_TITLE_H, 0, EdgeTxStyles::STD_FONT_HEIGHT)

@@ -352,6 +352,9 @@ class FlightModeBtn : public ListLineButton
 
 static void fm_id_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+#if defined(X10S_COMPACT_UI)
+  etx_font(obj, FONT_STD_INDEX);
+#endif
   etx_obj_add_style(obj, styles->text_align_left, LV_PART_MAIN);
 }
 
@@ -389,6 +392,9 @@ const lv_obj_class_t FlightModeBtn::fm_name_class = {
 
 static void fm_switch_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+#if defined(X10S_COMPACT_UI)
+  etx_font(obj, FONT_STD_INDEX);
+#endif
   etx_obj_add_style(obj, styles->text_align_left, LV_PART_MAIN);
 }
 
@@ -407,6 +413,9 @@ const lv_obj_class_t FlightModeBtn::fm_switch_class = {
 
 static void fm_fade_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+#if defined(X10S_COMPACT_UI)
+  etx_font(obj, FONT_STD_INDEX);
+#endif
   etx_obj_add_style(obj, styles->text_align_right, LV_PART_MAIN);
 }
 
@@ -426,6 +435,9 @@ const lv_obj_class_t FlightModeBtn::fm_fade_class = {
 static void fm_trim_mode_constructor(const lv_obj_class_t* class_p,
                                      lv_obj_t* obj)
 {
+#if defined(X10S_COMPACT_UI)
+  etx_font(obj, FONT_STD_INDEX);
+#endif
   etx_obj_add_style(obj, styles->text_align_center, LV_PART_MAIN);
 }
 

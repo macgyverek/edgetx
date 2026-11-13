@@ -35,7 +35,13 @@ class PageHeader : public Window
   StaticText* setTitle2(std::string txt);
 
   static LAYOUT_VAL_SCALED(PAGE_TITLE_LEFT, 50)
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t PAGE_TITLE_TOP = (EdgeTxStyles::MENU_HEADER_HEIGHT - 2 * EdgeTxStyles::STD_FONT_HEIGHT) / 2;
+  static constexpr coord_t PAGE_SINGLE_TITLE_TOP = (EdgeTxStyles::MENU_HEADER_HEIGHT - EdgeTxStyles::STD_FONT_HEIGHT) / 2;
+#else
   static constexpr coord_t PAGE_TITLE_TOP = PAD_TINY;
+  static constexpr coord_t PAGE_SINGLE_TITLE_TOP = PAGE_TITLE_TOP;
+#endif
 
  protected:
   StaticText* title;

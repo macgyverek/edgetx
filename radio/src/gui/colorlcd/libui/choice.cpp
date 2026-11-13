@@ -63,11 +63,19 @@ ChoiceBase::ChoiceBase(Window* parent, const rect_t& rect,
   lv_obj_t* img = lv_img_create(lvobj);
   lv_img_set_src(
       img, type == CHOICE_TYPE_DROPOWN ? LV_SYMBOL_DOWN : LV_SYMBOL_DIRECTORY);
+#if defined(X10S_COMPACT_UI)
+  lv_obj_align(img, LV_ALIGN_LEFT_MID, 0, 0);
+#else
   lv_obj_set_pos(img, 0, PAD_TINY);
+#endif
 
   // Add label
   label = etx_label_create(lvobj);
+#if defined(X10S_COMPACT_UI)
+  lv_obj_align(label, LV_ALIGN_LEFT_MID, type == CHOICE_TYPE_DROPOWN ? ICON_W - 2 : ICON_W, 0);
+#else
   lv_obj_set_pos(label, type == CHOICE_TYPE_DROPOWN ? ICON_W - 2 : ICON_W, PAD_TINY);
+#endif
   etx_font(label, FONT_XS_INDEX, LV_STATE_USER_1);
 }
 

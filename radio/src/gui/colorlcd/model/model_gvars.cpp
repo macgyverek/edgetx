@@ -210,6 +210,9 @@ const lv_obj_class_t GVarButton::gv_label_class = {
 
 static void gv_value_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+#if defined(X10S_COMPACT_UI)
+  etx_font(obj, FONT_STD_INDEX);
+#endif
   etx_obj_add_style(obj, styles->text_align_center, LV_PART_MAIN);
   etx_font(obj, FONT_XS_INDEX, LV_PART_MAIN | ETX_STATE_VALUE_SMALL_FONT);
   etx_solid_bg(obj, COLOR_THEME_ACTIVE_INDEX, LV_STATE_CHECKED);
