@@ -75,6 +75,8 @@ jobs:
           cmake --preset simu -G Ninja -B build/x10s-compact
           -DPCB=X10 -DPCBREV=STD -DX10S_COMPACT_UI=ON
           -DDISABLE_COMPANION=ON -DCMAKE_BUILD_TYPE=Release
+          "-DCMAKE_C_FLAGS=-mno-ms-bitfields"
+          "-DCMAKE_CXX_FLAGS=-mno-ms-bitfields"
           "-DSDL2_DIR=$env:SDL2_ROOT/cmake"
       - name: Build simulator
         run: cmake --build build/x10s-compact --target simu --parallel 4

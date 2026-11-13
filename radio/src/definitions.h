@@ -69,7 +69,8 @@ typedef const char* (*STR_TYP)();
 #endif
 #endif
 
-#if __GNUC__
+// Clang supports packed attributes even when targeting the Microsoft ABI.
+#if defined(__GNUC__) || defined(__clang__)
   #define PACK(__Declaration__) __Declaration__ __attribute__((__packed__))
 #else
   #define PACK(__Declaration__) __pragma( pack(push, 1) ) __Declaration__ __pragma( pack(pop) )
