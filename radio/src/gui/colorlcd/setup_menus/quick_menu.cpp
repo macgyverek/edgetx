@@ -240,7 +240,7 @@ QuickMenu::QuickMenu() :
   new StaticIcon(w, (QM_W - mask->width) / 2, 0, ICON_TOP_LOGO, COLOR_THEME_QM_FG_INDEX);
 
   new ButtonBase(
-    w, {0, 0, QM_W, EdgeTxStyles::UI_ELEMENT_HEIGHT},
+    w, {0, 0, QM_W, QM_HEADER_HEIGHT},
     [=]() -> uint8_t {
       inSubMenu = false;
       onCancel();

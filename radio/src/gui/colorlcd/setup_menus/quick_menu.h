@@ -47,6 +47,8 @@ class QuickSubMenu;
 class QuickMenu : public NavWindow
 {
  public:
+  // The quick menu keeps its original geometry in Compact UI builds.
+  static LAYOUT_VAL_SCALED(QM_HEADER_HEIGHT, 32)
 
   QuickMenu();
 
@@ -94,9 +96,9 @@ class QuickMenu : public NavWindow
   static constexpr int QM_MAIN_W = GRP_W(QM_MAIN_COLS);
   static constexpr int QM_MAIN_H = GRP_H(QM_MAIN_ROWS);
   static constexpr coord_t QM_W = QM_MAIN_W + PAD_LARGE * 2;
-  static constexpr coord_t QM_H = QM_MAIN_H + EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_MEDIUM * 2;
+  static constexpr coord_t QM_H = QM_MAIN_H + QM_HEADER_HEIGHT + PAD_MEDIUM * 2;
   static constexpr coord_t QM_MAIN_X = (QM_W - QM_MAIN_W) / 2;
-  static constexpr coord_t QM_MAIN_Y = EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_OUTLINE;
+  static constexpr coord_t QM_MAIN_Y = QM_HEADER_HEIGHT + PAD_OUTLINE;
   static constexpr int FIRST_SEARCH_IDX = 0;
 #else
   static LAYOUT_ORIENTATION(QM_MAIN_COLS, 6, 1)
@@ -110,7 +112,7 @@ class QuickMenu : public NavWindow
   static constexpr coord_t QM_W = LCD_W;
   static constexpr coord_t QM_H = LCD_H;
   static LAYOUT_ORIENTATION(QM_MAIN_X, (QM_W - QM_MAIN_W) / 2, (QM_W - QM_MAIN_W - QM_SUB_W - PAD_SMALL) / 2)
-  static constexpr coord_t QM_MAIN_Y = EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_OUTLINE;
+  static constexpr coord_t QM_MAIN_Y = QM_HEADER_HEIGHT + PAD_OUTLINE;
   static LAYOUT_ORIENTATION(QM_SUB_X, QM_MAIN_X, QM_MAIN_X + QM_MAIN_W + PAD_SMALL)
   static LAYOUT_ORIENTATION(QM_SUB_Y, QM_MAIN_Y + QM_MAIN_H + PAD_LARGE, QM_MAIN_Y)
   static constexpr int FIRST_SEARCH_IDX = 1;  // Skip favorites

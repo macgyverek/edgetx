@@ -126,7 +126,7 @@ else()
   message(FATAL_ERROR "Unknown PCB '${PCB}'")
 endif()
 
-option(X10S_COMPACT_UI "Compact quick menu for FrSky X10/X10S (non-Express)" OFF)
+option(X10S_COMPACT_UI "Compact settings controls for FrSky X10/X10S (non-Express)" OFF)
 if(X10S_COMPACT_UI)
   if(NOT (PCB STREQUAL "X10" AND PCBREV STREQUAL "STD"))
     message(FATAL_ERROR "X10S_COMPACT_UI requires PCB=X10 and PCBREV=STD")

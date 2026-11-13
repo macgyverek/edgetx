@@ -65,38 +65,13 @@ class QuickMenuButton : public ButtonBase
       visibleHandler(std::move(visibleHandler))
   {
     iconPtr = new StaticIcon(this, (QuickMenuGroup::QM_BUTTON_WIDTH - QuickMenuGroup::QM_ICON_SIZE) / 2, PAD_SMALL, icon, COLOR_THEME_QM_FG_INDEX);
-#if defined(X10S_COMPACT_UI)
-    // Resample once: LVGL zoom does not support alpha-only images.
-    const auto* mask = getBuiltinIcon(icon);
-    constexpr int size = QuickMenuGroup::QM_ICON_SIZE;
-    for (int y = 0; y < size; ++y) {
-      for (int x = 0; x < size; ++x) {
-        const int x0 = x * mask->width / size;
-        const int y0 = y * mask->height / size;
-        const int x1 = max(x0 + 1, (x + 1) * mask->width / size);
-        const int y1 = max(y0 + 1, (y + 1) * mask->height / size);
-        unsigned sum = 0;
-        for (int sy = y0; sy < y1; ++sy)
-          for (int sx = x0; sx < x1; ++sx)
-            sum += mask->data[sy * mask->width + sx];
-        compactIcon[y * size + x] = sum / ((x1 - x0) * (y1 - y0));
-      }
-    }
-    lv_canvas_set_buffer(iconPtr->getLvObj(), compactIcon, size, size,
-                         LV_IMG_CF_ALPHA_8BIT);
-#endif
 #if VERSION_MAJOR > 2
     etx_obj_add_style(iconPtr->getLvObj(), styles->qmdisabled, LV_PART_MAIN | LV_STATE_DISABLED);
 #endif
     etx_img_color(iconPtr->getLvObj(), COLOR_THEME_QM_BG_INDEX, LV_STATE_USER_1);
 
     textPtr = new StaticText(this, {0, QuickMenuGroup::QM_ICON_SIZE + PAD_TINY * 2, QuickMenuGroup::QM_BUTTON_WIDTH - 1, 0},
-                   title, COLOR_THEME_QM_FG_INDEX, CENTERED | QuickMenuGroup::QM_FONT);
-#if defined(X10S_COMPACT_UI)
-    lv_obj_set_height(textPtr->getLvObj(), QuickMenuGroup::QM_BUTTON_HEIGHT -
-                      QuickMenuGroup::QM_ICON_SIZE - PAD_TINY * 2);
-    lv_label_set_long_mode(textPtr->getLvObj(), LV_LABEL_LONG_DOT);
-#endif
+                   title, COLOR_THEME_QM_FG_INDEX, CENTERED | FONT(XS));
 #if VERSION_MAJOR > 2
     etx_obj_add_style(textPtr->getLvObj(), styles->qmdisabled, LV_PART_MAIN | LV_STATE_DISABLED);
 #endif
@@ -153,9 +128,6 @@ class QuickMenuButton : public ButtonBase
   }
 
  protected:
-#if defined(X10S_COMPACT_UI)
-  uint8_t compactIcon[QuickMenuGroup::QM_ICON_SIZE * QuickMenuGroup::QM_ICON_SIZE];
-#endif
   StaticIcon* iconPtr = nullptr;
   StaticText* textPtr = nullptr;
   std::function<bool(void)> visibleHandler = nullptr;
