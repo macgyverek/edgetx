@@ -32,3 +32,7 @@ test, inspect Radio Setup, Model Setup, Inputs, Mixes and Outputs in EN/PL,
 including text editing and dropdowns. Verify rotary selection, Enter, Back,
 page keys and favorites using test model data, and confirm that the quick
 menu retains its original appearance.
+
+Model/Radio Setup navigation buttons use a 24-pixel minimum instead of
+62-pixel tiles. Wrapped labels increase only their own button and row height
+as needed; rows have 2-pixel gaps. Quick-menu tiles remain unchanged.

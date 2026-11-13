@@ -563,6 +563,15 @@ class SetupTextButton : public TextButton
       if (entry.enabled) show(entry.enabled());
     });
     setWrap();
+#if defined(X10S_COMPACT_UI)
+    // Fit wrapped translations without preserving the oversized tile height.
+    lv_obj_update_layout(lvobj);
+    coord_t contentHeight = lv_obj_get_height(label) +
+        lv_obj_get_style_pad_top(lvobj, LV_PART_MAIN) +
+        lv_obj_get_style_pad_bottom(lvobj, LV_PART_MAIN) +
+        2 * lv_obj_get_style_border_width(lvobj, LV_PART_MAIN);
+    if (contentHeight > height()) setHeight(contentHeight);
+#endif
   }
 
  protected:
@@ -592,6 +601,10 @@ SetupButtonGroup::SetupButtonGroup(Window* parent, const rect_t& rect, const cha
   coord_t xw = buttonWidth + PAD_SMALL;
   coord_t xo = (width() - (cols * xw - PAD_SMALL)) / 2;
   coord_t x, y;
+#if defined(X10S_COMPACT_UI)
+  coord_t rowTop = yo;
+  coord_t rowHeight = 0;
+#endif
   for (auto& entry : pages) {
     if (remaining < cols && (n % cols == 0)) {
       coord_t space = ((cols - remaining) * xw) / (remaining + 1);
@@ -599,12 +612,24 @@ SetupButtonGroup::SetupButtonGroup(Window* parent, const rect_t& rect, const cha
       xo += space;
     }
     x = xo + (n % cols) * xw;
+#if defined(X10S_COMPACT_UI)
+    if (n > 0 && n % cols == 0) {
+      rowTop += rowHeight + PAD_TINY;
+      rowHeight = 0;
+    }
+    y = rowTop;
+    auto button = new SetupTextButton(this, {x, y, buttonWidth, btnHeight}, entry);
+    if (button->height() > rowHeight) rowHeight = button->height();
+#else
     y = yo + (n / cols) * (btnHeight + PAD_MEDIUM);
-
     new SetupTextButton(this, {x, y, buttonWidth, btnHeight}, entry);
+#endif
     n += 1;
     remaining -= 1;
   }
+#if defined(X10S_COMPACT_UI)
+  setHeight(rowTop + rowHeight + PAD_TINY * 2);
+#endif
 }
 
 SetupLine::SetupLine(Window* parent, coord_t y, coord_t col2, PaddingSize padding, const char* title,

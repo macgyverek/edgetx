@@ -31,6 +31,10 @@ class RadioSetupPage: public PageGroupItem
   void build(Window * window) override;
 
   static LAYOUT_ORIENTATION(BTN_COLS, 3, 2)
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t BTN_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
+#else
   static LAYOUT_VAL_SCALED(BTN_H, 62)
+#endif
   static LAYOUT_VAL_SCALED(HATS_MODE_W, 120)
 };

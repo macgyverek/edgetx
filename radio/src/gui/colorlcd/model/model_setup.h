@@ -32,7 +32,11 @@ class ModelSetupPage: public PageGroupItem {
   void build(Window * window) override;
 
   static LAYOUT_SIZE(BTN_COLS, 3, 3)
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t BTN_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
+#else
   static LAYOUT_VAL_SCALED(BTN_H, 62)
+#endif
   static LAYOUT_VAL_SCALED(OPTS_W, 100)
   static LAYOUT_SIZE_SCALED(NAM_W, 200, 140)
 };
