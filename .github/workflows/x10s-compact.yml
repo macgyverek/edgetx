@@ -48,9 +48,6 @@ jobs:
   windows-simulator:
     runs-on: windows-latest
     timeout-minutes: 45
-    env:
-      CC: clang
-      CXX: clang++
     steps:
       - uses: actions/checkout@v7
         with:
@@ -60,35 +57,46 @@ jobs:
           python-version: '3.13'
       - name: Install build-time Python packages
         run: python -m pip install .
-      - name: Setup MSVC environment
-        shell: pwsh
-        run: ./.github/actions/build_companion/setup-msvc.ps1
-      - name: Setup SDL
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          SDL2_VERSION: 2.32.8
-        run: ./.github/actions/build_companion/setup-sdl.sh
+      - name: Setup MinGW toolchain and SDL
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          path-type: inherit
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-ninja
+            mingw-w64-ucrt-x86_64-SDL2
       - name: Configure X10/X10S simulator
-        shell: pwsh
-        run: >-
-          cmake --preset simu -G Ninja -B build/x10s-compact
-          -DPCB=X10 -DPCBREV=STD -DX10S_COMPACT_UI=ON
-          -DDISABLE_COMPANION=ON -DCMAKE_BUILD_TYPE=Release
-          "-DCMAKE_C_FLAGS=-mno-ms-bitfields"
-          "-DCMAKE_CXX_FLAGS=-mno-ms-bitfields"
-          "-DSDL2_DIR=$env:SDL2_ROOT/cmake"
+        shell: msys2 {0}
+        run: |
+          cmake --preset simu -G Ninja -B build/x10s-compact \
+            -DPCB=X10 -DPCBREV=STD -DX10S_COMPACT_UI=ON \
+            -DDISABLE_COMPANION=ON -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
+            "-DPython3_EXECUTABLE=$(cygpath -m "$pythonLocation/python.exe")"
       - name: Build simulator
+        shell: msys2 {0}
         run: cmake --build build/x10s-compact --target simu --parallel 4
-      - name: Package and check executable startup
+      - name: Package simulator and runtime libraries
+        shell: msys2 {0}
+        run: |
+          set -euo pipefail
+          mkdir -p package
+          mapfile -t simulators < <(find build/x10s-compact -name simu.exe)
+          test "${#simulators[@]}" -eq 1
+          cp "${simulators[0]}" package/simu.exe
+          ldd package/simu.exe | tee runtime-dependencies.txt
+          if grep -q 'not found' runtime-dependencies.txt; then exit 1; fi
+          while read -r dll; do cp "$dll" package/; done < <(
+            awk '/=> \/ucrt64\/bin\// {print $3}' runtime-dependencies.txt | sort -u
+          )
+          cp LICENSE package/
+      - name: Check packaged executable without build tools on PATH
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force package | Out-Null
-          $simulator = Get-ChildItem build/x10s-compact -Recurse -Filter simu.exe
-          if (@($simulator).Count -ne 1) { throw 'Expected exactly one simu.exe' }
-          Copy-Item $simulator.FullName package/simu.exe
-          Copy-Item "$env:SDL2_ROOT/lib/x64/SDL2.dll" package/
-          Copy-Item LICENSE package/
+          $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
           ./package/simu.exe --help
           if ($LASTEXITCODE -ne 0) { throw 'Simulator startup check failed' }
       - uses: actions/upload-artifact@v7
