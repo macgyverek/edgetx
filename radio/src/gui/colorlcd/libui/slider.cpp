@@ -105,8 +105,17 @@ void SliderBase::setColor(LcdFlags color)
 //-----------------------------------------------------------------------------
 
 // Slider
+#if defined(X10S_COMPACT_UI)
+static constexpr coord_t sliderKnobPadding = PAD_MEDIUM;
+static constexpr coord_t sliderTrackOffset = (EdgeTxStyles::UI_ELEMENT_HEIGHT - PAD_LARGE) / 2;
+static_assert(PAD_LARGE + 2 * sliderKnobPadding <= EdgeTxStyles::UI_ELEMENT_HEIGHT,
+              "Slider knob must fit inside the compact control");
+#else
+static constexpr coord_t sliderKnobPadding = PAD_LARGE + 1;
+static constexpr coord_t sliderTrackOffset = PAD_LARGE + 1;
+#endif
 const lv_style_const_prop_t slider_knob_props[] = {
-    LV_STYLE_CONST_PAD_TOP(PAD_LARGE + 1),  LV_STYLE_CONST_PAD_BOTTOM(PAD_LARGE + 1),
+    LV_STYLE_CONST_PAD_TOP(sliderKnobPadding), LV_STYLE_CONST_PAD_BOTTOM(sliderKnobPadding),
     LV_STYLE_CONST_PAD_LEFT(PAD_SMALL), LV_STYLE_CONST_PAD_RIGHT(PAD_SMALL),
     LV_STYLE_CONST_RADIUS(PAD_SMALL),   LV_STYLE_CONST_BORDER_WIDTH(PAD_TINY),
     LV_STYLE_PROP_INV,
@@ -160,7 +169,7 @@ Slider::Slider(Window* parent, coord_t width, int32_t vmin, int32_t vmax,
                std::function<void(int)> setValue) :
     SliderBase(parent, width, EdgeTxStyles::UI_ELEMENT_HEIGHT, vmin, vmax, getValue, setValue)
 {
-  padTop(PAD_LARGE + 1);
+  padTop(sliderTrackOffset);
   padLeft(PAD_LARGE);
   padRight(PAD_LARGE);
 
@@ -203,7 +212,7 @@ void Slider::delayedInit()
 // Vertical Slider
 const lv_style_const_prop_t vslider_knob_props[] = {
     LV_STYLE_CONST_PAD_TOP(PAD_SMALL), LV_STYLE_CONST_PAD_BOTTOM(PAD_SMALL),
-    LV_STYLE_CONST_PAD_LEFT(PAD_LARGE + 1),  LV_STYLE_CONST_PAD_RIGHT(PAD_LARGE + 1),
+    LV_STYLE_CONST_PAD_LEFT(sliderKnobPadding), LV_STYLE_CONST_PAD_RIGHT(sliderKnobPadding),
     LV_STYLE_CONST_RADIUS(PAD_SMALL),   LV_STYLE_CONST_BORDER_WIDTH(PAD_TINY),
     LV_STYLE_PROP_INV,
 };
@@ -256,7 +265,7 @@ VerticalSlider::VerticalSlider(Window* parent, coord_t height, int32_t vmin, int
                std::function<void(int)> setValue) :
     SliderBase(parent, EdgeTxStyles::UI_ELEMENT_HEIGHT, height, vmin,vmax, getValue, setValue)
 {
-  padLeft(PAD_LARGE + 1);
+  padLeft(sliderTrackOffset);
   padTop(PAD_LARGE);
   padBottom(PAD_LARGE);
 

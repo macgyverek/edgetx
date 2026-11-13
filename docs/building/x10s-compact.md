@@ -48,3 +48,6 @@ sensor numbers, names and values also use the compact font.
 
 File/folder and dropdown choice symbols and labels are vertically aligned
 to the control center instead of a fixed top offset.
+
+Horizontal and vertical sliders use a 20-pixel knob cross-section centered
+inside the 24-pixel control, preserving two pixels of clearance at each side.
