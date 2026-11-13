@@ -20,6 +20,8 @@ standalone Windows SDL simulator with MinGW GCC. Windows compilation uses
 structure-size assertions remain enabled. The package includes detected
 MinGW runtime DLLs and runs `simu.exe --help` without build tools on PATH.
 
+Inputs/Mixes, Logical Switches, Special/Global Functions and Global Variables
+also use compact list frames with adjusted content positions.
 Output rows also use 24-pixel frames, with centered values and bars. Named
 channels use a single line (channel number followed by name, ellipsized if
 needed); the full name remains in the output editor. Form rows use 2-pixel

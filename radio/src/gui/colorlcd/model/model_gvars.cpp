@@ -67,9 +67,21 @@ class GVarButton : public ListLineButton
   static constexpr coord_t GVAR_COLS = MAX_FLIGHT_MODES;
 #endif
   static constexpr coord_t GVAR_VAL_W = GVAR_VAL_SPACE / GVAR_COLS;
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t BTN_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
+#else
   static LAYOUT_SIZE_SCALED(BTN_H, 32, 50)
+#endif
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t GVAR_NM_Y = 1;
+#else
   static LAYOUT_SIZE_SCALED(GVAR_NM_Y, 3, 13)
+#endif
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t GVAR_YO = 0;
+#else
   static LAYOUT_SIZE_SCALED(GVAR_YO, 3, 2)
+#endif
 
   static const lv_obj_class_t gv_label_class;
   static const lv_obj_class_t gv_value_class;

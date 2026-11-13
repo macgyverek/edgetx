@@ -48,13 +48,21 @@ class FunctionLineButton : public ListLineButton
   void refresh() override;
 
   static constexpr coord_t NM_X = PAD_TINY;
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t NM_Y = 1;
+#else
   static LAYOUT_SIZE_SCALED(NM_Y, 4, 10)
+#endif
   static LAYOUT_SIZE_SCALED(NM_W, 43, 40)
   static constexpr coord_t SW_X = NM_X + NM_W + PAD_TINY;
   static LAYOUT_SIZE(SW_Y, NM_Y, 0)
   static LAYOUT_SIZE_SCALED(SW_W, 70, 198)
   static LAYOUT_SIZE(FN_X, SW_X + SW_W + PAD_TINY, NM_X + NM_W + PAD_TINY)
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t FN_Y = NM_Y;
+#else
   static LAYOUT_SIZE_SCALED(FN_Y, 4, 20)
+#endif
   static LAYOUT_SIZE_SCALED(RP_W, 40, 34)
   static LAYOUT_VAL_SCALED(EN_SZ, 16)
   static constexpr coord_t RP_X = ListLineButton::GRP_W - PAD_BORDER * 2 - RP_W - EN_SZ - PAD_TINY * 2;
@@ -122,7 +130,11 @@ class FunctionsPage : public PageGroupItem
 
   void build(Window* window) override;
 
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t SF_BUTTON_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
+#else
   static LAYOUT_SIZE_SCALED(SF_BUTTON_H, 32, 44)
+#endif
 
  protected:
   int8_t focusIndex = -1;

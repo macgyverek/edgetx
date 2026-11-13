@@ -479,10 +479,18 @@ class LogicalSwitchButton : public ListLineButton
     }
   }
 
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t LS_BUTTON_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
+#else
   static LAYOUT_SIZE_SCALED(LS_BUTTON_H, 32, 44)
+#endif
 
   static constexpr coord_t NM_X = PAD_TINY;
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t NM_Y = 1;
+#else
   static LAYOUT_SIZE_SCALED(NM_Y, 4, 10)
+#endif
   static LAYOUT_SIZE_SCALED(NM_W, 30, 36)
   static constexpr coord_t FN_X = NM_X + NM_W + PAD_TINY;
   static constexpr coord_t FN_Y = NM_Y;
@@ -496,7 +504,11 @@ class LogicalSwitchButton : public ListLineButton
   static LAYOUT_SIZE_SCALED(DUR_W, 40, 54)
   static constexpr coord_t DEL_W = DUR_W;
   static constexpr coord_t AND_X = ListLineButton::GRP_W - PAD_BORDER * 2 - AND_W - DUR_W - DEL_W - PAD_TINY * 3;
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t AND_Y = NM_Y;
+#else
   static LAYOUT_SIZE_SCALED(AND_Y, 4, 20)
+#endif
   static constexpr coord_t V2_W = AND_X - V2_X - PAD_TINY;
   static constexpr coord_t DUR_X = ListLineButton::GRP_W - PAD_BORDER * 2 - DUR_W - DEL_W - PAD_TINY * 2;
   static constexpr coord_t DUR_Y = AND_Y;
