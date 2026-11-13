@@ -129,6 +129,14 @@ string(CONCAT RADIO_NAME "RADIO_" ${RADIO_NAME})
 add_definitions(-D${RADIO_NAME})
 set(${RADIO_NAME} YES)
 
+option(X10S_COMPACT_UI "Compact quick menu for FrSky X10/X10S (non-Express)" OFF)
+if(X10S_COMPACT_UI)
+  if(NOT (PCB STREQUAL "X10" AND PCBREV STREQUAL "STD"))
+    message(FATAL_ERROR "X10S_COMPACT_UI requires PCB=X10 and PCBREV=STD")
+  endif()
+  add_definitions(-DX10S_COMPACT_UI)
+endif()
+
 add_definitions(
   -DCPU_TYPE=${CPU_TYPE} -DCPU_TYPE_FULL=${CPU_TYPE_FULL}
 )

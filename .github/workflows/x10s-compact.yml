@@ -1,0 +1,97 @@
+name: X10S Compact UI
+
+on:
+  push:
+    branches: [feature/x10s-compact-ui]
+    paths:
+      - 'radio/**'
+      - 'cmake/**'
+      - 'CMakeLists.txt'
+      - '.github/workflows/x10s-compact.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: x10s-compact-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  firmware:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    container:
+      image: ghcr.io/edgetx/edgetx-dev:latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/fetch_deps
+      - name: Build X10/X10S non-Express
+        env:
+          FLAVOR: x10
+          EXTRA_OPTIONS: -DX10S_COMPACT_UI=ON -DPCBREV=STD
+          CMAKE_BUILD_PARALLEL_LEVEL: 4
+          EDGETX_VERSION_SUFFIX: x10s-compact
+        run: ./tools/build-gh.sh
+      - uses: actions/upload-artifact@v7
+        with:
+          name: x10s-compact-firmware
+          path: |
+            *.bin
+            fw.json
+            LICENSE
+          if-no-files-found: error
+          retention-days: 14
+
+  windows-simulator:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    env:
+      CC: clang
+      CXX: clang++
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Install build-time Python packages
+        run: python -m pip install .
+      - name: Setup MSVC environment
+        shell: pwsh
+        run: ./.github/actions/build_companion/setup-msvc.ps1
+      - name: Setup SDL
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SDL2_VERSION: 2.32.8
+        run: ./.github/actions/build_companion/setup-sdl.sh
+      - name: Configure X10/X10S simulator
+        shell: pwsh
+        run: >-
+          cmake --preset simu -G Ninja -B build/x10s-compact
+          -DPCB=X10 -DPCBREV=STD -DX10S_COMPACT_UI=ON
+          -DDISABLE_COMPANION=ON -DCMAKE_BUILD_TYPE=Release
+          "-DSDL2_DIR=$env:SDL2_ROOT/cmake"
+      - name: Build simulator
+        run: cmake --build build/x10s-compact --target simu --parallel 4
+      - name: Package and check executable startup
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force package | Out-Null
+          $simulator = Get-ChildItem build/x10s-compact -Recurse -Filter simu.exe
+          if (@($simulator).Count -ne 1) { throw 'Expected exactly one simu.exe' }
+          Copy-Item $simulator.FullName package/simu.exe
+          Copy-Item "$env:SDL2_ROOT/lib/x64/SDL2.dll" package/
+          Copy-Item LICENSE package/
+          ./package/simu.exe --help
+          if ($LASTEXITCODE -ne 0) { throw 'Simulator startup check failed' }
+      - uses: actions/upload-artifact@v7
+        with:
+          name: x10s-compact-windows-simulator
+          path: package/
+          if-no-files-found: error
+          retention-days: 14

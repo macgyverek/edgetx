@@ -55,7 +55,13 @@ class QuickMenuGroup : public Window
   void prevEntry();
   ButtonBase* getFocusedButton();
 
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t QM_ICON_SIZE = 20;
+  static constexpr LcdFlags QM_FONT = FONT(XXS);
+#else
   static LAYOUT_VAL_SCALED(QM_ICON_SIZE, 30)
+  static constexpr LcdFlags QM_FONT = FONT(XS);
+#endif
   static LAYOUT_ORIENTATION(QM_ICON_PAD, PAD_MEDIUM, PAD_SMALL)
 
  protected:
