@@ -51,3 +51,8 @@ to the control center instead of a fixed top offset.
 
 Horizontal and vertical sliders use a 20-pixel knob cross-section centered
 inside the 24-pixel control, preserving two pixels of clearance at each side.
+
+Button matrices (switch/pot warnings and center beeps) explicitly use the
+compact item font. Preflight matrix rows use 24-pixel keys with their normal
+spacing. The numeric keypad uses the same compact font and a 54-pixel total
+height instead of 90; numeric/text fields and the text keyboard are unchanged.

@@ -99,7 +99,11 @@ class SwitchWarnMatrix : public ButtonMatrix
 
   static LAYOUT_SIZE(SW_BTNS, 8, 4)
   static LAYOUT_SIZE_SCALED(SW_BTN_W, 56, 72)
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t SW_BTN_H = EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_SMALL;
+#else
   static LAYOUT_VAL_SCALED(SW_BTN_H, 36)
+#endif
 
  private:
   uint8_t sw_idx[MAX_SWITCHES];
