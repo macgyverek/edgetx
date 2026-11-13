@@ -44,7 +44,11 @@ class ModelOutputsPage : public PageGroupItem
   static LAYOUT_VAL_SCALED(EXLIMCB_W, 52)
   static constexpr coord_t EXLIMCB_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
   static LAYOUT_SIZE(EXLIM_X, ADD_TRIMS_X + ADD_TRIMS_W + PAD_SMALL, PAD_MEDIUM)
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t EXLIM_Y = EXLIMCB_Y + (EXLIMCB_H - EdgeTxStyles::STD_FONT_HEIGHT) / 2;
+#else
   static LAYOUT_SIZE(EXLIM_Y, PAD_LARGE + PAD_TINY, ADD_TRIMS_Y + ADD_TRIMS_H + PAD_LARGE)
+#endif
   static constexpr coord_t EXLIM_W = EXLIMCB_X - EXLIM_X - PAD_SMALL;
   static constexpr coord_t TRIMB_X = PAD_SMALL;
   static constexpr coord_t TRIMB_Y = EXLIMCB_Y + EXLIMCB_H + PAD_MEDIUM / 2;

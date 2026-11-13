@@ -131,8 +131,13 @@ const lv_style_const_prop_t pad_large_props[] = {
 LV_STYLE_CONST_MULTI_INIT(EdgeTxStyles::pad_large, pad_large_props);
 
 const lv_style_const_prop_t pad_button_props[] = {
+#if defined(X10S_COMPACT_UI)
+    LV_STYLE_CONST_PAD_TOP(1),
+    LV_STYLE_CONST_PAD_BOTTOM(1),
+#else
     LV_STYLE_CONST_PAD_TOP(PAD_TINY),
     LV_STYLE_CONST_PAD_BOTTOM(PAD_TINY),
+#endif
     LV_STYLE_CONST_PAD_LEFT(PAD_MEDIUM),
     LV_STYLE_CONST_PAD_RIGHT(PAD_MEDIUM),
     LV_STYLE_CONST_PAD_ROW(PAD_TINY),
@@ -142,8 +147,13 @@ const lv_style_const_prop_t pad_button_props[] = {
 LV_STYLE_CONST_MULTI_INIT(EdgeTxStyles::pad_button, pad_button_props);
 
 const lv_style_const_prop_t pad_textarea_props[] = {
+#if defined(X10S_COMPACT_UI)
+    LV_STYLE_CONST_PAD_TOP(1),
+    LV_STYLE_CONST_PAD_BOTTOM(PAD_TINY),
+#else
     LV_STYLE_CONST_PAD_TOP(PAD_SMALL),
     LV_STYLE_CONST_PAD_BOTTOM(PAD_SMALL - 1),
+#endif
     LV_STYLE_CONST_PAD_LEFT(PAD_MEDIUM),
     LV_STYLE_CONST_PAD_RIGHT(PAD_SMALL),
     LV_STYLE_PROP_INV,

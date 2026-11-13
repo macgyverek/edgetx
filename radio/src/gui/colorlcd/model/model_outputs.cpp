@@ -49,8 +49,11 @@ class OutputLineButton : public ListLineButton
     source = etx_label_create(lvobj);
     lv_obj_set_pos(source, SRC_X, SRC_Y);
     lv_obj_set_size(source, SRC_W, SRC_H);
+#if defined(X10S_COMPACT_UI)
+    lv_label_set_long_mode(source, LV_LABEL_LONG_DOT);
+#endif
 
-#if !NARROW_LAYOUT
+#if !NARROW_LAYOUT && !defined(X10S_COMPACT_UI)
     etx_font(source, FONT_XS_INDEX, ETX_STATE_NAME_FONT_SMALL);
     lv_obj_set_style_pad_top(source, -PAD_TINY, ETX_STATE_NAME_FONT_SMALL);
     lv_obj_set_style_text_line_space(source, -PAD_THREE, ETX_STATE_NAME_FONT_SMALL);
@@ -85,7 +88,7 @@ class OutputLineButton : public ListLineButton
     curve =
         new StaticIcon(this, CRV_X, CRV_Y, ICON_TEXTLINE_CURVE, COLOR_THEME_SECONDARY1_INDEX);
 
-    new OutputChannelBar(this, rect_t{BAR_X, PAD_MEDIUM, CH_BAR_WIDTH, CH_BAR_HEIGHT},
+    new OutputChannelBar(this, rect_t{BAR_X, BAR_Y, CH_BAR_WIDTH, CH_BAR_HEIGHT},
                                index, false, false);
 
     checkEvents();
@@ -114,17 +117,24 @@ class OutputLineButton : public ListLineButton
 
     const LimitData* output = limitAddress(index);
     if (g_model.limitData[index].name[0] != '\0') {
-#if !NARROW_LAYOUT
+#if !NARROW_LAYOUT && !defined(X10S_COMPACT_UI)
       lv_obj_add_state(source, ETX_STATE_NAME_FONT_SMALL);
 #endif
       char chanStr[LEN_CHANNEL_NAME + 16];
+#if defined(X10S_COMPACT_UI)
+      char* s = strAppend(chanStr, STR_CH);
+      s = strAppendUnsigned(s, index + 1);
+      s = strAppend(s, " ");
+      strAppend(s, getSourceString(MIXSRC_FIRST_CH + index));
+#else
       char* s = strAppend(chanStr, getSourceString(MIXSRC_FIRST_CH + index));
       s = strAppend(s, "\n");
       s = strAppend(s, STR_CH);
       strAppendUnsigned(s, index + 1);
+#endif
       lv_label_set_text(source, chanStr);
     } else {
-#if !NARROW_LAYOUT
+#if !NARROW_LAYOUT && !defined(X10S_COMPACT_UI)
       lv_obj_clear_state(source, ETX_STATE_NAME_FONT_SMALL);
 #endif
       lv_label_set_text(source, getSourceString(MIXSRC_FIRST_CH + index));
@@ -153,24 +163,43 @@ class OutputLineButton : public ListLineButton
     curve->show(output->curve);
   }
 
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t CH_LINE_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
+#else
   static LAYOUT_SIZE_SCALED(CH_LINE_H, 32, 50)
+#endif
   static LAYOUT_VAL_SCALED(CH_BAR_WIDTH, 100)
   static LAYOUT_VAL_SCALED(CH_BAR_HEIGHT, 16)
   static LAYOUT_VAL_SCALED(BAR_XO, 17)
   static constexpr coord_t BAR_X = LCD_W - CH_BAR_WIDTH - BAR_XO;
 
   static constexpr coord_t SRC_X = PAD_TINY;
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t TEXT_Y = (CH_LINE_H - EdgeTxStyles::STD_FONT_HEIGHT) / 2 - PAD_BORDER;
+  static constexpr coord_t BAR_Y = (CH_LINE_H - CH_BAR_HEIGHT) / 2 - PAD_BORDER;
+  static constexpr coord_t SRC_Y = TEXT_Y;
+#else
+  static constexpr coord_t BAR_Y = PAD_MEDIUM;
   static constexpr coord_t SRC_Y = 1;
+#endif
   static LAYOUT_VAL_SCALED(SRC_W, 80)
   static constexpr coord_t SRC_H = CH_LINE_H - PAD_MEDIUM;
   static constexpr coord_t MIN_X = SRC_X + SRC_W + PAD_TINY;
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t MIN_Y = TEXT_Y;
+#else
   static LAYOUT_SIZE_SCALED(MIN_Y, 4, 2)
+#endif
   static LAYOUT_VAL_SCALED(MIN_W, 52)
   static constexpr coord_t MAX_X = MIN_X + MIN_W + PAD_TINY;
   static constexpr coord_t MAX_Y = MIN_Y;
   static LAYOUT_SIZE_SCALED(MAX_W, 52, 60)
   static LAYOUT_SIZE(OFF_X, MAX_X + MAX_W + PAD_TINY, SRC_X + SRC_W + PAD_TINY)
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t OFF_Y = TEXT_Y;
+#else
   static LAYOUT_SIZE_SCALED(OFF_Y, 4, 24)
+#endif
   static LAYOUT_SIZE_SCALED(OFF_W, 44, 52)
   static constexpr coord_t CTR_X = OFF_X + OFF_W + PAD_TINY;
   static constexpr coord_t CTR_Y = OFF_Y;

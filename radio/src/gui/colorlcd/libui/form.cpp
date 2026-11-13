@@ -86,6 +86,11 @@ FormLine::FormLine(Window* parent, FlexGridLayout& layout) :
 
   layout.resetPos();
   layout.apply(this);
+#if defined(X10S_COMPACT_UI)
+  // Keep horizontal alignment, reduce only the space above/below each row.
+  lv_obj_set_style_pad_top(lvobj, PAD_TINY, LV_PART_MAIN);
+  lv_obj_set_style_pad_bottom(lvobj, PAD_TINY, LV_PART_MAIN);
+#endif
 
   lv_obj_set_width(lvobj, lv_pct(100));
   lv_obj_set_height(lvobj, LV_SIZE_CONTENT);
