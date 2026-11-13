@@ -126,6 +126,14 @@ else()
   message(FATAL_ERROR "Unknown PCB '${PCB}'")
 endif()
 
+option(X10S_COMPACT_UI "Compact quick menu for FrSky X10/X10S (non-Express)" OFF)
+if(X10S_COMPACT_UI)
+  if(NOT (PCB STREQUAL "X10" AND PCBREV STREQUAL "STD"))
+    message(FATAL_ERROR "X10S_COMPACT_UI requires PCB=X10 and PCBREV=STD")
+  endif()
+  add_definitions(-DX10S_COMPACT_UI)
+endif()
+
 set(HW_DESC_JSON ${FLAVOUR}.json)
 AddHardwareDefTarget(${HW_DESC_JSON})
 

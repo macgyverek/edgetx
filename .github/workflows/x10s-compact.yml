@@ -1,0 +1,110 @@
+name: X10S Compact UI
+
+on:
+  push:
+    branches: [feature/x10s-compact-ui]
+    paths:
+      - 'radio/**'
+      - 'cmake/**'
+      - 'CMakeLists.txt'
+      - '.github/workflows/x10s-compact.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: x10s-compact-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  firmware:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    container:
+      image: ghcr.io/edgetx/edgetx-dev:2.12
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Build X10/X10S non-Express
+        env:
+          FLAVOR: x10
+          EXTRA_OPTIONS: -DX10S_COMPACT_UI=ON -DPCBREV=STD
+          CMAKE_BUILD_PARALLEL_LEVEL: 4
+          EDGETX_VERSION_SUFFIX: x10s-compact
+        run: ./tools/build-gh.sh
+      - uses: actions/upload-artifact@v7
+        with:
+          name: x10s-compact-firmware
+          path: |
+            *.bin
+            fw.json
+            LICENSE
+          if-no-files-found: error
+          retention-days: 14
+
+  windows-simulator:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Install build-time Python packages
+        run: python -m pip install clang jinja2 lz4 pillow
+      - name: Setup MinGW toolchain and SDL
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          path-type: inherit
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-ninja
+            mingw-w64-ucrt-x86_64-SDL2
+      - name: Configure X10/X10S simulator
+        shell: msys2 {0}
+        run: |
+          cmake -S . -G Ninja -B build/x10s-compact \
+            -DEdgeTX_SUPERBUILD=OFF -DNATIVE_BUILD=ON \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain/native.cmake \
+            -DPCB=X10 -DPCBREV=STD -DX10S_COMPACT_UI=ON \
+            -DDISABLE_COMPANION=ON -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
+            "-DCMAKE_C_FLAGS=-mno-ms-bitfields" \
+            "-DCMAKE_CXX_FLAGS=-mno-ms-bitfields" \
+            "-DPython3_EXECUTABLE=$(cygpath -m "$pythonLocation/python.exe")"
+      - name: Build simulator
+        shell: msys2 {0}
+        run: cmake --build build/x10s-compact --target simu --parallel 4
+      - name: Package simulator and runtime libraries
+        shell: msys2 {0}
+        run: |
+          set -euo pipefail
+          mkdir -p package
+          mapfile -t simulators < <(find build/x10s-compact -name simu.exe)
+          test "${#simulators[@]}" -eq 1
+          cp "${simulators[0]}" package/simu.exe
+          ldd package/simu.exe | tee runtime-dependencies.txt
+          if grep -q 'not found' runtime-dependencies.txt; then exit 1; fi
+          while read -r dll; do cp "$dll" package/; done < <(
+            awk '/=> \/ucrt64\/bin\// {print $3}' runtime-dependencies.txt | sort -u
+          )
+          cp LICENSE package/
+      - name: Check packaged executable without build tools on PATH
+        shell: pwsh
+        run: |
+          $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
+          ./package/simu.exe --help
+          if ($LASTEXITCODE -ne 0) { throw 'Simulator startup check failed' }
+      - uses: actions/upload-artifact@v7
+        with:
+          name: x10s-compact-windows-simulator
+          path: package/
+          if-no-files-found: error
+          retention-days: 14
