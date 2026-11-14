@@ -64,3 +64,6 @@ and use an ellipsis instead of wrapping over the channel identifier.
 Special/Global Function enable markers use a 12-pixel square with a thin
 outline, centered inside the row. Toggle switches are 44 by 20 pixels and
 centered in their existing row slots, including explicitly sized controls.
+
+Focused controls use a 1-pixel outline with no outside gap, reducing its
+extent by 2 pixels per edge. Normal borders and layout spacing are unchanged.

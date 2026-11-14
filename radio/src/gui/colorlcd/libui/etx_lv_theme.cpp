@@ -185,9 +185,14 @@ const lv_style_const_prop_t border_thin_props[] = {
 LV_STYLE_CONST_MULTI_INIT(EdgeTxStyles::border_thin, border_thin_props);
 
 static const lv_style_const_prop_t outline_props[] = {
+#if defined(X10S_COMPACT_UI)
+    LV_STYLE_CONST_OUTLINE_WIDTH(1),
+    LV_STYLE_CONST_OUTLINE_PAD(0),
+#else
     LV_STYLE_CONST_OUTLINE_WIDTH(PAD_OUTLINE),
-    LV_STYLE_CONST_OUTLINE_OPA(LV_OPA_COVER),
     LV_STYLE_CONST_OUTLINE_PAD(1),
+#endif
+    LV_STYLE_CONST_OUTLINE_OPA(LV_OPA_COVER),
     LV_STYLE_PROP_INV,
 };
 LV_STYLE_CONST_MULTI_INIT(EdgeTxStyles::outline, outline_props);
