@@ -64,12 +64,20 @@ class FunctionLineButton : public ListLineButton
   static LAYOUT_SIZE_SCALED(FN_Y, 4, 20)
 #endif
   static LAYOUT_SIZE_SCALED(RP_W, 40, 34)
+#if defined(X10S_COMPACT_UI)
+  static LAYOUT_VAL_SCALED(EN_SZ, 12)
+#else
   static LAYOUT_VAL_SCALED(EN_SZ, 16)
+#endif
   static constexpr coord_t RP_X = ListLineButton::GRP_W - PAD_BORDER * 2 - RP_W - EN_SZ - PAD_TINY * 2;
   static constexpr coord_t RP_Y = NM_Y;
   static constexpr coord_t FN_W = RP_X - FN_X - PAD_TINY;
   static constexpr coord_t EN_X = ListLineButton::GRP_W - PAD_BORDER * 2 - EN_SZ - PAD_TINY;
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t EN_Y = (EdgeTxStyles::UI_ELEMENT_HEIGHT - PAD_BORDER * 2 - EN_SZ) / 2;
+#else
   static constexpr coord_t EN_Y = NM_Y + PAD_TINY;
+#endif
 
  protected:
   const CustomFunctionData *cfn;

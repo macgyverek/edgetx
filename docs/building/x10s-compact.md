@@ -56,3 +56,11 @@ Button matrices (switch/pot warnings and center beeps) explicitly use the
 compact item font. Preflight matrix rows use 24-pixel keys with their normal
 spacing. The numeric keypad uses the same compact font and a 54-pixel total
 height instead of 90; numeric/text fields and the text keyboard are unchanged.
+
+Named mixer channel groups reserve enough height for both the name and CH
+identifier, even with a single mix. Long names stay within the left column
+and use an ellipsis instead of wrapping over the channel identifier.
+
+Special/Global Function enable markers use a 12-pixel square with a thin
+outline, centered inside the row. Toggle switches are 44 by 20 pixels and
+centered in their existing row slots, including explicitly sized controls.

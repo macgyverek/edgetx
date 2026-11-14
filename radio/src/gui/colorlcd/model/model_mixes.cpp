@@ -176,7 +176,13 @@ class MixGroup : public InputMixGroupBase
   {
     adjustHeight();
 
+#if defined(X10S_COMPACT_UI)
+    lv_obj_set_pos(label, PAD_TINY, 0);
+    lv_obj_set_size(label, InputMixButtonBase::LN_X - PAD_TINY * 2, EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_label_set_long_mode(label, LV_LABEL_LONG_DOT);
+#else
     lv_obj_set_pos(label, PAD_TINY, -1);
+#endif
 
     lv_obj_t* chText = nullptr;
     if (idx >= MIXSRC_FIRST_CH && idx <= MIXSRC_LAST_CH &&
@@ -186,7 +192,11 @@ class MixGroup : public InputMixGroupBase
       char* s = strAppend(chanStr, STR_CH);
       strAppendUnsigned(s, idx - MIXSRC_FIRST_CH + 1);
       lv_label_set_text(chText, chanStr);
+#if defined(X10S_COMPACT_UI)
+      lv_obj_set_pos(chText, PAD_TINY, CHNUM_Y);
+#else
       lv_obj_set_pos(chText, PAD_TINY, CHNUM_Y-1);
+#endif
     }
 
     refresh();
@@ -217,10 +227,21 @@ class MixGroup : public InputMixGroupBase
       line->updatePos(InputMixButtonBase::LN_X, y);
       y += line->height() + PAD_OUTLINE;
     }
+#if defined(X10S_COMPACT_UI)
+    // A named channel has two label lines even when it has only one mix.
+    if (idx >= MIXSRC_FIRST_CH && idx <= MIXSRC_LAST_CH &&
+        g_model.limitData[idx - MIXSRC_FIRST_CH].name[0] != '\0') {
+      y = max<coord_t>(y, CHNUM_Y + EdgeTxStyles::STD_FONT_HEIGHT);
+    }
+#endif
     setHeight(y + PAD_BORDER * 2);
   }
 
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t CHNUM_Y = EdgeTxStyles::STD_FONT_HEIGHT;
+#else
   static LAYOUT_VAL_SCALED(CHNUM_Y, 17)
+#endif
   static LAYOUT_VAL_SCALED(CHBAR_W, 100)
   static LAYOUT_VAL_SCALED(CHBAR_H, 14)
 

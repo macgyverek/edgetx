@@ -39,7 +39,11 @@ static const char *_failsafe_module[] = {
 };
 
 static const lv_style_const_prop_t sf_enable_state_style_props[] = {
+#if defined(X10S_COMPACT_UI)
+    LV_STYLE_CONST_OUTLINE_WIDTH(1),
+#else
     LV_STYLE_CONST_OUTLINE_WIDTH(3),
+#endif
     LV_STYLE_CONST_OUTLINE_OPA(LV_OPA_COVER),
     LV_STYLE_CONST_OUTLINE_PAD(1),
     LV_STYLE_PROP_INV,
@@ -51,7 +55,11 @@ static void sf_enable_state_constructor(const lv_obj_class_t *class_p,
 {
   etx_obj_add_style(obj, sf_enable_state_style, LV_PART_MAIN);
   etx_obj_add_style(obj, styles->outline_color_light, LV_PART_MAIN);
+#if defined(X10S_COMPACT_UI)
+  etx_obj_add_style(obj, styles->border_thin, LV_PART_MAIN);
+#else
   etx_obj_add_style(obj, styles->border, LV_PART_MAIN);
+#endif
   etx_obj_add_style(obj, styles->border_color[COLOR_THEME_SECONDARY1_INDEX], LV_PART_MAIN);
   etx_obj_add_style(obj, styles->bg_opacity_cover, LV_PART_MAIN);
   etx_bg_color(obj, COLOR_THEME_ACTIVE_INDEX, LV_STATE_CHECKED);
