@@ -70,3 +70,7 @@ extent by 2 pixels per edge. Normal borders and layout spacing are unchanged.
 
 When the channel name makes a mixer group taller, the mix rows are vertically
 centered in the extra space. Multi-row groups keep their normal spacing.
+
+Function enable markers have an additional 3-pixel right inset; adjacent
+repeat/function text reserves the same space. Setup row wrapping is measured
+with the compact font, avoiding false two-line layouts such as Key lock.

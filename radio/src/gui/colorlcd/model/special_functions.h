@@ -69,10 +69,15 @@ class FunctionLineButton : public ListLineButton
 #else
   static LAYOUT_VAL_SCALED(EN_SZ, 16)
 #endif
-  static constexpr coord_t RP_X = ListLineButton::GRP_W - PAD_BORDER * 2 - RP_W - EN_SZ - PAD_TINY * 2;
+#if defined(X10S_COMPACT_UI)
+  static constexpr coord_t EN_INSET = PAD_THREE;
+#else
+  static constexpr coord_t EN_INSET = 0;
+#endif
+  static constexpr coord_t RP_X = ListLineButton::GRP_W - PAD_BORDER * 2 - RP_W - EN_SZ - PAD_TINY * 2 - EN_INSET;
   static constexpr coord_t RP_Y = NM_Y;
   static constexpr coord_t FN_W = RP_X - FN_X - PAD_TINY;
-  static constexpr coord_t EN_X = ListLineButton::GRP_W - PAD_BORDER * 2 - EN_SZ - PAD_TINY;
+  static constexpr coord_t EN_X = ListLineButton::GRP_W - PAD_BORDER * 2 - EN_SZ - PAD_TINY - EN_INSET;
 #if defined(X10S_COMPACT_UI)
   static constexpr coord_t EN_Y = (EdgeTxStyles::UI_ELEMENT_HEIGHT - PAD_BORDER * 2 - EN_SZ) / 2;
 #else

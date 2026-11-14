@@ -644,7 +644,12 @@ SetupLine::SetupLine(Window* parent, coord_t y, coord_t col2, PaddingSize paddin
     coord_t editY = PAD_TINY;
     coord_t lblWidth = col2 - PAD_SMALL - PAD_TINY;
     if (title) {
-      if (getTextWidth(title) >= lblWidth) {
+#if defined(X10S_COMPACT_UI)
+      auto titleWidth = getTextWidth(title, 0, FONT(XS));
+#else
+      auto titleWidth = getTextWidth(title);
+#endif
+      if (titleWidth >= lblWidth) {
         h += PAD_MEDIUM;
         titleY = 0;
         titleH = EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_TINY + PAD_LARGE;
