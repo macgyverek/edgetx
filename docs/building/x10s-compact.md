@@ -67,3 +67,6 @@ centered in their existing row slots, including explicitly sized controls.
 
 Focused controls use a 1-pixel outline with no outside gap, reducing its
 extent by 2 pixels per edge. Normal borders and layout spacing are unchanged.
+
+When the channel name makes a mixer group taller, the mix rows are vertically
+centered in the extra space. Multi-row groups keep their normal spacing.

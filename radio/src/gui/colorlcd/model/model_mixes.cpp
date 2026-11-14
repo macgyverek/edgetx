@@ -231,7 +231,16 @@ class MixGroup : public InputMixGroupBase
     // A named channel has two label lines even when it has only one mix.
     if (idx >= MIXSRC_FIRST_CH && idx <= MIXSRC_LAST_CH &&
         g_model.limitData[idx - MIXSRC_FIRST_CH].name[0] != '\0') {
-      y = max<coord_t>(y, CHNUM_Y + EdgeTxStyles::STD_FONT_HEIGHT);
+      coord_t contentHeight = max<coord_t>(y, CHNUM_Y + EdgeTxStyles::STD_FONT_HEIGHT);
+      coord_t offset = (contentHeight - y) / 2;
+      if (offset > 0) {
+        coord_t lineY = (monitorVisible ? CHNUM_Y : PAD_OUTLINE) + offset;
+        for (auto line : lines) {
+          line->updatePos(InputMixButtonBase::LN_X, lineY);
+          lineY += line->height() + PAD_OUTLINE;
+        }
+      }
+      y = contentHeight;
     }
 #endif
     setHeight(y + PAD_BORDER * 2);
