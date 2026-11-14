@@ -50,14 +50,14 @@ class OutputLineButton : public ListLineButton
     lv_obj_set_pos(source, SRC_X, SRC_Y());
     lv_obj_set_size(source, SRC_W, SRC_H());
     if (compactUiEnabled()) {
-    lv_label_set_long_mode(source, LV_LABEL_LONG_DOT);
+      lv_label_set_long_mode(source, LV_LABEL_LONG_DOT);
     }
 
 #if !NARROW_LAYOUT
     if (!compactUiEnabled()) {
-    etx_font(source, FONT_XS_INDEX, ETX_STATE_NAME_FONT_SMALL);
-    lv_obj_set_style_pad_top(source, -PAD_TINY, ETX_STATE_NAME_FONT_SMALL);
-    lv_obj_set_style_text_line_space(source, -PAD_THREE, ETX_STATE_NAME_FONT_SMALL);
+      etx_font(source, FONT_XS_INDEX, ETX_STATE_NAME_FONT_SMALL);
+      lv_obj_set_style_pad_top(source, -PAD_TINY, ETX_STATE_NAME_FONT_SMALL);
+      lv_obj_set_style_text_line_space(source, -PAD_THREE, ETX_STATE_NAME_FONT_SMALL);
     }
 #endif
 
@@ -121,26 +121,26 @@ class OutputLineButton : public ListLineButton
     if (g_model.limitData[index].name[0] != '\0') {
 #if !NARROW_LAYOUT
     if (!compactUiEnabled()) {
-      lv_obj_add_state(source, ETX_STATE_NAME_FONT_SMALL);
+        lv_obj_add_state(source, ETX_STATE_NAME_FONT_SMALL);
     }
 #endif
       char chanStr[LEN_CHANNEL_NAME + 16];
       if (compactUiEnabled()) {
-      char* s = strAppend(chanStr, STR_CH);
-      s = strAppendUnsigned(s, index + 1);
-      s = strAppend(s, " ");
-      strAppend(s, getSourceString(MIXSRC_FIRST_CH + index));
+        char* s = strAppend(chanStr, STR_CH);
+        s = strAppendUnsigned(s, index + 1);
+        s = strAppend(s, " ");
+        strAppend(s, getSourceString(MIXSRC_FIRST_CH + index));
       } else {
-      char* s = strAppend(chanStr, getSourceString(MIXSRC_FIRST_CH + index));
-      s = strAppend(s, "\n");
-      s = strAppend(s, STR_CH);
-      strAppendUnsigned(s, index + 1);
+        char* s = strAppend(chanStr, getSourceString(MIXSRC_FIRST_CH + index));
+        s = strAppend(s, "\n");
+        s = strAppend(s, STR_CH);
+        strAppendUnsigned(s, index + 1);
       }
       lv_label_set_text(source, chanStr);
     } else {
 #if !NARROW_LAYOUT
     if (!compactUiEnabled()) {
-      lv_obj_clear_state(source, ETX_STATE_NAME_FONT_SMALL);
+        lv_obj_clear_state(source, ETX_STATE_NAME_FONT_SMALL);
     }
 #endif
       lv_label_set_text(source, getSourceString(MIXSRC_FIRST_CH + index));

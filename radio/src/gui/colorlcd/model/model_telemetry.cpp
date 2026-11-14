@@ -99,7 +99,7 @@ static void ts_num_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
   lv_obj_set_height(obj, EdgeTxStyles::STD_FONT_HEIGHT());
   if (compactUiEnabled()) {
-  etx_font(obj, FONT_STD_INDEX);
+    etx_font(obj, FONT_STD_INDEX);
   }
   etx_obj_add_style(obj, styles->text_align_center, LV_PART_MAIN);
   etx_font(obj, FONT_XS_INDEX, ETX_STATE_VALUE_SMALL_FONT);
@@ -157,7 +157,7 @@ static void ts_name_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
   lv_obj_set_height(obj, EdgeTxStyles::STD_FONT_HEIGHT());
   if (compactUiEnabled()) {
-  etx_font(obj, FONT_STD_INDEX);
+    etx_font(obj, FONT_STD_INDEX);
   }
   etx_obj_add_style(obj, styles->text_align_left, LV_PART_MAIN);
 }
@@ -187,7 +187,7 @@ static void ts_value_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
   lv_obj_set_height(obj, EdgeTxStyles::STD_FONT_HEIGHT());
   if (compactUiEnabled()) {
-  etx_font(obj, FONT_STD_INDEX);
+    etx_font(obj, FONT_STD_INDEX);
   }
   etx_obj_add_style(obj, styles->text_align_left, LV_PART_MAIN);
   etx_txt_color(obj, COLOR_THEME_WARNING_INDEX, ETX_STATE_VALUE_STALE_WARN);

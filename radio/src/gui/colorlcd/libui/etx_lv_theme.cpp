@@ -348,10 +348,10 @@ void EdgeTxStyles::setFonts()
   for (int i = FONT_STD_INDEX; i < FONTS_COUNT; i += 1) {
     int fontIndex = i;
     if (compactUiEnabled()) {
-    // Use the existing language-aware XS font for standard UI controls.
-    // Leave getFont() and the Lua font identifiers unchanged.
-    if (i == FONT_STD_INDEX || i == FONT_BOLD_INDEX)
-      fontIndex = FONT_XS_INDEX;
+      // Use the existing language-aware XS font for standard UI controls.
+      // Leave getFont() and the Lua font identifiers unchanged.
+      if (i == FONT_STD_INDEX || i == FONT_BOLD_INDEX)
+        fontIndex = FONT_XS_INDEX;
     }
     lv_style_set_text_font(&font[i], getFont(fontIndex << 8));
   }
@@ -722,9 +722,9 @@ static void textarea_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 
   lv_textarea_t* ta = (lv_textarea_t*)obj;
   if (compactUiEnabled()) {
-  lv_obj_set_height(ta->label, EdgeTxStyles::STD_FONT_HEIGHT());
+    lv_obj_set_height(ta->label, EdgeTxStyles::STD_FONT_HEIGHT());
   } else {
-  lv_obj_set_height(ta->label, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 21 / 32);
+    lv_obj_set_height(ta->label, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 21 / 32);
   }
 }
 

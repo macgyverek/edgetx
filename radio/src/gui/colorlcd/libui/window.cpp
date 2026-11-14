@@ -69,7 +69,7 @@ void Window::eventHandler(lv_event_t *e)
         // Force scroll to top or bottom when near either edge.
         // Only applies when using rotary encoder or keys.
         // Limit is 2 standard size labels with some extra padding
-        constexpr lv_coord_t NEAR_LIMIT =
+        const lv_coord_t NEAR_LIMIT =
             (EdgeTxStyles::STD_FONT_HEIGHT() + PAD_TINY * 2 + PAD_OUTLINE * 2) * 2 + PAD_MEDIUM * 2;
 
         TRACE("SCROLL[x=%d;y=%d;top=%d;bottom=%d,limit=%d]", p->x, p->y, scroll_y,
@@ -564,13 +564,13 @@ class SetupTextButton : public TextButton
     });
     setWrap();
     if (compactUiEnabled()) {
-    // Fit wrapped translations without preserving the oversized tile height.
-    lv_obj_update_layout(lvobj);
-    coord_t contentHeight = lv_obj_get_height(label) +
-        lv_obj_get_style_pad_top(lvobj, LV_PART_MAIN) +
-        lv_obj_get_style_pad_bottom(lvobj, LV_PART_MAIN) +
-        2 * lv_obj_get_style_border_width(lvobj, LV_PART_MAIN);
-    if (contentHeight > height()) setHeight(contentHeight);
+      // Fit wrapped translations without preserving the oversized tile height.
+      lv_obj_update_layout(lvobj);
+      coord_t contentHeight = lv_obj_get_height(label) +
+          lv_obj_get_style_pad_top(lvobj, LV_PART_MAIN) +
+          lv_obj_get_style_pad_bottom(lvobj, LV_PART_MAIN) +
+          2 * lv_obj_get_style_border_width(lvobj, LV_PART_MAIN);
+      if (contentHeight > height()) setHeight(contentHeight);
     }
   }
 
@@ -611,22 +611,22 @@ SetupButtonGroup::SetupButtonGroup(Window* parent, const rect_t& rect, const cha
     }
     x = xo + (n % cols) * xw;
     if (compactUiEnabled()) {
-    if (n > 0 && n % cols == 0) {
-      rowTop += rowHeight + PAD_TINY;
-      rowHeight = 0;
-    }
-    y = rowTop;
-    auto button = new SetupTextButton(this, {x, y, buttonWidth, btnHeight}, entry);
-    if (button->height() > rowHeight) rowHeight = button->height();
+      if (n > 0 && n % cols == 0) {
+        rowTop += rowHeight + PAD_TINY;
+        rowHeight = 0;
+      }
+      y = rowTop;
+      auto button = new SetupTextButton(this, {x, y, buttonWidth, btnHeight}, entry);
+      if (button->height() > rowHeight) rowHeight = button->height();
     } else {
-    y = yo + (n / cols) * (btnHeight + PAD_MEDIUM);
-    new SetupTextButton(this, {x, y, buttonWidth, btnHeight}, entry);
+      y = yo + (n / cols) * (btnHeight + PAD_MEDIUM);
+      new SetupTextButton(this, {x, y, buttonWidth, btnHeight}, entry);
     }
     n += 1;
     remaining -= 1;
   }
   if (compactUiEnabled()) {
-  setHeight(rowTop + rowHeight + PAD_TINY * 2);
+    setHeight(rowTop + rowHeight + PAD_TINY * 2);
   }
 }
 

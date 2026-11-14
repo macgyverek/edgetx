@@ -148,7 +148,7 @@ void NumberKeyboard::onLongPressPGDN() { setDEF(); }
 NumberKeyboard::NumberKeyboard() : Keyboard(KEYBOARD_HEIGHT())
 {
   if (compactUiEnabled()) {
-  etx_font(keyboard, FONT_STD_INDEX, LV_PART_ITEMS);
+    etx_font(keyboard, FONT_STD_INDEX, LV_PART_ITEMS);
   }
   // setup custom keyboard
   lv_keyboard_set_map(keyboard, LV_KEYBOARD_MODE_USER_1,

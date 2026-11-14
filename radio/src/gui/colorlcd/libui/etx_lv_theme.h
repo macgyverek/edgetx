@@ -33,7 +33,7 @@ class Window;
 
 // Active style is latched at startup. Changing the saved preference requires
 // a restart, so existing windows always keep one consistent set of metrics.
-#if defined(X10S_COMPACT_UI)
+#if defined(X10S_COMPACT_UI) && !defined(BOOT)
 bool compactUiEnabled();
 void initUiStyle(bool compact);
 #else

@@ -87,9 +87,9 @@ FormLine::FormLine(Window* parent, FlexGridLayout& layout) :
   layout.resetPos();
   layout.apply(this);
   if (compactUiEnabled()) {
-  // Keep horizontal alignment, reduce only the space above/below each row.
-  lv_obj_set_style_pad_top(lvobj, PAD_TINY, LV_PART_MAIN);
-  lv_obj_set_style_pad_bottom(lvobj, PAD_TINY, LV_PART_MAIN);
+    // Keep horizontal alignment, reduce only the space above/below each row.
+    lv_obj_set_style_pad_top(lvobj, PAD_TINY, LV_PART_MAIN);
+    lv_obj_set_style_pad_bottom(lvobj, PAD_TINY, LV_PART_MAIN);
   }
 
   lv_obj_set_width(lvobj, lv_pct(100));

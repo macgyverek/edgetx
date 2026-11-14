@@ -62,7 +62,7 @@ StaticText* PageHeader::setTitle2(std::string txt)
 {
   if (title2 == nullptr) {
     if (compactUiEnabled()) {
-    title->setTop(PAGE_TITLE_TOP());
+      title->setTop(PAGE_TITLE_TOP());
     }
     title2 = new StaticText(this,
                             {PAGE_TITLE_LEFT, PAGE_TITLE_TOP() + EdgeTxStyles::STD_FONT_HEIGHT(),

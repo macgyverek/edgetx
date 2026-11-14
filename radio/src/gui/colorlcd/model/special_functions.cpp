@@ -55,9 +55,9 @@ static void sf_enable_state_constructor(const lv_obj_class_t *class_p,
   lv_obj_set_style_outline_width(obj, compactUiEnabled() ? 1 : 3, LV_PART_MAIN);
   etx_obj_add_style(obj, styles->outline_color_light, LV_PART_MAIN);
   if (compactUiEnabled()) {
-  etx_obj_add_style(obj, styles->border_thin, LV_PART_MAIN);
+    etx_obj_add_style(obj, styles->border_thin, LV_PART_MAIN);
   } else {
-  etx_obj_add_style(obj, styles->border, LV_PART_MAIN);
+    etx_obj_add_style(obj, styles->border, LV_PART_MAIN);
   }
   etx_obj_add_style(obj, styles->border_color[COLOR_THEME_SECONDARY1_INDEX], LV_PART_MAIN);
   etx_obj_add_style(obj, styles->bg_opacity_cover, LV_PART_MAIN);

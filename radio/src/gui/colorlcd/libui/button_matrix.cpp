@@ -32,7 +32,7 @@ static void btnmatrix_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 
   etx_std_style(obj, LV_PART_ITEMS, PAD_LARGE);
   if (compactUiEnabled()) {
-  etx_font(obj, FONT_STD_INDEX, LV_PART_ITEMS);
+    etx_font(obj, FONT_STD_INDEX, LV_PART_ITEMS);
   }
   etx_remove_border_color(obj, LV_PART_ITEMS | LV_STATE_FOCUSED);
 

@@ -134,9 +134,9 @@ PageGroupHeaderBase::PageGroupHeaderBase(Window* parent, coord_t height, EdgeTxI
 
     lv_obj_set_style_pad_left(titleLabel, PAD_MEDIUM, LV_PART_MAIN);
     if (compactUiEnabled()) {
-    lv_obj_set_style_pad_top(titleLabel, (PageGroup::PAGE_GROUP_ALT_TITLE_H() - EdgeTxStyles::STD_FONT_HEIGHT()) / 2, LV_PART_MAIN);
+      lv_obj_set_style_pad_top(titleLabel, (PageGroup::PAGE_GROUP_ALT_TITLE_H() - EdgeTxStyles::STD_FONT_HEIGHT()) / 2, LV_PART_MAIN);
     } else {
-    lv_obj_set_style_pad_top(titleLabel, 1, LV_PART_MAIN);
+      lv_obj_set_style_pad_top(titleLabel, 1, LV_PART_MAIN);
     }
     lv_obj_set_pos(titleLabel, 0, PageGroup::PAGE_GROUP_TOP_BAR_H);
     lv_obj_set_size(titleLabel, LCD_W, PageGroup::PAGE_GROUP_ALT_TITLE_H());
@@ -496,9 +496,9 @@ class TabsGroupHeader : public PageGroupHeaderBase
 
     lv_obj_set_style_pad_left(titleLabel, PAD_MEDIUM, LV_PART_MAIN);
     if (compactUiEnabled()) {
-    lv_obj_set_style_pad_top(titleLabel, (PageGroup::PAGE_GROUP_ALT_TITLE_H() - EdgeTxStyles::STD_FONT_HEIGHT()) / 2, LV_PART_MAIN);
+      lv_obj_set_style_pad_top(titleLabel, (PageGroup::PAGE_GROUP_ALT_TITLE_H() - EdgeTxStyles::STD_FONT_HEIGHT()) / 2, LV_PART_MAIN);
     } else {
-    lv_obj_set_style_pad_top(titleLabel, 1, LV_PART_MAIN);
+      lv_obj_set_style_pad_top(titleLabel, 1, LV_PART_MAIN);
     }
     lv_obj_set_pos(titleLabel, 0, TabsGroup::TABS_GROUP_TOP_BAR_H);
     lv_obj_set_size(titleLabel, LCD_W, TabsGroup::TABS_GROUP_ALT_TITLE_H());

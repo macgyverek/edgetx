@@ -26,9 +26,9 @@
 #define SET_DIRTY() storageDirty(EE_GENERAL)
 
 LAYOUT_VAL_SCALED(SCALE_HEIGHT, 15)
-constexpr coord_t SPECTRUM_HEIGHT = LCD_H - EdgeTxStyles::MENU_HEADER_HEIGHT -
+static coord_t SPECTRUM_HEIGHT() { return LCD_H - EdgeTxStyles::MENU_HEADER_HEIGHT -
                                     SCALE_HEIGHT -
-                                    EdgeTxStyles::UI_ELEMENT_HEIGHT() - PAD_OUTLINE * 2;
+                                    EdgeTxStyles::UI_ELEMENT_HEIGHT() - PAD_OUTLINE * 2; }
 
 // Empirical full-scale value of bars/max/peak samples. Used to map sample
 // values to chart pixels so bars fill the available height on any LCD.
@@ -36,7 +36,7 @@ constexpr uint8_t SPECTRUM_FULL_SCALE = 90;
 
 static inline coord_t scaleSample(uint16_t value)
 {
-  return (value * SPECTRUM_HEIGHT) / SPECTRUM_FULL_SCALE;
+  return (value * SPECTRUM_HEIGHT()) / SPECTRUM_FULL_SCALE;
 }
 
 template <uint8_t CNT>
@@ -172,7 +172,7 @@ class SpectrumWindow : public Window
   SpectrumWindow(Window* parent, const rect_t& rect) : Window(parent, rect)
   {
     lv_coord_t w = width() - 1;
-    for (int i = 0; i < SPECTRUM_HEIGHT / LINE_SPACE; i += 1) {
+    for (int i = 0; i < SPECTRUM_HEIGHT() / LINE_SPACE; i += 1) {
       lv_coord_t y = height() - LINE_SPACE - (i * LINE_SPACE);
       hAxisPts[i * 2] = {0, y};
       hAxisPts[i * 2 + 1] = {w, y};
@@ -306,7 +306,7 @@ class SpectrumWindow : public Window
   lv_point_t maxPts[2 * LCD_W / 4];
   lv_point_t barPts[2 * LCD_W / 4];
   lv_point_t peakPts[2 * LCD_W / 4];
-  lv_point_t hAxisPts[2 * SPECTRUM_HEIGHT / LINE_SPACE];
+  lv_point_t hAxisPts[2 * SPECTRUM_HEIGHT() / LINE_SPACE];
   lv_point_t vAxisPts[2 * 8];
   lv_obj_t* maxLines[LCD_W / 4];
   lv_obj_t* barLines[LCD_W / 4];
@@ -339,10 +339,10 @@ void RadioSpectrumAnalyser::buildHeader(Window* window)
 
 void RadioSpectrumAnalyser::buildBody(Window* window)
 {
-  new SpectrumWindow(window, {0, 0, LCD_W, SPECTRUM_HEIGHT});
-  new SpectrumScaleWindow(window, {0, SPECTRUM_HEIGHT, LCD_W, SCALE_HEIGHT});
+  new SpectrumWindow(window, {0, 0, LCD_W, SPECTRUM_HEIGHT()});
+  new SpectrumScaleWindow(window, {0, SPECTRUM_HEIGHT(), LCD_W, SCALE_HEIGHT});
   new SpectrumFooterWindow(window,
-                           {0, SPECTRUM_HEIGHT + SCALE_HEIGHT, LCD_W,
+                           {0, SPECTRUM_HEIGHT() + SCALE_HEIGHT, LCD_W,
                             EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_OUTLINE * 2},
                            moduleIdx);
 }

@@ -320,9 +320,9 @@ class LogicalSwitchButton : public ListLineButton
     lv_obj_set_pos(lsFunc, FN_X, FN_Y());
     lv_obj_set_size(lsFunc, FN_W(), EdgeTxStyles::STD_FONT_HEIGHT());
     if (compactUiEnabled()) {
-    etx_font(lsFunc, FONT_BOLD_INDEX, LV_STATE_USER_1);
+      etx_font(lsFunc, FONT_BOLD_INDEX, LV_STATE_USER_1);
     } else {
-    lv_obj_set_style_text_font(lsFunc, getFont(FONT(BOLD)), LV_STATE_USER_1);
+      lv_obj_set_style_text_font(lsFunc, getFont(FONT(BOLD)), LV_STATE_USER_1);
     }
 
     lsV1 = etx_label_create(lvobj);
@@ -331,9 +331,9 @@ class LogicalSwitchButton : public ListLineButton
     lv_obj_set_pos(lsV1, V1_X(), V1_Y());
     lv_obj_set_size(lsV1, V1_W, EdgeTxStyles::STD_FONT_HEIGHT());
     if (compactUiEnabled()) {
-    etx_font(lsV1, FONT_BOLD_INDEX, LV_STATE_USER_1);
+      etx_font(lsV1, FONT_BOLD_INDEX, LV_STATE_USER_1);
     } else {
-    lv_obj_set_style_text_font(lsV1, getFont(FONT(BOLD)), LV_STATE_USER_1);
+      lv_obj_set_style_text_font(lsV1, getFont(FONT(BOLD)), LV_STATE_USER_1);
     }
 
     lsV2 = etx_label_create(lvobj);
@@ -341,9 +341,9 @@ class LogicalSwitchButton : public ListLineButton
     lv_obj_set_pos(lsV2, V2_X(), V2_Y());
     lv_obj_set_size(lsV2, V2_W(), EdgeTxStyles::STD_FONT_HEIGHT());
     if (compactUiEnabled()) {
-    etx_font(lsV2, FONT_BOLD_INDEX, LV_STATE_USER_1);
+      etx_font(lsV2, FONT_BOLD_INDEX, LV_STATE_USER_1);
     } else {
-    lv_obj_set_style_text_font(lsV2, getFont(FONT(BOLD)), LV_STATE_USER_1);
+      lv_obj_set_style_text_font(lsV2, getFont(FONT(BOLD)), LV_STATE_USER_1);
     }
 
     lsAnd = etx_label_create(lvobj);
@@ -351,9 +351,9 @@ class LogicalSwitchButton : public ListLineButton
     lv_obj_set_pos(lsAnd, AND_X, AND_Y());
     lv_obj_set_size(lsAnd, AND_W, EdgeTxStyles::STD_FONT_HEIGHT());
     if (compactUiEnabled()) {
-    etx_font(lsAnd, FONT_BOLD_INDEX, LV_STATE_USER_1);
+      etx_font(lsAnd, FONT_BOLD_INDEX, LV_STATE_USER_1);
     } else {
-    lv_obj_set_style_text_font(lsAnd, getFont(FONT(BOLD)), LV_STATE_USER_1);
+      lv_obj_set_style_text_font(lsAnd, getFont(FONT(BOLD)), LV_STATE_USER_1);
     }
 
     lsDuration = etx_label_create(lvobj);

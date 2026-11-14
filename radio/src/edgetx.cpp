@@ -1464,7 +1464,6 @@ void edgeTxInit()
 
 #if defined(X10S_COMPACT_UI)
   extern void initUiStyle(bool compact);
-  extern void initUiStyle(bool compact);
   initUiStyle(g_eeGeneral.compactUi);
 #endif
 

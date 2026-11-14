@@ -90,12 +90,12 @@ ToggleSwitch::ToggleSwitch(Window* parent, const rect_t& rect,
     _setValue(std::move(setValue))
 {
   if (compactUiEnabled()) {
-  // Preserve the caller's row center, including fixed-position setup lines.
-  coord_t slotHeight = rect.h > 0 ? rect.h : EdgeTxStyles::UI_ELEMENT_HEIGHT();
-  coord_t controlHeight = min<coord_t>(slotHeight, TOGGLE_H());
-  setHeight(controlHeight);
-  setTop(rect.y + (slotHeight - controlHeight) / 2);
-  if (rect.w == 0 || rect.w > TOGGLE_W()) setWidth(TOGGLE_W());
+    // Preserve the caller's row center, including fixed-position setup lines.
+    coord_t slotHeight = rect.h > 0 ? rect.h : EdgeTxStyles::UI_ELEMENT_HEIGHT();
+    coord_t controlHeight = min<coord_t>(slotHeight, TOGGLE_H());
+    setHeight(controlHeight);
+    setTop(rect.y + (slotHeight - controlHeight) / 2);
+    if (rect.w == 0 || rect.w > TOGGLE_W()) setWidth(TOGGLE_W());
   }
   update();
 
