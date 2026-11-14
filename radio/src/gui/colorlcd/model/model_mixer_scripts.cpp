@@ -174,7 +174,7 @@ class ScriptLineButton : public ListLineButton
       scriptData(scriptData),
       runtimeData(runtimeData)
   {
-    setHeight(EdgeTxStyles::UI_ELEMENT_HEIGHT);
+    setHeight(EdgeTxStyles::UI_ELEMENT_HEIGHT());
     padTop(PAD_SMALL);
     padLeft(PAD_TINY);
     padRight(PAD_TINY);

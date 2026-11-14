@@ -230,20 +230,16 @@ class PageGroup : public PageGroupBase
 
 #if VERSION_MAJOR == 2
   static LAYOUT_VAL_SCALED(PAGE_GROUP_TOP_BAR_H, 48)
-#if defined(X10S_COMPACT_UI)
-  static LAYOUT_VAL_SCALED(PAGE_GROUP_ALT_TITLE_H, 21)
-#else
-  static constexpr coord_t PAGE_GROUP_ALT_TITLE_H = EdgeTxStyles::STD_FONT_HEIGHT;
-#endif
+  static coord_t PAGE_GROUP_ALT_TITLE_H() { return compactUiEnabled() ? (LAYOUT_SCALE(21)) : (EdgeTxStyles::STD_FONT_HEIGHT()); }
   static constexpr coord_t PAGE_GROUP_BACK_BTN_W = 0;
   static LAYOUT_VAL_SCALED(PAGE_GROUP_BACK_BTN_XO, 45)
 #else
   static LAYOUT_VAL_SCALED(PAGE_GROUP_TOP_BAR_H, 45)
-  static constexpr coord_t PAGE_GROUP_ALT_TITLE_H = 0;
+  static coord_t PAGE_GROUP_ALT_TITLE_H() { return 0; }
   static constexpr coord_t PAGE_GROUP_BACK_BTN_W = PAGE_GROUP_TOP_BAR_H;
   static constexpr coord_t PAGE_GROUP_BACK_BTN_XO = PAGE_GROUP_TOP_BAR_H;
 #endif
-  static constexpr coord_t PAGE_GROUP_BODY_Y = PAGE_GROUP_TOP_BAR_H + PAGE_GROUP_ALT_TITLE_H;
+  static coord_t PAGE_GROUP_BODY_Y() { return PAGE_GROUP_TOP_BAR_H + PAGE_GROUP_ALT_TITLE_H(); }
 
  protected:
 
@@ -265,16 +261,12 @@ class TabsGroup : public PageGroupBase
 
 #if VERSION_MAJOR == 2
   static LAYOUT_VAL_SCALED(TABS_GROUP_TOP_BAR_H, 48)
-#if defined(X10S_COMPACT_UI)
-  static LAYOUT_VAL_SCALED(TABS_GROUP_ALT_TITLE_H, 21)
-#else
-  static constexpr coord_t TABS_GROUP_ALT_TITLE_H = EdgeTxStyles::STD_FONT_HEIGHT;
-#endif
+  static coord_t TABS_GROUP_ALT_TITLE_H() { return compactUiEnabled() ? (LAYOUT_SCALE(21)) : (EdgeTxStyles::STD_FONT_HEIGHT()); }
 #else
   static LAYOUT_ORIENTATION_SCALED(TABS_GROUP_TOP_BAR_H, 45, 48)
-  static LAYOUT_ORIENTATION(TABS_GROUP_ALT_TITLE_H, 0, EdgeTxStyles::STD_FONT_HEIGHT)
+  static coord_t TABS_GROUP_ALT_TITLE_H() { return (LANDSCAPE ? (0) : (EdgeTxStyles::STD_FONT_HEIGHT())); }
 #endif
-  static constexpr coord_t TABS_GROUP_BODY_Y = TABS_GROUP_TOP_BAR_H + TABS_GROUP_ALT_TITLE_H;
+  static coord_t TABS_GROUP_BODY_Y() { return TABS_GROUP_TOP_BAR_H + TABS_GROUP_ALT_TITLE_H(); }
 
  protected:
 

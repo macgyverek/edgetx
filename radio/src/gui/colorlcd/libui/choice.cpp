@@ -24,6 +24,7 @@
 // Choice
 static void choice_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+  lv_obj_set_height(obj, EdgeTxStyles::UI_ELEMENT_HEIGHT());
   etx_std_style(obj, LV_PART_MAIN, PAD_TINY);
   lv_obj_set_style_pad_hor(obj, PAD_MEDIUM, LV_PART_MAIN);
 }
@@ -35,7 +36,7 @@ static const lv_obj_class_t choice_class = {
     .user_data = nullptr,
     .event_cb = nullptr,
     .width_def = LV_SIZE_CONTENT,
-    .height_def = EdgeTxStyles::UI_ELEMENT_HEIGHT,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_TRUE,
     .instance_size = sizeof(lv_obj_t),
@@ -63,19 +64,19 @@ ChoiceBase::ChoiceBase(Window* parent, const rect_t& rect,
   lv_obj_t* img = lv_img_create(lvobj);
   lv_img_set_src(
       img, type == CHOICE_TYPE_DROPOWN ? LV_SYMBOL_DOWN : LV_SYMBOL_DIRECTORY);
-#if defined(X10S_COMPACT_UI)
+  if (compactUiEnabled()) {
   lv_obj_align(img, LV_ALIGN_LEFT_MID, 0, 0);
-#else
+  } else {
   lv_obj_set_pos(img, 0, PAD_TINY);
-#endif
+  }
 
   // Add label
   label = etx_label_create(lvobj);
-#if defined(X10S_COMPACT_UI)
+  if (compactUiEnabled()) {
   lv_obj_align(label, LV_ALIGN_LEFT_MID, type == CHOICE_TYPE_DROPOWN ? ICON_W - 2 : ICON_W, 0);
-#else
+  } else {
   lv_obj_set_pos(label, type == CHOICE_TYPE_DROPOWN ? ICON_W - 2 : ICON_W, PAD_TINY);
-#endif
+  }
   etx_font(label, FONT_XS_INDEX, LV_STATE_USER_1);
 }
 

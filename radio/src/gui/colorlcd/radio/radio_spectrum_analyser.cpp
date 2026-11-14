@@ -28,7 +28,7 @@
 LAYOUT_VAL_SCALED(SCALE_HEIGHT, 15)
 constexpr coord_t SPECTRUM_HEIGHT = LCD_H - EdgeTxStyles::MENU_HEADER_HEIGHT -
                                     SCALE_HEIGHT -
-                                    EdgeTxStyles::UI_ELEMENT_HEIGHT - PAD_OUTLINE * 2;
+                                    EdgeTxStyles::UI_ELEMENT_HEIGHT() - PAD_OUTLINE * 2;
 
 // Empirical full-scale value of bars/max/peak samples. Used to map sample
 // values to chart pixels so bars fill the available height on any LCD.
@@ -343,7 +343,7 @@ void RadioSpectrumAnalyser::buildBody(Window* window)
   new SpectrumScaleWindow(window, {0, SPECTRUM_HEIGHT, LCD_W, SCALE_HEIGHT});
   new SpectrumFooterWindow(window,
                            {0, SPECTRUM_HEIGHT + SCALE_HEIGHT, LCD_W,
-                            EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_OUTLINE * 2},
+                            EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_OUTLINE * 2},
                            moduleIdx);
 }
 
@@ -359,7 +359,7 @@ void RadioSpectrumAnalyser::checkEvents()
     trackX = x;
     trackPts[0] = {(lv_coord_t)x, EdgeTxStyles::MENU_HEADER_HEIGHT};
     trackPts[1] = {(lv_coord_t)x,
-                   (lv_coord_t)(height() - EdgeTxStyles::UI_ELEMENT_HEIGHT)};
+                   (lv_coord_t)(height() - EdgeTxStyles::UI_ELEMENT_HEIGHT())};
     lv_line_set_points(trackLine, trackPts, 2);
   }
   Page::checkEvents();

@@ -97,7 +97,7 @@ class ColorEditorPopup : public BaseDialog
     lv_obj_set_flex_align(hbox_obj, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START,
                           LV_FLEX_ALIGN_SPACE_AROUND);
 
-    colorPad = new ColorSwatch(hbox, {0, 0, COLOR_PAD_WIDTH, EdgeTxStyles::UI_ELEMENT_HEIGHT},
+    colorPad = new ColorSwatch(hbox, {0, 0, COLOR_PAD_WIDTH, EdgeTxStyles::UI_ELEMENT_HEIGHT()},
                                COLOR_THEME_PRIMARY1);
 
     hexStr = new StaticText(hbox, {0, 0, EdgeTxStyles::EDIT_FLD_WIDTH, 0}, "", COLOR_THEME_PRIMARY1_INDEX, FONT(L));
@@ -151,7 +151,7 @@ class ColorEditorPopup : public BaseDialog
     thmBtn->check(true);
     lv_group_focus_obj(thmBtn->getLvObj());
 
-    hbox = new Window(vbox, {0, height() - EdgeTxStyles::UI_ELEMENT_HEIGHT - PAD_SMALL, 0, 0});
+    hbox = new Window(vbox, {0, height() - EdgeTxStyles::UI_ELEMENT_HEIGHT() - PAD_SMALL, 0, 0});
     hbox->setFlexLayout(LV_FLEX_FLOW_ROW, PAD_MEDIUM);
     lv_obj_set_flex_align(hbox->getLvObj(), LV_FLEX_ALIGN_CENTER,
                           LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_SPACE_BETWEEN);
@@ -186,7 +186,7 @@ ColorPicker::ColorPicker(Window* parent, const rect_t& rect,
                          std::function<void(uint32_t)> setValue,
                          std::function<void(uint32_t)> preview,
                          COLOR_EDITOR_FMT fmt) :
-    Button(parent, {rect.x, rect.y, rect.w == 0 ? ColorEditorPopup::COLOR_PAD_WIDTH : rect.w, EdgeTxStyles::UI_ELEMENT_HEIGHT}),
+    Button(parent, {rect.x, rect.y, rect.w == 0 ? ColorEditorPopup::COLOR_PAD_WIDTH : rect.w, EdgeTxStyles::UI_ELEMENT_HEIGHT()}),
     setValue(std::move(setValue)), preview(std::move(preview)), format(fmt)
 {
   updateColor(getValue());

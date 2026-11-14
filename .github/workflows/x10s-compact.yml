@@ -1,8 +1,8 @@
-name: X10S Compact UI
+name: X10S UI Style Switch
 
 on:
   push:
-    branches: [feature/x10s-compact-ui]
+    branches: [feature/x10s-ui-style-switch]
     paths:
       - 'radio/**'
       - 'cmake/**'
@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: x10s-compact-${{ github.ref }}
+  group: x10s-ui-switch-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
         run: ./tools/build-gh.sh
       - uses: actions/upload-artifact@v7
         with:
-          name: x10s-compact-firmware
+          name: x10s-ui-switch-firmware
           path: |
             *.bin
             fw.json
@@ -104,7 +104,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Simulator startup check failed' }
       - uses: actions/upload-artifact@v7
         with:
-          name: x10s-compact-windows-simulator
+          name: x10s-ui-switch-windows-simulator
           path: package/
           if-no-files-found: error
           retention-days: 14

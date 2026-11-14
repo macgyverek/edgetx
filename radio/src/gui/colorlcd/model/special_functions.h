@@ -48,41 +48,21 @@ class FunctionLineButton : public ListLineButton
   void refresh() override;
 
   static constexpr coord_t NM_X = PAD_TINY;
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t NM_Y = 1;
-#else
-  static LAYOUT_SIZE_SCALED(NM_Y, 4, 10)
-#endif
+  static coord_t NM_Y() { return compactUiEnabled() ? (1) : (LV(4, 10)); }
   static LAYOUT_SIZE_SCALED(NM_W, 43, 40)
   static constexpr coord_t SW_X = NM_X + NM_W + PAD_TINY;
-  static LAYOUT_SIZE(SW_Y, NM_Y, 0)
+  static coord_t SW_Y() { return (NARROW_LAYOUT ? (0) : (NM_Y())); }
   static LAYOUT_SIZE_SCALED(SW_W, 70, 198)
   static LAYOUT_SIZE(FN_X, SW_X + SW_W + PAD_TINY, NM_X + NM_W + PAD_TINY)
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t FN_Y = NM_Y;
-#else
-  static LAYOUT_SIZE_SCALED(FN_Y, 4, 20)
-#endif
+  static coord_t FN_Y() { return compactUiEnabled() ? (NM_Y()) : (LV(4, 20)); }
   static LAYOUT_SIZE_SCALED(RP_W, 40, 34)
-#if defined(X10S_COMPACT_UI)
-  static LAYOUT_VAL_SCALED(EN_SZ, 12)
-#else
-  static LAYOUT_VAL_SCALED(EN_SZ, 16)
-#endif
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t EN_INSET = PAD_THREE;
-#else
-  static constexpr coord_t EN_INSET = 0;
-#endif
-  static constexpr coord_t RP_X = ListLineButton::GRP_W - PAD_BORDER * 2 - RP_W - EN_SZ - PAD_TINY * 2 - EN_INSET;
-  static constexpr coord_t RP_Y = NM_Y;
-  static constexpr coord_t FN_W = RP_X - FN_X - PAD_TINY;
-  static constexpr coord_t EN_X = ListLineButton::GRP_W - PAD_BORDER * 2 - EN_SZ - PAD_TINY - EN_INSET;
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t EN_Y = (EdgeTxStyles::UI_ELEMENT_HEIGHT - PAD_BORDER * 2 - EN_SZ) / 2;
-#else
-  static constexpr coord_t EN_Y = NM_Y + PAD_TINY;
-#endif
+  static coord_t EN_SZ() { return compactUiEnabled() ? (LAYOUT_SCALE(12)) : (LAYOUT_SCALE(16)); }
+  static coord_t EN_INSET() { return compactUiEnabled() ? (PAD_THREE) : (0); }
+  static coord_t RP_X() { return ListLineButton::GRP_W - PAD_BORDER * 2 - RP_W - EN_SZ() - PAD_TINY * 2 - EN_INSET(); }
+  static coord_t RP_Y() { return NM_Y(); }
+  static coord_t FN_W() { return RP_X() - FN_X - PAD_TINY; }
+  static coord_t EN_X() { return ListLineButton::GRP_W - PAD_BORDER * 2 - EN_SZ() - PAD_TINY - EN_INSET(); }
+  static coord_t EN_Y() { return compactUiEnabled() ? ((EdgeTxStyles::UI_ELEMENT_HEIGHT() - PAD_BORDER * 2 - EN_SZ()) / 2) : (NM_Y() + PAD_TINY); }
 
  protected:
   const CustomFunctionData *cfn;
@@ -143,11 +123,7 @@ class FunctionsPage : public PageGroupItem
 
   void build(Window* window) override;
 
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t SF_BUTTON_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
-#else
-  static LAYOUT_SIZE_SCALED(SF_BUTTON_H, 32, 44)
-#endif
+  static coord_t SF_BUTTON_H() { return compactUiEnabled() ? (EdgeTxStyles::UI_ELEMENT_HEIGHT()) : (LV(32, 44)); }
 
  protected:
   int8_t focusIndex = -1;

@@ -43,10 +43,10 @@ class ExtPortUnsafeWarnDialog : public HRSTool
     new HRSText(topBar, {0, PAD_LARGE, LCD_W, 0}, "WARNING", HRS_COLOR_WHITE,
                 CENTERED | FONT(L));
 
-    new HRSText(this, {PAD_LARGE, EdgeTxStyles::UI_ELEMENT_HEIGHT * 2, LCD_W - PAD_LARGE * 2, 0},
+    new HRSText(this, {PAD_LARGE, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 2, LCD_W - PAD_LARGE * 2, 0},
                 "EXT signal unsafe", HRS_COLOR_DANGER, CENTERED | FONT(L));
 
-    new HRSText(this, {PAD_LARGE, EdgeTxStyles::UI_ELEMENT_HEIGHT * 3 + PAD_SMALL,
+    new HRSText(this, {PAD_LARGE, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 3 + PAD_SMALL,
                        LCD_W - PAD_LARGE * 2, 0},
                 "Test blocked", HRS_COLOR_DANGER, CENTERED | FONT(STD));
 
@@ -58,11 +58,11 @@ class ExtPortUnsafeWarnDialog : public HRSTool
     } else {
       snprintf(detail, sizeof(detail), "%s", v15ExtPortBlockedMessage());
     }
-    new HRSText(this, {PAD_LARGE, EdgeTxStyles::UI_ELEMENT_HEIGHT * 5,
+    new HRSText(this, {PAD_LARGE, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 5,
                        LCD_W - PAD_LARGE * 2, 0},
                 detail, HRS_COLOR_WARN, CENTERED | FONT(STD));
 
-    new HRSText(this, {PAD_LARGE, EdgeTxStyles::UI_ELEMENT_HEIGHT * 7,
+    new HRSText(this, {PAD_LARGE, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 7,
                        LCD_W - PAD_LARGE * 2, 0},
                 "Disconnect high voltage\nSIG must be <= 5V",
                 HRS_COLOR_WHITE, CENTERED | FONT(STD));

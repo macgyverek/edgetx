@@ -40,6 +40,10 @@ static void table_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
   etx_solid_bg(obj, COLOR_THEME_PRIMARY2_INDEX, LV_PART_ITEMS);
   etx_txt_color(obj, COLOR_THEME_PRIMARY1_INDEX, LV_PART_ITEMS);
   etx_obj_add_style(obj, table_cell, LV_PART_ITEMS);
+  if (compactUiEnabled()) {
+    lv_obj_set_style_pad_top(obj, LAYOUT_SCALE(4), LV_PART_ITEMS);
+    lv_obj_set_style_pad_bottom(obj, LAYOUT_SCALE(4), LV_PART_ITEMS);
+  }
   etx_obj_add_style(obj, styles->border_color[COLOR_THEME_SECONDARY2_INDEX], LV_PART_ITEMS);
   etx_obj_add_style(obj, styles->pressed, LV_PART_ITEMS | LV_STATE_PRESSED);
 

@@ -21,11 +21,7 @@
 #include "numberedit.h"
 #include "etx_lv_theme.h"
 
-#if defined(X10S_COMPACT_UI)
-static constexpr coord_t KEYBOARD_HEIGHT = 2 * EdgeTxStyles::UI_ELEMENT_HEIGHT + 3 * PAD_TINY;
-#else
-LAYOUT_VAL_SCALED(KEYBOARD_HEIGHT, 90);
-#endif
+static coord_t KEYBOARD_HEIGHT() { return compactUiEnabled() ? (2 * EdgeTxStyles::UI_ELEMENT_HEIGHT() + 3 * PAD_TINY) : (LAYOUT_SCALE(90)); }
 NumberKeyboard* NumberKeyboard::_instance = nullptr;
 
 static const char* const number_kb_map[] = {"<<",  "-",   "+",   ">>",  "\n",
@@ -149,11 +145,11 @@ void NumberKeyboard::onLongPressPGDN() { setDEF(); }
 
 #endif
 
-NumberKeyboard::NumberKeyboard() : Keyboard(KEYBOARD_HEIGHT)
+NumberKeyboard::NumberKeyboard() : Keyboard(KEYBOARD_HEIGHT())
 {
-#if defined(X10S_COMPACT_UI)
+  if (compactUiEnabled()) {
   etx_font(keyboard, FONT_STD_INDEX, LV_PART_ITEMS);
-#endif
+  }
   // setup custom keyboard
   lv_keyboard_set_map(keyboard, LV_KEYBOARD_MODE_USER_1,
                       (const char**)number_kb_map, number_kb_ctrl_map);

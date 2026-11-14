@@ -282,7 +282,7 @@ class SetupButtonGroup : public Window
   typedef std::list<PageButtonDef> PageDefs;
 
   SetupButtonGroup(Window* parent, const rect_t& rect, const char* title, int cols,
-                   PaddingSize padding, PageDefs pages, coord_t btnHeight = EdgeTxStyles::UI_ELEMENT_HEIGHT);
+                   PaddingSize padding, PageDefs pages, coord_t btnHeight = EdgeTxStyles::UI_ELEMENT_HEIGHT());
 
  protected:
 };

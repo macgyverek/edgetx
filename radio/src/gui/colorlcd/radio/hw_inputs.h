@@ -40,9 +40,9 @@ class HWSticks : public Window
   static constexpr coord_t S_NM_X = S_LBL_W + PAD_SMALL;
   static LAYOUT_VAL_SCALED(S_NM_W, 64)
   static constexpr coord_t S_INV_X = S_NM_X + S_NM_W + PAD_LARGE * 3;
-  static constexpr coord_t S_INV_W = ToggleSwitch::TOGGLE_W;
-  static constexpr coord_t S_ROW_H = EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_OUTLINE;
-  #define S_Y(i) (i * S_ROW_H + PAD_TINY)
+  static coord_t S_INV_W() { return ToggleSwitch::TOGGLE_W(); }
+  static coord_t S_ROW_H() { return EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_OUTLINE; }
+  #define S_Y(i) (i * S_ROW_H() + PAD_TINY)
 };
 
 class HWPots : public Window
@@ -58,13 +58,13 @@ class HWPots : public Window
   static LAYOUT_ORIENTATION(P_TYP_X, P_NM_X + P_NM_W + PAD_SMALL, LAYOUT_SCALE(32))
   static LAYOUT_ORIENTATION(P_TYP_W, LAYOUT_SCALE(160), P_LBL_W)
   static LAYOUT_ORIENTATION(P_INV_X, P_TYP_X + P_TYP_W + PAD_SMALL, P_NM_X + P_NM_W + PAD_SMALL)
-  static constexpr coord_t P_INV_W = ToggleSwitch::TOGGLE_W;
-  static LAYOUT_ORIENTATION(P_ROW_H, EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_OUTLINE, LAYOUT_SCALE(72))
+  static coord_t P_INV_W() { return ToggleSwitch::TOGGLE_W(); }
+  static coord_t P_ROW_H() { return (LANDSCAPE ? (EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_OUTLINE) : (LAYOUT_SCALE(72))); }
   static LAYOUT_ORIENTATION_SCALED(P_OFST_Y, 0, 36)
   static LAYOUT_ORIENTATION(POTS_WINDOW_WIDTH,
-                              P_LBL_W + P_NM_W + P_TYP_W + P_INV_W + PAD_TINY * 2 + PAD_SMALL * 5 + PAD_SCROLL,
-                              P_LBL_W + P_NM_W + P_INV_W + PAD_TINY * 2 + PAD_SMALL * 4 + PAD_SCROLL)
-  #define P_Y(i) (i * P_ROW_H + PAD_TINY)
+                              P_LBL_W + P_NM_W + P_TYP_W + P_INV_W() + PAD_TINY * 2 + PAD_SMALL * 5 + PAD_SCROLL,
+                              P_LBL_W + P_NM_W + P_INV_W() + PAD_TINY * 2 + PAD_SMALL * 4 + PAD_SCROLL)
+  #define P_Y(i) (i * P_ROW_H() + PAD_TINY)
 
  protected:
   bool potsChanged;

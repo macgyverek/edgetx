@@ -353,7 +353,7 @@ void bootloaderDrawScreen(BootloaderState st, int opt, const char* str)
         opt = 100;  // Completed > 100%
       } else if (st == ST_FLASH_ERROR) {
         // the bar stays where the write gave up
-        lcd.drawText(LCD_W / 2, (LCD_H - PROGRESS_H) / 2 - EdgeTxStyles::STD_FONT_HEIGHT,
+        lcd.drawText(LCD_W / 2, (LCD_H - PROGRESS_H) / 2 - EdgeTxStyles::STD_FONT_HEIGHT(),
                      LV_SYMBOL_CLOSE " " TR_BL_WRITING_FAILED, CENTERED | BL_FOREGROUND);
       }
 
@@ -381,13 +381,13 @@ void bootloaderDrawScreen(BootloaderState st, int opt, const char* str)
           lcd.drawText(VERCHK_X, VERCHK_Y, TR_BL_FORK, RIGHT | BL_FOREGROUND);
           lcd.drawSizedText(VERCHK_X + PAD_MEDIUM, VERCHK_Y, tag.fork, 6, BL_FOREGROUND);
 
-          lcd.drawText(VERCHK_X, VERCHK_Y + EdgeTxStyles::STD_FONT_HEIGHT, TR_BL_VERSION, RIGHT | BL_FOREGROUND);
-          lcd.drawText(VERCHK_X + PAD_MEDIUM, VERCHK_Y + EdgeTxStyles::STD_FONT_HEIGHT, tag.version, BL_FOREGROUND);
+          lcd.drawText(VERCHK_X, VERCHK_Y + EdgeTxStyles::STD_FONT_HEIGHT(), TR_BL_VERSION, RIGHT | BL_FOREGROUND);
+          lcd.drawText(VERCHK_X + PAD_MEDIUM, VERCHK_Y + EdgeTxStyles::STD_FONT_HEIGHT(), tag.version, BL_FOREGROUND);
 
-          lcd.drawText(VERCHK_X, VERCHK_Y + EdgeTxStyles::STD_FONT_HEIGHT * 2, TR_BL_RADIO, RIGHT | BL_FOREGROUND);
-          lcd.drawText(VERCHK_X + PAD_MEDIUM, VERCHK_Y + EdgeTxStyles::STD_FONT_HEIGHT * 2, tag.flavour, BL_FOREGROUND);
+          lcd.drawText(VERCHK_X, VERCHK_Y + EdgeTxStyles::STD_FONT_HEIGHT() * 2, TR_BL_RADIO, RIGHT | BL_FOREGROUND);
+          lcd.drawText(VERCHK_X + PAD_MEDIUM, VERCHK_Y + EdgeTxStyles::STD_FONT_HEIGHT() * 2, tag.flavour, BL_FOREGROUND);
 
-          lcd.drawText(VERCHK_ICN_X, VERCHK_Y + EdgeTxStyles::STD_FONT_HEIGHT, LV_SYMBOL_OK, BL_GREEN);
+          lcd.drawText(VERCHK_ICN_X, VERCHK_Y + EdgeTxStyles::STD_FONT_HEIGHT(), LV_SYMBOL_OK, BL_GREEN);
         }
       }
     }

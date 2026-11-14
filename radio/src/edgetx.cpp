@@ -1462,6 +1462,12 @@ void edgeTxInit()
   lcdSetContrast();
 #endif
 
+#if defined(X10S_COMPACT_UI)
+  extern void initUiStyle(bool compact);
+  extern void initUiStyle(bool compact);
+  initUiStyle(g_eeGeneral.compactUi);
+#endif
+
   currentBacklightBright = requiredBacklightBright = g_eeGeneral.getBrightness();
   BACKLIGHT_ENABLE(); // we start the backlight during the startup animation
 

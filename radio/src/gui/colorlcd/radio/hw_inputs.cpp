@@ -36,7 +36,7 @@
 struct HWInputEdit : public RadioTextEdit {
   HWInputEdit(Window* parent, char* name, size_t len, coord_t x = 0,
               coord_t y = 0) :
-      RadioTextEdit(parent, rect_t{x, y, HW_INP_W, EdgeTxStyles::UI_ELEMENT_HEIGHT}, name,
+      RadioTextEdit(parent, rect_t{x, y, HW_INP_W, EdgeTxStyles::UI_ELEMENT_HEIGHT()}, name,
                     len)
   {
   }
@@ -67,7 +67,7 @@ HWSticks::HWSticks(Window* parent) : Window(parent, {0, 0, LV_PCT(100), LV_SIZE_
   new StaticText(this, {S_NM_X, -PAD_TINY, 0, 0}, STR_NAME, COLOR_THEME_PRIMARY1_INDEX, FONT(XS));
   new StaticText(this, {S_INV_X, -PAD_TINY, 0, 0}, STR_MENU_INVERT, COLOR_THEME_PRIMARY1_INDEX, FONT(XS));
 
-  coord_t yo = EdgeTxStyles::STD_FONT_HEIGHT - PAD_TINY;
+  coord_t yo = EdgeTxStyles::STD_FONT_HEIGHT() - PAD_TINY;
 
   auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   for (int i = 0; i < max_sticks; i++) {
@@ -77,7 +77,7 @@ HWSticks::HWSticks(Window* parent) : Window(parent, {0, 0, LV_PCT(100), LV_SIZE_
                     LEN_ANA_NAME, S_NM_X, S_Y(i) + yo);
 
     new ToggleSwitch(
-          this, {S_INV_X, S_Y(i) + yo, S_INV_W, 0},
+          this, {S_INV_X, S_Y(i) + yo, S_INV_W(), 0},
           [=]() -> uint8_t { return (uint8_t)getStickInversion(i); },
           [=](int8_t newValue) {
             setStickInversion(i, newValue);
@@ -104,7 +104,7 @@ HWSticks::HWSticks(Window* parent) : Window(parent, {0, 0, LV_PCT(100), LV_SIZE_
     new StaticText(this, {0, S_Y(row) + yo + PAD_MEDIUM, S_LBL_W, 0},
                    getStringAtIndex(STR_IMU_VSRCRAW, a));
     new ToggleSwitch(
-          this, {S_INV_X, S_Y(row) + yo, S_INV_W, 0},
+          this, {S_INV_X, S_Y(row) + yo, S_INV_W(), 0},
           [=]() -> uint8_t { return (uint8_t)getImuInversion(a); },
           [=](int8_t newValue) {
             setImuInversion(a, newValue);
@@ -130,7 +130,7 @@ HWPots::HWPots(Window* parent) :
   new StaticText(this, {P_TYP_X, -PAD_TINY, 0, 0}, STR_TYPE, COLOR_THEME_PRIMARY1_INDEX, FONT(XS));
   new StaticText(this, {P_INV_X, -PAD_TINY, 0, 0}, STR_MENU_INVERT, COLOR_THEME_PRIMARY1_INDEX, FONT(XS));
 
-  coord_t yo = EdgeTxStyles::STD_FONT_HEIGHT - PAD_TINY;
+  coord_t yo = EdgeTxStyles::STD_FONT_HEIGHT() - PAD_TINY;
 
   auto max_pots = adcGetMaxInputs(ADC_INPUT_FLEX);
   for (int i = 0; i < max_pots; i++) {
@@ -165,7 +165,7 @@ HWPots::HWPots(Window* parent) :
     pot->setAvailableHandler([=](int val) { return isPotTypeAvailable(val); });
 
     auto tgl = new ToggleSwitch(
-          this, {P_INV_X, P_Y(i) + yo, P_INV_W, 0},
+          this, {P_INV_X, P_Y(i) + yo, P_INV_W(), 0},
           [=]() -> uint8_t { return (uint8_t)getPotInversion(i); },
           [=](int8_t newValue) {
             setPotInversion(i, newValue);
@@ -272,7 +272,7 @@ class HWSwitch
     }
   }
 
-  static constexpr coord_t SW_CTRL_H = EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_OUTLINE;
+  static coord_t SW_CTRL_H() { return EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_OUTLINE; }
 
  protected:
   Choice* channel = nullptr;
@@ -287,7 +287,7 @@ HWSwitches::HWSwitches(Window* parent) :
   auto max_switches = switchGetMaxAllSwitches();
   for (int i = 0, j = 0; i < max_switches; i++) {
     if (!switchIsCustomSwitch(i)) {
-      new HWSwitch(this, i, j * HWSwitch::SW_CTRL_H + PAD_OUTLINE);
+      new HWSwitch(this, i, j * HWSwitch::SW_CTRL_H() + PAD_OUTLINE);
       j++;
     }
   }

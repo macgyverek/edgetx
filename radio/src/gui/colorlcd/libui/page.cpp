@@ -38,8 +38,8 @@ PageHeader::PageHeader(Window* parent, EdgeTxIcon icon) :
   new HeaderIcon(this, icon);
 
   title = new StaticText(this,
-                         {PAGE_TITLE_LEFT, PAGE_SINGLE_TITLE_TOP,
-                          LCD_W - PAGE_TITLE_LEFT, EdgeTxStyles::STD_FONT_HEIGHT},
+                         {PAGE_TITLE_LEFT, PAGE_SINGLE_TITLE_TOP(),
+                          LCD_W - PAGE_TITLE_LEFT, EdgeTxStyles::STD_FONT_HEIGHT()},
                          "", COLOR_THEME_PRIMARY2_INDEX);
 }
 
@@ -53,20 +53,20 @@ PageHeader::PageHeader(Window* parent, const char* iconFile) :
   new HeaderIcon(this, iconFile);
 
   title = new StaticText(this,
-                         {PAGE_TITLE_LEFT, PAGE_SINGLE_TITLE_TOP,
-                          LCD_W - PAGE_TITLE_LEFT, EdgeTxStyles::STD_FONT_HEIGHT},
+                         {PAGE_TITLE_LEFT, PAGE_SINGLE_TITLE_TOP(),
+                          LCD_W - PAGE_TITLE_LEFT, EdgeTxStyles::STD_FONT_HEIGHT()},
                          "", COLOR_THEME_PRIMARY2_INDEX);
 }
 
 StaticText* PageHeader::setTitle2(std::string txt)
 {
   if (title2 == nullptr) {
-#if defined(X10S_COMPACT_UI)
-    title->setTop(PAGE_TITLE_TOP);
-#endif
+    if (compactUiEnabled()) {
+    title->setTop(PAGE_TITLE_TOP());
+    }
     title2 = new StaticText(this,
-                            {PAGE_TITLE_LEFT, PAGE_TITLE_TOP + EdgeTxStyles::STD_FONT_HEIGHT,
-                             LCD_W - PAGE_TITLE_LEFT, EdgeTxStyles::STD_FONT_HEIGHT},
+                            {PAGE_TITLE_LEFT, PAGE_TITLE_TOP() + EdgeTxStyles::STD_FONT_HEIGHT(),
+                             LCD_W - PAGE_TITLE_LEFT, EdgeTxStyles::STD_FONT_HEIGHT()},
                             "", COLOR_THEME_PRIMARY2_INDEX);
   }
   title2->setText(std::move(txt));

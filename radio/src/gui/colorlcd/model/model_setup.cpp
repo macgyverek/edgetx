@@ -213,7 +213,7 @@ struct CenterBeepsMatrix : public ButtonMatrix {
     setWidth(min((int)btn_cnt, SW_BTNS) * SW_BTN_W + PAD_SMALL);
 
     uint8_t rows = ((btn_cnt - 1) / SW_BTNS) + 1;
-    setHeight((rows * (EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_SMALL)) + PAD_SMALL);
+    setHeight((rows * (EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_SMALL)) + PAD_SMALL);
 
     lv_obj_set_style_pad_all(lvobj, PAD_SMALL, LV_PART_MAIN);
 
@@ -250,7 +250,7 @@ struct CenterBeepsMatrix : public ButtonMatrix {
 
   static LAYOUT_SIZE(SW_BTNS, 8, 4)
   static LAYOUT_SIZE_SCALED(SW_BTN_W, 56, 72)
-  static LAYOUT_VAL_SCALED(SW_BTN_H, 36)
+  static coord_t SW_BTN_H() { return LAYOUT_SCALE(36); }
 
  private:
   uint8_t max_analogs;
@@ -375,5 +375,5 @@ void ModelSetupPage::build(Window * window)
 #if defined(HELI)
     {STR_DEF(STR_MENUHELISETUP), []() { return new ModelHeliPage(); }, nullptr, modelHeliEnabled},
 #endif
-  }, BTN_H);
+  }, BTN_H());
 }

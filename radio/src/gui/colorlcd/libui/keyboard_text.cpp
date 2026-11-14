@@ -20,10 +20,10 @@
 
 #include "textedit.h"
 
-constexpr coord_t KEYBOARD_HEIGHT = LCD_H * 2 / 5;
+coord_t KEYBOARD_HEIGHT() { return LCD_H * 2 / 5; }
 TextKeyboard* TextKeyboard::_instance = nullptr;
 
-TextKeyboard::TextKeyboard() : Keyboard(KEYBOARD_HEIGHT) {}
+TextKeyboard::TextKeyboard() : Keyboard(KEYBOARD_HEIGHT()) {}
 
 TextKeyboard::~TextKeyboard() { _instance = nullptr; }
 

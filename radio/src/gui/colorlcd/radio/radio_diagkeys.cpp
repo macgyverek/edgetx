@@ -103,22 +103,22 @@ class RadioKeyDiagsWindow : public Window
 
       auto lbl = etx_label_create(obj);
       lv_label_set_text(lbl, keysGetLabel(k));
-      lv_obj_set_pos(lbl, 0, i * EdgeTxStyles::STD_FONT_HEIGHT);
+      lv_obj_set_pos(lbl, 0, i * EdgeTxStyles::STD_FONT_HEIGHT());
 
       lbl = etx_label_create(obj);
       lv_label_set_text(lbl, "");
-      lv_obj_set_pos(lbl, KVAL_X, i * EdgeTxStyles::STD_FONT_HEIGHT);
+      lv_obj_set_pos(lbl, KVAL_X, i * EdgeTxStyles::STD_FONT_HEIGHT());
       keyValues[i] = lbl;
     }
 
 #if defined(ROTARY_ENCODER_NAVIGATION) && !defined(USE_HATS_AS_KEYS)
     auto lbl = etx_label_create(obj);
     lv_label_set_text(lbl, STR_ROTARY_ENCODER);
-    lv_obj_set_pos(lbl, 0, (i + 1) * EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_pos(lbl, 0, (i + 1) * EdgeTxStyles::STD_FONT_HEIGHT());
 
     reValue = etx_label_create(obj);
     lv_label_set_text(reValue, "");
-    lv_obj_set_pos(reValue, KVAL_X, (i + 1) * EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_pos(reValue, KVAL_X, (i + 1) * EdgeTxStyles::STD_FONT_HEIGHT());
 #endif
   }
 
@@ -134,7 +134,7 @@ class RadioKeyDiagsWindow : public Window
       if (SWITCH_EXISTS(i) && !switchIsCustomSwitch(i)) {
         auto lbl = etx_label_create(obj);
         lv_label_set_text(lbl, "");
-        lv_obj_set_pos(lbl, 0, row * EdgeTxStyles::STD_FONT_HEIGHT);
+        lv_obj_set_pos(lbl, 0, row * EdgeTxStyles::STD_FONT_HEIGHT());
         switchValues[i] = lbl;
         row += 1;
       }
@@ -162,16 +162,16 @@ class RadioKeyDiagsWindow : public Window
       lbl = etx_label_create(obj);
       formatNumberAsString(s, 10, i + 1, 0, 10, "T");
       lv_label_set_text(lbl, s);
-      lv_obj_set_pos(lbl, PAD_SMALL, i * EdgeTxStyles::STD_FONT_HEIGHT + EdgeTxStyles::STD_FONT_HEIGHT);
+      lv_obj_set_pos(lbl, PAD_SMALL, i * EdgeTxStyles::STD_FONT_HEIGHT() + EdgeTxStyles::STD_FONT_HEIGHT());
 
       lbl = etx_label_create(obj);
       lv_label_set_text(lbl, "");
-      lv_obj_set_pos(lbl, TRIM_MINUS_X - PAD_TINY, i * EdgeTxStyles::STD_FONT_HEIGHT + EdgeTxStyles::STD_FONT_HEIGHT);
+      lv_obj_set_pos(lbl, TRIM_MINUS_X - PAD_TINY, i * EdgeTxStyles::STD_FONT_HEIGHT() + EdgeTxStyles::STD_FONT_HEIGHT());
       trimValues[i * 2] = lbl;
 
       lbl = etx_label_create(obj);
       lv_label_set_text(lbl, "");
-      lv_obj_set_pos(lbl, TRIM_PLUS_X, i * EdgeTxStyles::STD_FONT_HEIGHT + EdgeTxStyles::STD_FONT_HEIGHT);
+      lv_obj_set_pos(lbl, TRIM_PLUS_X, i * EdgeTxStyles::STD_FONT_HEIGHT() + EdgeTxStyles::STD_FONT_HEIGHT());
       trimValues[i * 2 + 1] = lbl;
     }
   }

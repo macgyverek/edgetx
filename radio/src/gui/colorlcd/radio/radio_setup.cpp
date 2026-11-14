@@ -118,7 +118,7 @@ class DateTimeWindow : public Window
   // Absolute layout for date/time setion due to slow performance
   // of lv_textarea in a flex layout.
   static LAYOUT_ORIENTATION(DT_EDT_W, EdgeTxStyles::EDIT_FLD_WIDTH_NARROW, LAYOUT_SCALE(52))
-  static constexpr coord_t DT_Y2 = PAD_TINY + EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_MEDIUM;
+  static coord_t DT_Y2() { return PAD_TINY + EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_MEDIUM; }
 
  protected:
   bool init = false;
@@ -163,7 +163,7 @@ class DateTimeWindow : public Window
     m_last_tm = m_tm;
 
     // Date
-    new StaticText(this, rect_t{PAD_TINY, PAD_TINY + PAD_MEDIUM, SubPage::EDT_X - PAD_TINY - PAD_SMALL, EdgeTxStyles::STD_FONT_HEIGHT}, STR_DATE);
+    new StaticText(this, rect_t{PAD_TINY, PAD_TINY + PAD_MEDIUM, SubPage::EDT_X - PAD_TINY - PAD_SMALL, EdgeTxStyles::STD_FONT_HEIGHT()}, STR_DATE);
     year = new DateNumberEdit(
         this, rect_t{SubPage::EDT_X, PAD_TINY, DT_EDT_W, 0}, 2023, 2037,
         [=]() -> int32_t { return TM_YEAR_BASE + m_tm.tm_year; },
@@ -195,9 +195,9 @@ class DateTimeWindow : public Window
         [](int32_t value) { return formatNumberAsString(value, LEADING0, 2); });
 
     // Time
-    new StaticText(this, rect_t{PAD_TINY, DT_Y2 + PAD_MEDIUM, SubPage::EDT_X - PAD_TINY - PAD_SMALL, EdgeTxStyles::STD_FONT_HEIGHT}, STR_TIME);
+    new StaticText(this, rect_t{PAD_TINY, DT_Y2() + PAD_MEDIUM, SubPage::EDT_X - PAD_TINY - PAD_SMALL, EdgeTxStyles::STD_FONT_HEIGHT()}, STR_TIME);
     hour = new DateNumberEdit(
-        this, rect_t{SubPage::EDT_X, DT_Y2, DT_EDT_W, 0}, 0, 23,
+        this, rect_t{SubPage::EDT_X, DT_Y2(), DT_EDT_W, 0}, 0, 23,
         [=]() -> int32_t { return m_tm.tm_hour; },
         [=](int32_t newValue) {
           m_last_tm.tm_hour = m_tm.tm_hour = newValue;
@@ -207,7 +207,7 @@ class DateTimeWindow : public Window
         [](int32_t value) { return formatNumberAsString(value, LEADING0, 2); });
 
     minutes = new DateNumberEdit(
-        this, rect_t{SubPage::EDT_X + DT_EDT_W + PAD_TINY, DT_Y2, DT_EDT_W, 0}, 0, 59,
+        this, rect_t{SubPage::EDT_X + DT_EDT_W + PAD_TINY, DT_Y2(), DT_EDT_W, 0}, 0, 59,
         [=]() -> int32_t { return m_tm.tm_min; },
         [=](int32_t newValue) {
           m_last_tm.tm_min = m_tm.tm_min = newValue;
@@ -217,7 +217,7 @@ class DateTimeWindow : public Window
         [](int32_t value) { return formatNumberAsString(value, LEADING0, 2); });
 
     seconds = new DateNumberEdit(
-        this, rect_t{SubPage::EDT_X + DT_EDT_W * 2 + PAD_SMALL, DT_Y2, DT_EDT_W, 0}, 0, 59,
+        this, rect_t{SubPage::EDT_X + DT_EDT_W * 2 + PAD_SMALL, DT_Y2(), DT_EDT_W, 0}, 0, 59,
         [=]() -> int32_t { return m_tm.tm_sec; },
         [=](int32_t newValue) {
           m_last_tm.tm_sec = m_tm.tm_sec = newValue;
@@ -596,7 +596,7 @@ static void viewOption(Window* parent, coord_t x, coord_t y,
     std::string s(STR_MODEL);
     s += " - ";
     s += STR_ADCFILTERVALUES[modelOption];
-    new StaticText(parent, {x + ToggleSwitch::TOGGLE_W + PAD_MEDIUM, y + PAD_SMALL + 1, 0, 0}, s.c_str(), COLOR_THEME_SECONDARY1_INDEX);
+    new StaticText(parent, {x + ToggleSwitch::TOGGLE_W() + PAD_MEDIUM, y + PAD_SMALL + 1, 0, 0}, s.c_str(), COLOR_THEME_SECONDARY1_INDEX);
   }
 }
 
@@ -777,6 +777,22 @@ static coord_t addKeyLockLine(Window* window, coord_t y, coord_t col2, PaddingSi
 #endif
 
 static SetupLineDef setupLines[] = {
+#if defined(X10S_COMPACT_UI)
+  {
+#if defined(ALL_LANGS)
+    []() -> const char* { return "UI style (restart)"; },
+#else
+    "UI style (restart)",
+#endif
+    [](Window* parent, coord_t x, coord_t y) {
+      auto choice = new Choice(parent, {x, y, 0, 0}, 0, 1,
+                               GET_SET_DEFAULT(g_eeGeneral.compactUi));
+      choice->setTextHandler([](uint8_t value) {
+        return value ? "Compact" : "Normal";
+      });
+    }
+  },
+#endif
   {
     // Have only one log per day
     STR_DEF(STR_ONE_LOG_PER_DAY),
@@ -824,7 +840,7 @@ static SetupLineDef setupLines[] = {
   {
     STR_DEF(STR_PWR_AUTO_OFF),
      [](Window* parent, coord_t x, coord_t y) {
-       auto edit = new NumberEdit(parent,{x, y, EdgeTxStyles::EDIT_FLD_WIDTH_NARROW, EdgeTxStyles::UI_ELEMENT_HEIGHT}, 0,
+       auto edit = new NumberEdit(parent,{x, y, EdgeTxStyles::EDIT_FLD_WIDTH_NARROW, EdgeTxStyles::UI_ELEMENT_HEIGHT()}, 0,
            255, GET_SET_DEFAULT(g_eeGeneral.pwrOffIfInactive));
        edit->setSuffix(" min");
      }
@@ -1065,7 +1081,7 @@ void RadioSetupPage::build(Window* window)
   Window * w;
 
   // Date & time picker including labels
-  w = new DateTimeWindow(window, {0, y, LCD_W - padding * 2, EdgeTxStyles::UI_ELEMENT_HEIGHT * 2 + PAD_TINY * 2 + PAD_MEDIUM});
+  w = new DateTimeWindow(window, {0, y, LCD_W - padding * 2, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 2 + PAD_TINY * 2 + PAD_MEDIUM});
   y += w->height() + padding;
 
   // Sub-pages
@@ -1088,7 +1104,7 @@ void RadioSetupPage::build(Window* window)
     {STR_DEF(STR_KEY_SHORTCUTS), []() { new QMKeyShortcutsPage(); }, nullptr, [=]() { return hasShortcutKeys(); }},
     {STR_DEF(STR_QUICK_MENU_FAVORITES), []() { new QMFavoritesPage(); }, nullptr},
 #endif
-  }, BTN_H);
+  }, BTN_H());
   y += w->height() + padding;
 
 #if defined(KEYS_LOCK_KEY1) && defined(KEYS_LOCK_KEY2)

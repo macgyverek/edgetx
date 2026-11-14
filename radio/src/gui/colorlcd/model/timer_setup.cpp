@@ -106,9 +106,9 @@ TimerWindow::TimerWindow(uint8_t timer) :
                   p_timer->countdownBeep, p_timer->extraHaptic);
           });
 
-      new Choice(parent, {x + COUNTDOWN_VAL_XO, y + COUNTDOWN_VAL_YO, 0, 0}, STR_COUNTDOWNVALUES, 0, 3,
+      new Choice(parent, {x + COUNTDOWN_VAL_XO, y + COUNTDOWN_VAL_YO(), 0, 0}, STR_COUNTDOWNVALUES, 0, 3,
                 GET_SET_WITH_OFFSET(p_timer->countdownStart, 2));
-    }, COUNTDOWN_LBL_YO);
+    }, COUNTDOWN_LBL_YO());
 
   // Timer persistent
   setupLine(STR_PERSISTENT,

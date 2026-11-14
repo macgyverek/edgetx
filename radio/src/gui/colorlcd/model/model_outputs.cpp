@@ -47,48 +47,50 @@ class OutputLineButton : public ListLineButton
     lv_obj_enable_style_refresh(false);
 
     source = etx_label_create(lvobj);
-    lv_obj_set_pos(source, SRC_X, SRC_Y);
-    lv_obj_set_size(source, SRC_W, SRC_H);
-#if defined(X10S_COMPACT_UI)
+    lv_obj_set_pos(source, SRC_X, SRC_Y());
+    lv_obj_set_size(source, SRC_W, SRC_H());
+    if (compactUiEnabled()) {
     lv_label_set_long_mode(source, LV_LABEL_LONG_DOT);
-#endif
+    }
 
-#if !NARROW_LAYOUT && !defined(X10S_COMPACT_UI)
+#if !NARROW_LAYOUT
+    if (!compactUiEnabled()) {
     etx_font(source, FONT_XS_INDEX, ETX_STATE_NAME_FONT_SMALL);
     lv_obj_set_style_pad_top(source, -PAD_TINY, ETX_STATE_NAME_FONT_SMALL);
     lv_obj_set_style_text_line_space(source, -PAD_THREE, ETX_STATE_NAME_FONT_SMALL);
+    }
 #endif
 
     min = etx_label_create(lvobj);
     etx_obj_add_style(min, styles->text_align_right, LV_PART_MAIN);
     etx_font(min, FONT_BOLD_INDEX, ETX_STATE_MINMAX_BOLD);
-    lv_obj_set_pos(min, MIN_X, MIN_Y);
-    lv_obj_set_size(min, MIN_W, EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_pos(min, MIN_X, MIN_Y());
+    lv_obj_set_size(min, MIN_W, EdgeTxStyles::STD_FONT_HEIGHT());
 
     max = etx_label_create(lvobj);
     etx_obj_add_style(max, styles->text_align_right, LV_PART_MAIN);
     etx_font(max, FONT_BOLD_INDEX, ETX_STATE_MINMAX_BOLD);
-    lv_obj_set_pos(max, MAX_X, MAX_Y);
-    lv_obj_set_size(max, MAX_W, EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_pos(max, MAX_X, MAX_Y());
+    lv_obj_set_size(max, MAX_W, EdgeTxStyles::STD_FONT_HEIGHT());
 
     offset = etx_label_create(lvobj);
     etx_obj_add_style(offset, styles->text_align_right, LV_PART_MAIN);
-    lv_obj_set_pos(offset, OFF_X, OFF_Y);
-    lv_obj_set_size(offset, OFF_W, EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_pos(offset, OFF_X, OFF_Y());
+    lv_obj_set_size(offset, OFF_W, EdgeTxStyles::STD_FONT_HEIGHT());
 
     center = etx_label_create(lvobj);
     etx_obj_add_style(center, styles->text_align_right, LV_PART_MAIN);
-    lv_obj_set_pos(center, CTR_X, CTR_Y);
-    lv_obj_set_size(center, CTR_W, EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_pos(center, CTR_X, CTR_Y());
+    lv_obj_set_size(center, CTR_W, EdgeTxStyles::STD_FONT_HEIGHT());
 
     revert = lv_img_create(lvobj);
     lv_img_set_src(revert, LV_SYMBOL_SHUFFLE);
-    lv_obj_set_pos(revert, REV_X, REV_Y);
+    lv_obj_set_pos(revert, REV_X, REV_Y());
 
     curve =
-        new StaticIcon(this, CRV_X, CRV_Y, ICON_TEXTLINE_CURVE, COLOR_THEME_SECONDARY1_INDEX);
+        new StaticIcon(this, CRV_X, CRV_Y(), ICON_TEXTLINE_CURVE, COLOR_THEME_SECONDARY1_INDEX);
 
-    new OutputChannelBar(this, rect_t{BAR_X, BAR_Y, CH_BAR_WIDTH, CH_BAR_HEIGHT},
+    new OutputChannelBar(this, rect_t{BAR_X, BAR_Y(), CH_BAR_WIDTH, CH_BAR_HEIGHT},
                                index, false, false);
 
     checkEvents();
@@ -105,7 +107,7 @@ class OutputLineButton : public ListLineButton
   OutputLineButton(Window* parent, uint8_t channel) :
       ListLineButton(parent, channel)
   {
-    setHeight(CH_LINE_H);
+    setHeight(CH_LINE_H());
     padAll(PAD_ZERO);
 
     delayLoad();
@@ -117,25 +119,29 @@ class OutputLineButton : public ListLineButton
 
     const LimitData* output = limitAddress(index);
     if (g_model.limitData[index].name[0] != '\0') {
-#if !NARROW_LAYOUT && !defined(X10S_COMPACT_UI)
+#if !NARROW_LAYOUT
+    if (!compactUiEnabled()) {
       lv_obj_add_state(source, ETX_STATE_NAME_FONT_SMALL);
+    }
 #endif
       char chanStr[LEN_CHANNEL_NAME + 16];
-#if defined(X10S_COMPACT_UI)
+      if (compactUiEnabled()) {
       char* s = strAppend(chanStr, STR_CH);
       s = strAppendUnsigned(s, index + 1);
       s = strAppend(s, " ");
       strAppend(s, getSourceString(MIXSRC_FIRST_CH + index));
-#else
+      } else {
       char* s = strAppend(chanStr, getSourceString(MIXSRC_FIRST_CH + index));
       s = strAppend(s, "\n");
       s = strAppend(s, STR_CH);
       strAppendUnsigned(s, index + 1);
-#endif
+      }
       lv_label_set_text(source, chanStr);
     } else {
-#if !NARROW_LAYOUT && !defined(X10S_COMPACT_UI)
+#if !NARROW_LAYOUT
+    if (!compactUiEnabled()) {
       lv_obj_clear_state(source, ETX_STATE_NAME_FONT_SMALL);
+    }
 #endif
       lv_label_set_text(source, getSourceString(MIXSRC_FIRST_CH + index));
     }
@@ -163,52 +169,35 @@ class OutputLineButton : public ListLineButton
     curve->show(output->curve);
   }
 
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t CH_LINE_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
-#else
-  static LAYOUT_SIZE_SCALED(CH_LINE_H, 32, 50)
-#endif
+  static coord_t CH_LINE_H() { return compactUiEnabled() ? (EdgeTxStyles::UI_ELEMENT_HEIGHT()) : (LV(32, 50)); }
   static LAYOUT_VAL_SCALED(CH_BAR_WIDTH, 100)
   static LAYOUT_VAL_SCALED(CH_BAR_HEIGHT, 16)
   static LAYOUT_VAL_SCALED(BAR_XO, 17)
   static constexpr coord_t BAR_X = LCD_W - CH_BAR_WIDTH - BAR_XO;
 
   static constexpr coord_t SRC_X = PAD_TINY;
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t TEXT_Y = (CH_LINE_H - EdgeTxStyles::STD_FONT_HEIGHT) / 2 - PAD_BORDER;
-  static constexpr coord_t BAR_Y = (CH_LINE_H - CH_BAR_HEIGHT) / 2 - PAD_BORDER;
-  static constexpr coord_t SRC_Y = TEXT_Y;
-#else
-  static constexpr coord_t BAR_Y = PAD_MEDIUM;
-  static constexpr coord_t SRC_Y = 1;
-#endif
+  static coord_t TEXT_Y() { return (CH_LINE_H() - EdgeTxStyles::STD_FONT_HEIGHT()) / 2 - PAD_BORDER; }
+  static coord_t BAR_Y() { return compactUiEnabled() ? ((CH_LINE_H() - CH_BAR_HEIGHT) / 2 - PAD_BORDER) : (PAD_MEDIUM); }
+  static coord_t SRC_Y() { return compactUiEnabled() ? (TEXT_Y()) : (1); }
   static LAYOUT_VAL_SCALED(SRC_W, 80)
-  static constexpr coord_t SRC_H = CH_LINE_H - PAD_MEDIUM;
+  static coord_t SRC_H() { return CH_LINE_H() - PAD_MEDIUM; }
   static constexpr coord_t MIN_X = SRC_X + SRC_W + PAD_TINY;
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t MIN_Y = TEXT_Y;
-#else
-  static LAYOUT_SIZE_SCALED(MIN_Y, 4, 2)
-#endif
+  static coord_t MIN_Y() { return compactUiEnabled() ? (TEXT_Y()) : (LV(4, 2)); }
   static LAYOUT_VAL_SCALED(MIN_W, 52)
   static constexpr coord_t MAX_X = MIN_X + MIN_W + PAD_TINY;
-  static constexpr coord_t MAX_Y = MIN_Y;
+  static coord_t MAX_Y() { return MIN_Y(); }
   static LAYOUT_SIZE_SCALED(MAX_W, 52, 60)
   static LAYOUT_SIZE(OFF_X, MAX_X + MAX_W + PAD_TINY, SRC_X + SRC_W + PAD_TINY)
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t OFF_Y = TEXT_Y;
-#else
-  static LAYOUT_SIZE_SCALED(OFF_Y, 4, 24)
-#endif
+  static coord_t OFF_Y() { return compactUiEnabled() ? (TEXT_Y()) : (LV(4, 24)); }
   static LAYOUT_SIZE_SCALED(OFF_W, 44, 52)
   static constexpr coord_t CTR_X = OFF_X + OFF_W + PAD_TINY;
-  static constexpr coord_t CTR_Y = OFF_Y;
+  static coord_t CTR_Y() { return OFF_Y(); }
   static LAYOUT_VAL_SCALED(CTR_W, 60)
   static constexpr coord_t REV_X = CTR_X + CTR_W + PAD_TINY;
-  static constexpr coord_t REV_Y = CTR_Y;
+  static coord_t REV_Y() { return CTR_Y(); }
   static LAYOUT_VAL_SCALED(REV_W, 16)
   static constexpr coord_t CRV_X = REV_X + REV_W + PAD_TINY;
-  static constexpr coord_t CRV_Y = REV_Y + 1;
+  static coord_t CRV_Y() { return REV_Y() + 1; }
 
  protected:
   int value = -10000;
@@ -255,7 +244,7 @@ void ModelOutputsPage::build(Window* window)
   window->padAll(PAD_ZERO);
   window->padBottom(PAD_LARGE);
 
-  new TextButton(window, {ADD_TRIMS_X, ADD_TRIMS_Y, ADD_TRIMS_W, ADD_TRIMS_H}, STR_ADD_ALL_TRIMS_TO_SUBTRIMS, [=]() {
+  new TextButton(window, {ADD_TRIMS_X, ADD_TRIMS_Y, ADD_TRIMS_W, ADD_TRIMS_H()}, STR_ADD_ALL_TRIMS_TO_SUBTRIMS, [=]() {
     new ConfirmDialog(
         STR_TRIMS2OFFSETS, STR_ADD_ALL_TRIMS_TO_SUBTRIMS,
         [=] {
@@ -266,13 +255,13 @@ void ModelOutputsPage::build(Window* window)
     return 0;
   });
 
-  new StaticText(window, {EXLIM_X, EXLIM_Y, EXLIM_W, EdgeTxStyles::STD_FONT_HEIGHT}, STR_ELIMITS, COLOR_THEME_PRIMARY1_INDEX, RIGHT);
-  new ToggleSwitch(window, {EXLIMCB_X, EXLIMCB_Y, EXLIMCB_W, EXLIMCB_H}, GET_SET_DEFAULT(g_model.extendedLimits));
+  new StaticText(window, {EXLIM_X, EXLIM_Y(), EXLIM_W, EdgeTxStyles::STD_FONT_HEIGHT()}, STR_ELIMITS, COLOR_THEME_PRIMARY1_INDEX, RIGHT);
+  new ToggleSwitch(window, {EXLIMCB_X, EXLIMCB_Y(), EXLIMCB_W, EXLIMCB_H()}, GET_SET_DEFAULT(g_model.extendedLimits));
 
   for (uint8_t ch = 0; ch < MAX_OUTPUT_CHANNELS; ch++) {
     // Channel settings
     auto btn = new OutputLineButton(window, ch);
-    lv_obj_set_pos(btn->getLvObj(), TRIMB_X, TRIMB_Y + (ch * (OutputLineButton::CH_LINE_H + PAD_TINY)));
+    lv_obj_set_pos(btn->getLvObj(), TRIMB_X, TRIMB_Y() + (ch * (OutputLineButton::CH_LINE_H() + PAD_TINY)));
     btn->setWidth(TRIMB_W);
 
     outputButtons.emplace_back(btn);

@@ -161,7 +161,7 @@ class CurveDataEdit : public Window
     y += NUM_HDR_HEIGHT;
 
     new StaticText(
-        parent, {1, y + PAD_MEDIUM, PTNUM_X, EdgeTxStyles::UI_ELEMENT_HEIGHT},
+        parent, {1, y + PAD_MEDIUM, PTNUM_X, EdgeTxStyles::UI_ELEMENT_HEIGHT()},
         "X", COLOR_THEME_PRIMARY1_INDEX, CENTERED);
 
     int8_t* points = curveAddress(index);
@@ -174,7 +174,7 @@ class CurveDataEdit : public Window
         new StaticText(
             parent,
             {PTNUM_X + (i * (NUM_BTN_WIDTH + PAD_TINY)), y + PAD_MEDIUM,
-             NUM_BTN_WIDTH, EdgeTxStyles::UI_ELEMENT_HEIGHT},
+             NUM_BTN_WIDTH, EdgeTxStyles::UI_ELEMENT_HEIGHT()},
             "-100", COLOR_THEME_SECONDARY1_INDEX, CENTERED);
         i += 1;
       }
@@ -187,7 +187,7 @@ class CurveDataEdit : public Window
         numEditX[px] = new NumberEdit(
             parent,
             {PTNUM_X + (i * (NUM_BTN_WIDTH + PAD_TINY)), y, NUM_BTN_WIDTH,
-             EdgeTxStyles::UI_ELEMENT_HEIGHT},
+             EdgeTxStyles::UI_ELEMENT_HEIGHT()},
             (px == 0) ? -100 : points[curvePointsCount + px - 1],
             (px == curvePointsCount - 3) ? 100
                                          : points[curvePointsCount + px + 1],
@@ -209,7 +209,7 @@ class CurveDataEdit : public Window
         new StaticText(
             parent,
             {PTNUM_X + (i * (NUM_BTN_WIDTH + PAD_TINY)), y + PAD_MEDIUM,
-             NUM_BTN_WIDTH, EdgeTxStyles::UI_ELEMENT_HEIGHT},
+             NUM_BTN_WIDTH, EdgeTxStyles::UI_ELEMENT_HEIGHT()},
             "100", COLOR_THEME_SECONDARY1_INDEX, CENTERED);
       }
     } else {
@@ -217,23 +217,23 @@ class CurveDataEdit : public Window
         new StaticText(
             parent,
             rect_t{PTNUM_X + (i * (NUM_BTN_WIDTH + PAD_TINY)), y + PAD_MEDIUM,
-                   NUM_BTN_WIDTH, EdgeTxStyles::UI_ELEMENT_HEIGHT},
+                   NUM_BTN_WIDTH, EdgeTxStyles::UI_ELEMENT_HEIGHT()},
             std::to_string(-100 + (200 * (i + start)) / (curvePointsCount - 1)),
             COLOR_THEME_SECONDARY1_INDEX, CENTERED);
       }
     }
 
-    y += EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_TINY;
+    y += EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_TINY;
 
     new StaticText(
-        parent, {1, y + PAD_MEDIUM, PTNUM_X, EdgeTxStyles::UI_ELEMENT_HEIGHT},
+        parent, {1, y + PAD_MEDIUM, PTNUM_X, EdgeTxStyles::UI_ELEMENT_HEIGHT()},
         "Y", COLOR_THEME_PRIMARY1_INDEX, CENTERED);
 
     // y value
     for (uint8_t i = 0; i < count; i++) {
       new NumberEdit(parent,
           {PTNUM_X + (i * (NUM_BTN_WIDTH + PAD_TINY)), y, NUM_BTN_WIDTH,
-           EdgeTxStyles::UI_ELEMENT_HEIGHT},
+           EdgeTxStyles::UI_ELEMENT_HEIGHT()},
           -100, 100, GET_VALUE(points[i + start]),
           [=](int32_t newValue) {
             points[i + start] = newValue;
@@ -390,7 +390,7 @@ void CurveEditWindow::buildBody(Window* window)
       iLine,
       rect_t{
           0, 0, box->width(),
-          box->height() - (EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_TINY * 2) * 2},
+          box->height() - (EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_TINY * 2) * 2},
       index);
 
   // Curve editor

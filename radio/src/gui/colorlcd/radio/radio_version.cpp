@@ -370,7 +370,7 @@ void RadioVersionPage::build(Window* window)
   iy = 0;
 #else
   qw = window->width();
-  qh = QR_SZ + EdgeTxStyles::STD_FONT_HEIGHT * 2 + PAD_LARGE + PAD_SMALL;
+  qh = QR_SZ + EdgeTxStyles::STD_FONT_HEIGHT() * 2 + PAD_LARGE + PAD_SMALL;
   iw = qw;
   ih = window->height() - qh;
   ix = 0;
@@ -383,7 +383,7 @@ void RadioVersionPage::build(Window* window)
   new StaticText(qrBox, {0, PAD_SMALL, LV_PCT(100), 0}, copyright_str,
                  COLOR_THEME_SECONDARY1_INDEX, CENTERED);
 
-  new StaticText(qrBox, {0, qh - QR_SZ - PAD_MEDIUM - EdgeTxStyles::STD_FONT_HEIGHT, LV_PCT(100), 0},
+  new StaticText(qrBox, {0, qh - QR_SZ - PAD_MEDIUM - EdgeTxStyles::STD_FONT_HEIGHT(), LV_PCT(100), 0},
                  edgetx_url, COLOR_THEME_SECONDARY1_INDEX, CENTERED);
 
   new QRCode(qrBox, (qw - QR_SZ) / 2, qh - QR_SZ - PAD_MEDIUM, QR_SZ, edgetx_url);

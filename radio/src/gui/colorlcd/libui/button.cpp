@@ -25,6 +25,7 @@
 
 static void button_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+  lv_obj_set_height(obj, EdgeTxStyles::UI_ELEMENT_HEIGHT());
   etx_btn_style(obj, LV_PART_MAIN);
 }
 
@@ -36,7 +37,7 @@ const lv_obj_class_t button_class = {
     .user_data = nullptr,
     .event_cb = nullptr,
     .width_def = LV_SIZE_CONTENT,
-    .height_def = EdgeTxStyles::UI_ELEMENT_HEIGHT,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_TRUE,
     .instance_size = sizeof(lv_btn_t),
@@ -132,11 +133,11 @@ void TextButton::setText(std::string value)
 
 IconButton::IconButton(Window* parent, EdgeTxIcon icon, coord_t x, coord_t y,
                        std::function<uint8_t(void)> pressHandler) :
-    ButtonBase(parent, {x, y, EdgeTxStyles::UI_ELEMENT_HEIGHT, EdgeTxStyles::UI_ELEMENT_HEIGHT}, pressHandler, button_create)
+    ButtonBase(parent, {x, y, EdgeTxStyles::UI_ELEMENT_HEIGHT(), EdgeTxStyles::UI_ELEMENT_HEIGHT()}, pressHandler, button_create)
 {
   padAll(PAD_ZERO);
   iconImage = new StaticIcon(this, 0, 0, icon, COLOR_THEME_SECONDARY1_INDEX);
-  iconImage->center(EdgeTxStyles::UI_ELEMENT_HEIGHT - 4, EdgeTxStyles::UI_ELEMENT_HEIGHT - 4);
+  iconImage->center(EdgeTxStyles::UI_ELEMENT_HEIGHT() - 4, EdgeTxStyles::UI_ELEMENT_HEIGHT() - 4);
 }
 
 void IconButton::setIcon(EdgeTxIcon icon) { iconImage->setIcon(icon); }

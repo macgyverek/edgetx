@@ -97,9 +97,10 @@ static TSStyle tsStyle;
 
 static void ts_num_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
-#if defined(X10S_COMPACT_UI)
+  lv_obj_set_height(obj, EdgeTxStyles::STD_FONT_HEIGHT());
+  if (compactUiEnabled()) {
   etx_font(obj, FONT_STD_INDEX);
-#endif
+  }
   etx_obj_add_style(obj, styles->text_align_center, LV_PART_MAIN);
   etx_font(obj, FONT_XS_INDEX, ETX_STATE_VALUE_SMALL_FONT);
 }
@@ -111,7 +112,7 @@ static const lv_obj_class_t ts_num_class = {
     .user_data = nullptr,
     .event_cb = nullptr,
     .width_def = TSStyle::NUM_W,
-    .height_def = EdgeTxStyles::STD_FONT_HEIGHT,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_INHERIT,
     .instance_size = sizeof(lv_label_t),
@@ -154,9 +155,10 @@ lv_obj_t* TSStyle::newId(lv_obj_t* parent, const char* id)
 
 static void ts_name_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
-#if defined(X10S_COMPACT_UI)
+  lv_obj_set_height(obj, EdgeTxStyles::STD_FONT_HEIGHT());
+  if (compactUiEnabled()) {
   etx_font(obj, FONT_STD_INDEX);
-#endif
+  }
   etx_obj_add_style(obj, styles->text_align_left, LV_PART_MAIN);
 }
 
@@ -167,7 +169,7 @@ static const lv_obj_class_t ts_name_class = {
     .user_data = nullptr,
     .event_cb = nullptr,
     .width_def = TSStyle::NAME_W,
-    .height_def = EdgeTxStyles::STD_FONT_HEIGHT,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_INHERIT,
     .instance_size = sizeof(lv_label_t),
@@ -183,9 +185,10 @@ lv_obj_t* TSStyle::newName(lv_obj_t* parent, const char* name)
 
 static void ts_value_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
-#if defined(X10S_COMPACT_UI)
+  lv_obj_set_height(obj, EdgeTxStyles::STD_FONT_HEIGHT());
+  if (compactUiEnabled()) {
   etx_font(obj, FONT_STD_INDEX);
-#endif
+  }
   etx_obj_add_style(obj, styles->text_align_left, LV_PART_MAIN);
   etx_txt_color(obj, COLOR_THEME_WARNING_INDEX, ETX_STATE_VALUE_STALE_WARN);
 }
@@ -197,7 +200,7 @@ static const lv_obj_class_t ts_value_class = {
     .user_data = nullptr,
     .event_cb = nullptr,
     .width_def = LV_SIZE_CONTENT,
-    .height_def = EdgeTxStyles::STD_FONT_HEIGHT,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_INHERIT,
     .instance_size = sizeof(lv_label_t),
@@ -218,7 +221,7 @@ class SensorButton : public ListLineButton
       ListLineButton(parent, index)
   {
     padAll(PAD_ZERO);
-    setHeight(EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_SMALL);
+    setHeight(EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_SMALL);
 
     check(isActive());
 

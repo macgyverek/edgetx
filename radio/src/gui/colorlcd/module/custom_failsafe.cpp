@@ -206,7 +206,7 @@ FailSafePage::FailSafePage(uint8_t moduleIdx) : Page(ICON_STATS_ANALOGS)
 
     // Channel bargraph
     auto bar = new ChannelFailsafeBargraph(
-        line, rect_t{0, 0, FS_BARGRAPH_WIDTH, EdgeTxStyles::UI_ELEMENT_HEIGHT}, ch);
+        line, rect_t{0, 0, FS_BARGRAPH_WIDTH, EdgeTxStyles::UI_ELEMENT_HEIGHT()}, ch);
     lv_obj_set_style_grid_cell_x_align(bar->getLvObj(), LV_GRID_ALIGN_END, 0);
   }
 }

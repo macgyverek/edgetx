@@ -393,11 +393,11 @@ class DshotSafetyDialog : public HRSTool
 
     new HRSText(topBar, {0, PAD_LARGE, LCD_W, 0}, "WARNING", HRS_COLOR_WHITE, CENTERED | FONT(L));
 
-    new HRSText(this, {0, EdgeTxStyles::UI_ELEMENT_HEIGHT * 2, LCD_W, 0}, TITLE_DSHOT,
+    new HRSText(this, {0, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 2, LCD_W, 0}, TITLE_DSHOT,
                        HRS_COLOR_DANGER, CENTERED | FONT(STD));
 
     new HRSText(
-        this, {0, EdgeTxStyles::UI_ELEMENT_HEIGHT * 3, LCD_W, 0},
+        this, {0, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 3, LCD_W, 0},
         "REMOVE PROPS before testing!\n"
         "ESC needs its own motor battery.\n"
         "Ext +5V is 5V / 1A signal power only.\n"

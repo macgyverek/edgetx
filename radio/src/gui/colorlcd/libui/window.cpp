@@ -70,7 +70,7 @@ void Window::eventHandler(lv_event_t *e)
         // Only applies when using rotary encoder or keys.
         // Limit is 2 standard size labels with some extra padding
         constexpr lv_coord_t NEAR_LIMIT =
-            (EdgeTxStyles::STD_FONT_HEIGHT + PAD_TINY * 2 + PAD_OUTLINE * 2) * 2 + PAD_MEDIUM * 2;
+            (EdgeTxStyles::STD_FONT_HEIGHT() + PAD_TINY * 2 + PAD_OUTLINE * 2) * 2 + PAD_MEDIUM * 2;
 
         TRACE("SCROLL[x=%d;y=%d;top=%d;bottom=%d,limit=%d]", p->x, p->y, scroll_y,
               scroll_bottom,NEAR_LIMIT);
@@ -563,7 +563,7 @@ class SetupTextButton : public TextButton
       if (entry.enabled) show(entry.enabled());
     });
     setWrap();
-#if defined(X10S_COMPACT_UI)
+    if (compactUiEnabled()) {
     // Fit wrapped translations without preserving the oversized tile height.
     lv_obj_update_layout(lvobj);
     coord_t contentHeight = lv_obj_get_height(label) +
@@ -571,7 +571,7 @@ class SetupTextButton : public TextButton
         lv_obj_get_style_pad_bottom(lvobj, LV_PART_MAIN) +
         2 * lv_obj_get_style_border_width(lvobj, LV_PART_MAIN);
     if (contentHeight > height()) setHeight(contentHeight);
-#endif
+    }
   }
 
  protected:
@@ -588,7 +588,7 @@ SetupButtonGroup::SetupButtonGroup(Window* parent, const rect_t& rect, const cha
   int rows = (pages.size() + cols - 1) / cols;
   int height = rows * btnHeight + (rows - 1) * PAD_MEDIUM + PAD_TINY * 2;
   if (title) {
-    height += EdgeTxStyles::STD_FONT_HEIGHT + PAD_TINY;
+    height += EdgeTxStyles::STD_FONT_HEIGHT() + PAD_TINY;
   }
   setHeight(height);
 
@@ -597,14 +597,12 @@ SetupButtonGroup::SetupButtonGroup(Window* parent, const rect_t& rect, const cha
 
   int n = 0;
   int remaining = pages.size();
-  coord_t yo = title ? EdgeTxStyles::STD_FONT_HEIGHT + PAD_TINY : 0;
+  coord_t yo = title ? EdgeTxStyles::STD_FONT_HEIGHT() + PAD_TINY : 0;
   coord_t xw = buttonWidth + PAD_SMALL;
   coord_t xo = (width() - (cols * xw - PAD_SMALL)) / 2;
   coord_t x, y;
-#if defined(X10S_COMPACT_UI)
   coord_t rowTop = yo;
   coord_t rowHeight = 0;
-#endif
   for (auto& entry : pages) {
     if (remaining < cols && (n % cols == 0)) {
       coord_t space = ((cols - remaining) * xw) / (remaining + 1);
@@ -612,7 +610,7 @@ SetupButtonGroup::SetupButtonGroup(Window* parent, const rect_t& rect, const cha
       xo += space;
     }
     x = xo + (n % cols) * xw;
-#if defined(X10S_COMPACT_UI)
+    if (compactUiEnabled()) {
     if (n > 0 && n % cols == 0) {
       rowTop += rowHeight + PAD_TINY;
       rowHeight = 0;
@@ -620,16 +618,16 @@ SetupButtonGroup::SetupButtonGroup(Window* parent, const rect_t& rect, const cha
     y = rowTop;
     auto button = new SetupTextButton(this, {x, y, buttonWidth, btnHeight}, entry);
     if (button->height() > rowHeight) rowHeight = button->height();
-#else
+    } else {
     y = yo + (n / cols) * (btnHeight + PAD_MEDIUM);
     new SetupTextButton(this, {x, y, buttonWidth, btnHeight}, entry);
-#endif
+    }
     n += 1;
     remaining -= 1;
   }
-#if defined(X10S_COMPACT_UI)
+  if (compactUiEnabled()) {
   setHeight(rowTop + rowHeight + PAD_TINY * 2);
-#endif
+  }
 }
 
 SetupLine::SetupLine(Window* parent, coord_t y, coord_t col2, PaddingSize padding, const char* title,
@@ -638,21 +636,17 @@ SetupLine::SetupLine(Window* parent, coord_t y, coord_t col2, PaddingSize paddin
 {
   padAll(PAD_ZERO);
   coord_t titleY = PAD_LARGE + lblYOffset;
-  coord_t titleH = EdgeTxStyles::STD_FONT_HEIGHT;
-  coord_t h = EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_TINY * 2 + lblYOffset * 2;
+  coord_t titleH = EdgeTxStyles::STD_FONT_HEIGHT();
+  coord_t h = EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_TINY * 2 + lblYOffset * 2;
   if (createEdit) {
     coord_t editY = PAD_TINY;
     coord_t lblWidth = col2 - PAD_SMALL - PAD_TINY;
     if (title) {
-#if defined(X10S_COMPACT_UI)
-      auto titleWidth = getTextWidth(title, 0, FONT(XS));
-#else
-      auto titleWidth = getTextWidth(title);
-#endif
+      auto titleWidth = compactUiEnabled() ? getTextWidth(title, 0, FONT(XS)) : getTextWidth(title);
       if (titleWidth >= lblWidth) {
         h += PAD_MEDIUM;
         titleY = 0;
-        titleH = EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_TINY + PAD_LARGE;
+        titleH = EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_TINY + PAD_LARGE;
         editY = PAD_SMALL + 1;
       }
       new StaticText(this, {PAD_TINY, titleY, lblWidth, titleH}, title);

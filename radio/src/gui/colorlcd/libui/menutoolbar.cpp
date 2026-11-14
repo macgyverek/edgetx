@@ -111,13 +111,13 @@ rect_t MenuToolbar::getButtonRect(bool wideButton)
   coord_t x =
       (nxtBtnPos % filterColumns) * (MENUS_TOOLBAR_BUTTON_WIDTH + PAD_SMALL);
   coord_t y =
-      (nxtBtnPos / filterColumns) * (EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_SMALL);
+      (nxtBtnPos / filterColumns) * (EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_SMALL);
   coord_t w = wideButton ? (MENUS_TOOLBAR_BUTTON_WIDTH + PAD_SMALL) *
                                    (filterColumns - 1) +
                                MENUS_TOOLBAR_BUTTON_WIDTH
                          : MENUS_TOOLBAR_BUTTON_WIDTH;
   nxtBtnPos += wideButton ? filterColumns : 1;
-  return {x, y, w, EdgeTxStyles::UI_ELEMENT_HEIGHT};
+  return {x, y, w, EdgeTxStyles::UI_ELEMENT_HEIGHT()};
 }
 
 bool MenuToolbar::filterMenu(MenuToolbarButton* btn, int16_t filtermin,

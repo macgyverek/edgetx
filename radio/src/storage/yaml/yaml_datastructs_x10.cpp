@@ -448,7 +448,12 @@ static const struct YamlNode struct_RadioData[] = {
   YAML_UNSIGNED( "modelQuickSelect", 1 ),
   YAML_UNSIGNED( "oneLogPerDay", 1 ),
   YAML_UNSIGNED( "keyLockEnabled", 1 ),
+#if defined(X10S_COMPACT_UI)
+  YAML_UNSIGNED( "compactUi", 1 ),
+  YAML_PADDING( 2 ),
+#else
   YAML_PADDING( 3 ),
+#endif
   YAML_UNSIGNED( "pwrOffIfInactive", 8 ),
   YAML_ARRAY("keyShortcuts", 8, 6, struct_QuickMenuPage, NULL),
   YAML_ARRAY("qmFavorites", 8, 12, struct_QuickMenuPage, NULL),

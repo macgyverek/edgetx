@@ -290,7 +290,7 @@ void ScreenAddPage::build(Window* window)
   std::string s = replaceAll(STR_QM_ADD_SCREEN, "\n", " ");
 
   new TextButton(window,
-                 rect_t{LCD_W / 2 - ADD_TXT_W / 2, window->height() / 2 - EdgeTxStyles::UI_ELEMENT_HEIGHT, ADD_TXT_W, EdgeTxStyles::UI_ELEMENT_HEIGHT},
+                 rect_t{LCD_W / 2 - ADD_TXT_W / 2, window->height() / 2 - EdgeTxStyles::UI_ELEMENT_HEIGHT(), ADD_TXT_W, EdgeTxStyles::UI_ELEMENT_HEIGHT()},
                  s, [this]() -> uint8_t {
                     int newIdx = 1;
                     for (; newIdx < MAX_CUSTOM_SCREENS; newIdx += 1)

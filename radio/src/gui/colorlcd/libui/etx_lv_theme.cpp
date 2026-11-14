@@ -30,6 +30,11 @@
 
 extern lv_color_t makeLvColor(uint32_t colorFlags);
 
+#if defined(X10S_COMPACT_UI)
+static bool activeCompactUi = false;
+bool compactUiEnabled() { return activeCompactUi; }
+#endif
+
 /**********************
  *   Constant Styles
  **********************/
@@ -131,13 +136,8 @@ const lv_style_const_prop_t pad_large_props[] = {
 LV_STYLE_CONST_MULTI_INIT(EdgeTxStyles::pad_large, pad_large_props);
 
 const lv_style_const_prop_t pad_button_props[] = {
-#if defined(X10S_COMPACT_UI)
-    LV_STYLE_CONST_PAD_TOP(1),
-    LV_STYLE_CONST_PAD_BOTTOM(1),
-#else
     LV_STYLE_CONST_PAD_TOP(PAD_TINY),
     LV_STYLE_CONST_PAD_BOTTOM(PAD_TINY),
-#endif
     LV_STYLE_CONST_PAD_LEFT(PAD_MEDIUM),
     LV_STYLE_CONST_PAD_RIGHT(PAD_MEDIUM),
     LV_STYLE_CONST_PAD_ROW(PAD_TINY),
@@ -145,20 +145,33 @@ const lv_style_const_prop_t pad_button_props[] = {
     LV_STYLE_PROP_INV,
 };
 LV_STYLE_CONST_MULTI_INIT(EdgeTxStyles::pad_button, pad_button_props);
+const lv_style_const_prop_t pad_button_compact_props[] = {
+    LV_STYLE_CONST_PAD_TOP(1),
+    LV_STYLE_CONST_PAD_BOTTOM(1),
+    LV_STYLE_CONST_PAD_LEFT(PAD_MEDIUM),
+    LV_STYLE_CONST_PAD_RIGHT(PAD_MEDIUM),
+    LV_STYLE_CONST_PAD_ROW(PAD_TINY),
+    LV_STYLE_CONST_PAD_COLUMN(PAD_TINY),
+    LV_STYLE_PROP_INV,
+};
+LV_STYLE_CONST_MULTI_INIT(pad_button_compact, pad_button_compact_props);
 
 const lv_style_const_prop_t pad_textarea_props[] = {
-#if defined(X10S_COMPACT_UI)
-    LV_STYLE_CONST_PAD_TOP(1),
-    LV_STYLE_CONST_PAD_BOTTOM(PAD_TINY),
-#else
     LV_STYLE_CONST_PAD_TOP(PAD_SMALL),
     LV_STYLE_CONST_PAD_BOTTOM(PAD_SMALL - 1),
-#endif
     LV_STYLE_CONST_PAD_LEFT(PAD_MEDIUM),
     LV_STYLE_CONST_PAD_RIGHT(PAD_SMALL),
     LV_STYLE_PROP_INV,
 };
 LV_STYLE_CONST_MULTI_INIT(EdgeTxStyles::pad_textarea, pad_textarea_props);
+const lv_style_const_prop_t pad_textarea_compact_props[] = {
+    LV_STYLE_CONST_PAD_TOP(1),
+    LV_STYLE_CONST_PAD_BOTTOM(PAD_TINY),
+    LV_STYLE_CONST_PAD_LEFT(PAD_MEDIUM),
+    LV_STYLE_CONST_PAD_RIGHT(PAD_SMALL),
+    LV_STYLE_PROP_INV,
+};
+LV_STYLE_CONST_MULTI_INIT(pad_textarea_compact, pad_textarea_compact_props);
 
 // Border
 const lv_style_const_prop_t border_props[] = {
@@ -185,17 +198,19 @@ const lv_style_const_prop_t border_thin_props[] = {
 LV_STYLE_CONST_MULTI_INIT(EdgeTxStyles::border_thin, border_thin_props);
 
 static const lv_style_const_prop_t outline_props[] = {
-#if defined(X10S_COMPACT_UI)
-    LV_STYLE_CONST_OUTLINE_WIDTH(1),
-    LV_STYLE_CONST_OUTLINE_PAD(0),
-#else
     LV_STYLE_CONST_OUTLINE_WIDTH(PAD_OUTLINE),
     LV_STYLE_CONST_OUTLINE_PAD(1),
-#endif
     LV_STYLE_CONST_OUTLINE_OPA(LV_OPA_COVER),
     LV_STYLE_PROP_INV,
 };
 LV_STYLE_CONST_MULTI_INIT(EdgeTxStyles::outline, outline_props);
+static const lv_style_const_prop_t outline_compact_props[] = {
+    LV_STYLE_CONST_OUTLINE_WIDTH(1),
+    LV_STYLE_CONST_OUTLINE_PAD(0),
+    LV_STYLE_CONST_OUTLINE_OPA(LV_OPA_COVER),
+    LV_STYLE_PROP_INV,
+};
+LV_STYLE_CONST_MULTI_INIT(outline_compact, outline_compact_props);
 
 // States (pressed, disabled, etc)
 static lv_color_t dark_color_filter_cb(const lv_color_filter_dsc_t* f,
@@ -332,12 +347,12 @@ void EdgeTxStyles::setFonts()
   // Fonts
   for (int i = FONT_STD_INDEX; i < FONTS_COUNT; i += 1) {
     int fontIndex = i;
-#if defined(X10S_COMPACT_UI)
+    if (compactUiEnabled()) {
     // Use the existing language-aware XS font for standard UI controls.
     // Leave getFont() and the Lua font identifiers unchanged.
     if (i == FONT_STD_INDEX || i == FONT_BOLD_INDEX)
       fontIndex = FONT_XS_INDEX;
-#endif
+    }
     lv_style_set_text_font(&font[i], getFont(fontIndex << 8));
   }
 }
@@ -402,6 +417,16 @@ void usePreviewStyle()
   styles = previewStyles;
   styles->applyColors();
 }
+
+#if defined(X10S_COMPACT_UI)
+void initUiStyle(bool compact)
+{
+  activeCompactUi = compact;
+  // LCD styles may already exist for the startup screen.
+  if (mainStyles) mainStyles->setFonts();
+  if (previewStyles) previewStyles->setFonts();
+}
+#endif
 
 void useMainStyle()
 {
@@ -608,7 +633,7 @@ void etx_std_settings(lv_obj_t* obj, lv_style_selector_t selector)
   etx_obj_add_style(obj, styles->border_color[COLOR_THEME_SECONDARY2_INDEX], selector);
   etx_obj_add_style(obj, styles->rounded, selector);
 
-  etx_obj_add_style(obj, styles->outline, selector | LV_STATE_FOCUSED);
+  etx_obj_add_style(obj, (compactUiEnabled() ? outline_compact : styles->outline), selector | LV_STATE_FOCUSED);
   etx_obj_add_style(obj, styles->disabled, selector | LV_STATE_DISABLED);
   etx_obj_add_style(obj, styles->pressed, selector | LV_STATE_PRESSED);
 }
@@ -617,7 +642,7 @@ void etx_btn_style(lv_obj_t* obj, lv_style_selector_t selector)
 {
   etx_std_settings(obj, selector);
   etx_std_ctrl_colors(obj, selector);
-  etx_obj_add_style(obj, styles->pad_button, selector);
+  etx_obj_add_style(obj, (compactUiEnabled() ? pad_button_compact : styles->pad_button), selector);
 }
 
 void etx_padding(lv_obj_t* obj, PaddingSize padding,
@@ -628,7 +653,7 @@ void etx_padding(lv_obj_t* obj, PaddingSize padding,
   lv_obj_remove_style(obj, (lv_style_t*)&styles->pad_medium, selector);
   lv_obj_remove_style(obj, (lv_style_t*)&styles->pad_large, selector);
   lv_obj_remove_style(obj, (lv_style_t*)&styles->pad_zero, selector);
-  lv_obj_remove_style(obj, (lv_style_t*)&styles->pad_button, selector);
+  lv_obj_remove_style(obj, (lv_style_t*)&(compactUiEnabled() ? pad_button_compact : styles->pad_button), selector);
   switch (padding) {
     case PAD_TINY:
       etx_obj_add_style(obj, styles->pad_tiny, selector);
@@ -677,11 +702,12 @@ lv_obj_t* etx_create(const lv_obj_class_t* class_p, lv_obj_t* parent)
 
 static void textarea_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+  lv_obj_set_height(obj, EdgeTxStyles::UI_ELEMENT_HEIGHT());
   etx_obj_add_style(obj, styles->border, LV_PART_MAIN);
   etx_obj_add_style(obj, styles->border_color[COLOR_THEME_SECONDARY2_INDEX], LV_PART_MAIN);
   etx_obj_add_style(obj, styles->rounded, LV_PART_MAIN);
   etx_std_ctrl_colors(obj, LV_PART_MAIN);
-  etx_obj_add_style(obj, styles->pad_textarea, LV_PART_MAIN);
+  etx_obj_add_style(obj, (compactUiEnabled() ? pad_textarea_compact : styles->pad_textarea), LV_PART_MAIN);
 
   etx_bg_color(obj, COLOR_THEME_EDIT_INDEX, LV_PART_MAIN | LV_STATE_EDITED);
   etx_txt_color(obj, COLOR_THEME_PRIMARY2_INDEX,
@@ -695,11 +721,11 @@ static void textarea_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
   lv_textarea_set_one_line(obj, true);
 
   lv_textarea_t* ta = (lv_textarea_t*)obj;
-#if defined(X10S_COMPACT_UI)
-  lv_obj_set_height(ta->label, EdgeTxStyles::STD_FONT_HEIGHT);
-#else
-  lv_obj_set_height(ta->label, EdgeTxStyles::UI_ELEMENT_HEIGHT * 21 / 32);
-#endif
+  if (compactUiEnabled()) {
+  lv_obj_set_height(ta->label, EdgeTxStyles::STD_FONT_HEIGHT());
+  } else {
+  lv_obj_set_height(ta->label, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 21 / 32);
+  }
 }
 
 static const lv_obj_class_t textarea_class = {
@@ -709,7 +735,7 @@ static const lv_obj_class_t textarea_class = {
     .user_data = nullptr,
     .event_cb = nullptr,
     .width_def = 0,
-    .height_def = EdgeTxStyles::UI_ELEMENT_HEIGHT,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_INHERIT,
     .instance_size = sizeof(lv_textarea_t),

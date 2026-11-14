@@ -137,7 +137,7 @@ class MixLineButton : public InputMixButtonBase
   {
     setPos(x, y);
     mplex->setPos(x - MPLEX_XO, y);
-    mplex->show(y > ListLineButton::BTN_H);
+    mplex->show(y > ListLineButton::BTN_H());
   }
 
   lv_obj_t* mplexLvObj() const { return mplex->getLvObj(); }
@@ -176,13 +176,13 @@ class MixGroup : public InputMixGroupBase
   {
     adjustHeight();
 
-#if defined(X10S_COMPACT_UI)
+    if (compactUiEnabled()) {
     lv_obj_set_pos(label, PAD_TINY, 0);
-    lv_obj_set_size(label, InputMixButtonBase::LN_X - PAD_TINY * 2, EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_size(label, InputMixButtonBase::LN_X - PAD_TINY * 2, EdgeTxStyles::STD_FONT_HEIGHT());
     lv_label_set_long_mode(label, LV_LABEL_LONG_DOT);
-#else
+    } else {
     lv_obj_set_pos(label, PAD_TINY, -1);
-#endif
+    }
 
     lv_obj_t* chText = nullptr;
     if (idx >= MIXSRC_FIRST_CH && idx <= MIXSRC_LAST_CH &&
@@ -192,11 +192,11 @@ class MixGroup : public InputMixGroupBase
       char* s = strAppend(chanStr, STR_CH);
       strAppendUnsigned(s, idx - MIXSRC_FIRST_CH + 1);
       lv_label_set_text(chText, chanStr);
-#if defined(X10S_COMPACT_UI)
-      lv_obj_set_pos(chText, PAD_TINY, CHNUM_Y);
-#else
-      lv_obj_set_pos(chText, PAD_TINY, CHNUM_Y-1);
-#endif
+      if (compactUiEnabled()) {
+      lv_obj_set_pos(chText, PAD_TINY, CHNUM_Y());
+      } else {
+      lv_obj_set_pos(chText, PAD_TINY, CHNUM_Y()-1);
+      }
     }
 
     refresh();
@@ -220,21 +220,21 @@ class MixGroup : public InputMixGroupBase
 
   void adjustHeight() override
   {
-    coord_t y = monitorVisible ? CHNUM_Y : PAD_OUTLINE;
+    coord_t y = monitorVisible ? CHNUM_Y() : PAD_OUTLINE;
     for (auto it = lines.cbegin(); it != lines.cend(); ++it) {
       auto line = *it;
       line->updateHeight();
       line->updatePos(InputMixButtonBase::LN_X, y);
       y += line->height() + PAD_OUTLINE;
     }
-#if defined(X10S_COMPACT_UI)
+    if (compactUiEnabled()) {
     // A named channel has two label lines even when it has only one mix.
     if (idx >= MIXSRC_FIRST_CH && idx <= MIXSRC_LAST_CH &&
         g_model.limitData[idx - MIXSRC_FIRST_CH].name[0] != '\0') {
-      coord_t contentHeight = max<coord_t>(y, CHNUM_Y + EdgeTxStyles::STD_FONT_HEIGHT);
+      coord_t contentHeight = max<coord_t>(y, CHNUM_Y() + EdgeTxStyles::STD_FONT_HEIGHT());
       coord_t offset = (contentHeight - y) / 2;
       if (offset > 0) {
-        coord_t lineY = (monitorVisible ? CHNUM_Y : PAD_OUTLINE) + offset;
+        coord_t lineY = (monitorVisible ? CHNUM_Y() : PAD_OUTLINE) + offset;
         for (auto line : lines) {
           line->updatePos(InputMixButtonBase::LN_X, lineY);
           lineY += line->height() + PAD_OUTLINE;
@@ -242,15 +242,11 @@ class MixGroup : public InputMixGroupBase
       }
       y = contentHeight;
     }
-#endif
+    }
     setHeight(y + PAD_BORDER * 2);
   }
 
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t CHNUM_Y = EdgeTxStyles::STD_FONT_HEIGHT;
-#else
-  static LAYOUT_VAL_SCALED(CHNUM_Y, 17)
-#endif
+  static coord_t CHNUM_Y() { return compactUiEnabled() ? (EdgeTxStyles::STD_FONT_HEIGHT()) : (LAYOUT_SCALE(17)); }
   static LAYOUT_VAL_SCALED(CHBAR_W, 100)
   static LAYOUT_VAL_SCALED(CHBAR_H, 14)
 

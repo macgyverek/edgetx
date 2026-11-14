@@ -298,7 +298,7 @@ class LogicalSwitchButton : public ListLineButton
   LogicalSwitchButton(Window* parent, int lsIndex) :
       ListLineButton(parent, lsIndex)
   {
-    setHeight(LS_BUTTON_H);
+    setHeight(LS_BUTTON_H());
     padAll(PAD_ZERO);
 
     check(isActive());
@@ -312,59 +312,59 @@ class LogicalSwitchButton : public ListLineButton
 
     lsName = etx_label_create(lvobj);
     etx_obj_add_style(lsName, styles->text_align_left, LV_PART_MAIN);
-    lv_obj_set_pos(lsName, NM_X, NM_Y);
-    lv_obj_set_size(lsName, NM_W, EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_pos(lsName, NM_X, NM_Y());
+    lv_obj_set_size(lsName, NM_W, EdgeTxStyles::STD_FONT_HEIGHT());
 
     lsFunc = etx_label_create(lvobj);
     etx_obj_add_style(lsFunc, styles->text_align_left, LV_PART_MAIN);
-    lv_obj_set_pos(lsFunc, FN_X, FN_Y);
-    lv_obj_set_size(lsFunc, FN_W, EdgeTxStyles::STD_FONT_HEIGHT);
-#if defined(X10S_COMPACT_UI)
+    lv_obj_set_pos(lsFunc, FN_X, FN_Y());
+    lv_obj_set_size(lsFunc, FN_W(), EdgeTxStyles::STD_FONT_HEIGHT());
+    if (compactUiEnabled()) {
     etx_font(lsFunc, FONT_BOLD_INDEX, LV_STATE_USER_1);
-#else
+    } else {
     lv_obj_set_style_text_font(lsFunc, getFont(FONT(BOLD)), LV_STATE_USER_1);
-#endif
+    }
 
     lsV1 = etx_label_create(lvobj);
     etx_obj_add_style(lsV1, styles->text_align_center, LV_PART_MAIN);
     etx_font(lsV1, FONT_XS_INDEX, ETX_STATE_V1_SMALL_FONT);
-    lv_obj_set_pos(lsV1, V1_X, V1_Y);
-    lv_obj_set_size(lsV1, V1_W, EdgeTxStyles::STD_FONT_HEIGHT);
-#if defined(X10S_COMPACT_UI)
+    lv_obj_set_pos(lsV1, V1_X(), V1_Y());
+    lv_obj_set_size(lsV1, V1_W, EdgeTxStyles::STD_FONT_HEIGHT());
+    if (compactUiEnabled()) {
     etx_font(lsV1, FONT_BOLD_INDEX, LV_STATE_USER_1);
-#else
+    } else {
     lv_obj_set_style_text_font(lsV1, getFont(FONT(BOLD)), LV_STATE_USER_1);
-#endif
+    }
 
     lsV2 = etx_label_create(lvobj);
     etx_obj_add_style(lsV2, styles->text_align_center, LV_PART_MAIN);
-    lv_obj_set_pos(lsV2, V2_X, V2_Y);
-    lv_obj_set_size(lsV2, V2_W, EdgeTxStyles::STD_FONT_HEIGHT);
-#if defined(X10S_COMPACT_UI)
+    lv_obj_set_pos(lsV2, V2_X(), V2_Y());
+    lv_obj_set_size(lsV2, V2_W(), EdgeTxStyles::STD_FONT_HEIGHT());
+    if (compactUiEnabled()) {
     etx_font(lsV2, FONT_BOLD_INDEX, LV_STATE_USER_1);
-#else
+    } else {
     lv_obj_set_style_text_font(lsV2, getFont(FONT(BOLD)), LV_STATE_USER_1);
-#endif
+    }
 
     lsAnd = etx_label_create(lvobj);
     etx_obj_add_style(lsAnd, styles->text_align_center, LV_PART_MAIN);
-    lv_obj_set_pos(lsAnd, AND_X, AND_Y);
-    lv_obj_set_size(lsAnd, AND_W, EdgeTxStyles::STD_FONT_HEIGHT);
-#if defined(X10S_COMPACT_UI)
+    lv_obj_set_pos(lsAnd, AND_X, AND_Y());
+    lv_obj_set_size(lsAnd, AND_W, EdgeTxStyles::STD_FONT_HEIGHT());
+    if (compactUiEnabled()) {
     etx_font(lsAnd, FONT_BOLD_INDEX, LV_STATE_USER_1);
-#else
+    } else {
     lv_obj_set_style_text_font(lsAnd, getFont(FONT(BOLD)), LV_STATE_USER_1);
-#endif
+    }
 
     lsDuration = etx_label_create(lvobj);
     etx_obj_add_style(lsDuration, styles->text_align_center, LV_PART_MAIN);
-    lv_obj_set_pos(lsDuration, DUR_X, DUR_Y);
-    lv_obj_set_size(lsDuration, DUR_W, EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_pos(lsDuration, DUR_X, DUR_Y());
+    lv_obj_set_size(lsDuration, DUR_W, EdgeTxStyles::STD_FONT_HEIGHT());
 
     lsDelay = etx_label_create(lvobj);
     etx_obj_add_style(lsDelay, styles->text_align_center, LV_PART_MAIN);
-    lv_obj_set_pos(lsDelay, DEL_X, DEL_Y);
-    lv_obj_set_size(lsDelay, DEL_W, EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_pos(lsDelay, DEL_X, DEL_Y());
+    lv_obj_set_size(lsDelay, DEL_W, EdgeTxStyles::STD_FONT_HEIGHT());
 
     lv_obj_update_layout(lvobj);
 
@@ -495,41 +495,29 @@ class LogicalSwitchButton : public ListLineButton
     }
   }
 
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t LS_BUTTON_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
-#else
-  static LAYOUT_SIZE_SCALED(LS_BUTTON_H, 32, 44)
-#endif
+  static coord_t LS_BUTTON_H() { return compactUiEnabled() ? (EdgeTxStyles::UI_ELEMENT_HEIGHT()) : (LV(32, 44)); }
 
   static constexpr coord_t NM_X = PAD_TINY;
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t NM_Y = 1;
-#else
-  static LAYOUT_SIZE_SCALED(NM_Y, 4, 10)
-#endif
+  static coord_t NM_Y() { return compactUiEnabled() ? (1) : (LV(4, 10)); }
   static LAYOUT_SIZE_SCALED(NM_W, 30, 36)
   static constexpr coord_t FN_X = NM_X + NM_W + PAD_TINY;
-  static constexpr coord_t FN_Y = NM_Y;
-  static LAYOUT_SIZE_SCALED(FN_W, 50, 58)
-  static constexpr coord_t V1_X = FN_X + FN_W + PAD_TINY;
-  static LAYOUT_SIZE(V1_Y, NM_Y, 0)
+  static coord_t FN_Y() { return NM_Y(); }
+  static coord_t FN_W() { return LV(50, 58); }
+  static coord_t V1_X() { return FN_X + FN_W() + PAD_TINY; }
+  static coord_t V1_Y() { return (NARROW_LAYOUT ? (0) : (NM_Y())); }
   static LAYOUT_VAL_SCALED(V1_W, 88)
-  static constexpr coord_t V2_X = V1_X + V1_W + PAD_TINY;
-  static constexpr coord_t V2_Y = V1_Y;
+  static coord_t V2_X() { return V1_X() + V1_W + PAD_TINY; }
+  static coord_t V2_Y() { return V1_Y(); }
   static constexpr coord_t AND_W = V1_W;
   static LAYOUT_SIZE_SCALED(DUR_W, 40, 54)
   static constexpr coord_t DEL_W = DUR_W;
   static constexpr coord_t AND_X = ListLineButton::GRP_W - PAD_BORDER * 2 - AND_W - DUR_W - DEL_W - PAD_TINY * 3;
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t AND_Y = NM_Y;
-#else
-  static LAYOUT_SIZE_SCALED(AND_Y, 4, 20)
-#endif
-  static constexpr coord_t V2_W = AND_X - V2_X - PAD_TINY;
+  static coord_t AND_Y() { return compactUiEnabled() ? (NM_Y()) : (LV(4, 20)); }
+  static coord_t V2_W() { return AND_X - V2_X() - PAD_TINY; }
   static constexpr coord_t DUR_X = ListLineButton::GRP_W - PAD_BORDER * 2 - DUR_W - DEL_W - PAD_TINY * 2;
-  static constexpr coord_t DUR_Y = AND_Y;
+  static coord_t DUR_Y() { return AND_Y(); }
   static constexpr coord_t DEL_X = ListLineButton::GRP_W - PAD_BORDER * 2 - DEL_W - PAD_TINY;
-  static constexpr coord_t DEL_Y = AND_Y;
+  static coord_t DEL_Y() { return AND_Y(); }
 
  protected:
   lv_obj_t* lsName = nullptr;
@@ -671,7 +659,7 @@ void ModelLogicalSwitchesPage::build(Window* window)
 
   if (hasEmptySwitch) {
     addButton =
-        new TextButton(window, rect_t{0, 0, window->width() - PAD_SMALL * 2, LogicalSwitchButton::LS_BUTTON_H},
+        new TextButton(window, rect_t{0, 0, window->width() - PAD_SMALL * 2, LogicalSwitchButton::LS_BUTTON_H()},
                        LV_SYMBOL_PLUS, [=]() {
                          plusPopup(window);
                          return 0;

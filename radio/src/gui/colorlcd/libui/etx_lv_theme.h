@@ -31,6 +31,15 @@
 
 class Window;
 
+// Active style is latched at startup. Changing the saved preference requires
+// a restart, so existing windows always keep one consistent set of metrics.
+#if defined(X10S_COMPACT_UI)
+bool compactUiEnabled();
+void initUiStyle(bool compact);
+#else
+constexpr bool compactUiEnabled() { return false; }
+#endif
+
 /*********************
  *      Layout
  *********************/
@@ -85,11 +94,7 @@ enum PaddingSize {
   PAD_LARGE = LAYOUT_SCALE(8),
   PAD_SCROLL = LAYOUT_SCALE(3),
   PAD_THREE = PAD_SCROLL,
-#if defined(X10S_COMPACT_UI)
-  PAD_TABLE_V = LAYOUT_SCALE(4),
-#else
   PAD_TABLE_V = LAYOUT_SCALE(7),
-#endif
   PAD_TABLE_H = PAD_SMALL,
   PAD_OUTLINE = PAD_TINY,
   PAD_BORDER = 2,
@@ -282,13 +287,8 @@ class EdgeTxStyles
   void applyColors();
   void setFonts();
 
-#if defined(X10S_COMPACT_UI)
-  static LAYOUT_VAL_SCALED(STD_FONT_HEIGHT, 17)
-  static LAYOUT_VAL_SCALED(UI_ELEMENT_HEIGHT, 24)
-#else
-  static LAYOUT_VAL_SCALED(STD_FONT_HEIGHT, 21)
-  static LAYOUT_VAL_SCALED(UI_ELEMENT_HEIGHT, 32)
-#endif
+  static coord_t STD_FONT_HEIGHT() { return compactUiEnabled() ? (LAYOUT_SCALE(17)) : (LAYOUT_SCALE(21)); }
+  static coord_t UI_ELEMENT_HEIGHT() { return compactUiEnabled() ? (LAYOUT_SCALE(24)) : (LAYOUT_SCALE(32)); }
   static LAYOUT_VAL_SCALED(MENU_HEADER_HEIGHT, 45)
   static LAYOUT_VAL_SCALED(EDIT_FLD_WIDTH_NARROW, 70)
   static LAYOUT_VAL_SCALED(EDIT_FLD_WIDTH, 100)

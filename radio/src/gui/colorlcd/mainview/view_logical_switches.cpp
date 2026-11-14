@@ -281,8 +281,8 @@ void LogicalSwitchesViewPage::build(Window* window)
         return 0;
       });
     } else {
-      if (btnHeight > EdgeTxStyles::STD_FONT_HEIGHT)
-        y += (btnHeight - EdgeTxStyles::STD_FONT_HEIGHT) / 2;
+      if (btnHeight > EdgeTxStyles::STD_FONT_HEIGHT())
+        y += (btnHeight - EdgeTxStyles::STD_FONT_HEIGHT()) / 2;
       auto lbl = etx_label_create(window->getLvObj());
       lv_obj_set_size(lbl, BTN_WIDTH, btnHeight);
       lv_obj_set_pos(lbl, x, y);

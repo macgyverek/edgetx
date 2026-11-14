@@ -26,7 +26,7 @@ GVarNumberEdit::GVarNumberEdit(Window* parent, int32_t vmin,
                                int32_t vmax, std::function<int32_t()> getValue,
                                std::function<void(int32_t)> setValue,
                                LcdFlags textFlags, int32_t voffset, int32_t vdefault) :
-    Window(parent, {0, 0, EdgeTxStyles::EDIT_FLD_WIDTH_NARROW + GV_BTN_W + PAD_TINY * 3, EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_TINY * 2}),
+    Window(parent, {0, 0, EdgeTxStyles::EDIT_FLD_WIDTH_NARROW + GV_BTN_W + PAD_TINY * 3, EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_TINY * 2}),
     vmin(vmin),
     vmax(vmax),
     getValue(getValue),

@@ -37,21 +37,17 @@ class ModelOutputsPage : public PageGroupItem
   static constexpr coord_t ADD_TRIMS_X = PAD_SMALL;
   static constexpr coord_t ADD_TRIMS_Y = PAD_SMALL;
   static LAYOUT_SIZE(ADD_TRIMS_W, (LCD_W / 2) - PAD_LARGE, LCD_W - PAD_LARGE - PAD_SMALL)
-  static constexpr coord_t ADD_TRIMS_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
+  static coord_t ADD_TRIMS_H() { return EdgeTxStyles::UI_ELEMENT_HEIGHT(); }
   static LAYOUT_VAL_SCALED(EXLIM_XO, 58)
   static constexpr coord_t EXLIMCB_X = LCD_W - EXLIM_XO;
-  static LAYOUT_SIZE(EXLIMCB_Y, PAD_SMALL, ADD_TRIMS_Y + ADD_TRIMS_H + PAD_TINY)
+  static coord_t EXLIMCB_Y() { return (NARROW_LAYOUT ? (ADD_TRIMS_Y + ADD_TRIMS_H() + PAD_TINY) : (PAD_SMALL)); }
   static LAYOUT_VAL_SCALED(EXLIMCB_W, 52)
-  static constexpr coord_t EXLIMCB_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
+  static coord_t EXLIMCB_H() { return EdgeTxStyles::UI_ELEMENT_HEIGHT(); }
   static LAYOUT_SIZE(EXLIM_X, ADD_TRIMS_X + ADD_TRIMS_W + PAD_SMALL, PAD_MEDIUM)
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t EXLIM_Y = EXLIMCB_Y + (EXLIMCB_H - EdgeTxStyles::STD_FONT_HEIGHT) / 2;
-#else
-  static LAYOUT_SIZE(EXLIM_Y, PAD_LARGE + PAD_TINY, ADD_TRIMS_Y + ADD_TRIMS_H + PAD_LARGE)
-#endif
+  static coord_t EXLIM_Y() { return compactUiEnabled() ? (EXLIMCB_Y() + (EXLIMCB_H() - EdgeTxStyles::STD_FONT_HEIGHT()) / 2) : ((NARROW_LAYOUT ? (ADD_TRIMS_Y + ADD_TRIMS_H() + PAD_LARGE) : (PAD_LARGE + PAD_TINY))); }
   static constexpr coord_t EXLIM_W = EXLIMCB_X - EXLIM_X - PAD_SMALL;
   static constexpr coord_t TRIMB_X = PAD_SMALL;
-  static constexpr coord_t TRIMB_Y = EXLIMCB_Y + EXLIMCB_H + PAD_MEDIUM / 2;
+  static coord_t TRIMB_Y() { return EXLIMCB_Y() + EXLIMCB_H() + PAD_MEDIUM / 2; }
   static constexpr coord_t TRIMB_W = LCD_W - PAD_SMALL * 2;
 
  protected:

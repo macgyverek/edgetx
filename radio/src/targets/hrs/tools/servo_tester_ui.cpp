@@ -536,10 +536,10 @@ class ServoPowerWarnDialog : public HRSTool
 
     new HRSText(topBar, {0, PAD_LARGE, LCD_W, 0}, "WARNING", HRS_COLOR_WHITE, CENTERED | FONT(L));
 
-    new HRSText(this, {0, EdgeTxStyles::UI_ELEMENT_HEIGHT * 2, LCD_W, 0}, TITLE_SERVO,
+    new HRSText(this, {0, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 2, LCD_W, 0}, TITLE_SERVO,
                        HRS_COLOR_DANGER, CENTERED | FONT(STD));
 
-    new HRSText(this, {0, EdgeTxStyles::UI_ELEMENT_HEIGHT * 3, LCD_W, 0},
+    new HRSText(this, {0, EdgeTxStyles::UI_ELEMENT_HEIGHT() * 3, LCD_W, 0},
         "VCC provides 5V / 1A test power.\n"
         "Overcurrent may cut power off.\n"
         "Prefer an external supply for testing!",

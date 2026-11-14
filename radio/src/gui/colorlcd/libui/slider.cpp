@@ -105,17 +105,10 @@ void SliderBase::setColor(LcdFlags color)
 //-----------------------------------------------------------------------------
 
 // Slider
-#if defined(X10S_COMPACT_UI)
-static constexpr coord_t sliderKnobPadding = PAD_MEDIUM;
-static constexpr coord_t sliderTrackOffset = (EdgeTxStyles::UI_ELEMENT_HEIGHT - PAD_LARGE) / 2;
-static_assert(PAD_LARGE + 2 * sliderKnobPadding <= EdgeTxStyles::UI_ELEMENT_HEIGHT,
-              "Slider knob must fit inside the compact control");
-#else
-static constexpr coord_t sliderKnobPadding = PAD_LARGE + 1;
-static constexpr coord_t sliderTrackOffset = PAD_LARGE + 1;
-#endif
+static coord_t sliderKnobPadding() { return compactUiEnabled() ? (PAD_MEDIUM) : (PAD_LARGE + 1); }
+static coord_t sliderTrackOffset() { return compactUiEnabled() ? ((EdgeTxStyles::UI_ELEMENT_HEIGHT() - PAD_LARGE) / 2) : (PAD_LARGE + 1); }
 const lv_style_const_prop_t slider_knob_props[] = {
-    LV_STYLE_CONST_PAD_TOP(sliderKnobPadding), LV_STYLE_CONST_PAD_BOTTOM(sliderKnobPadding),
+    LV_STYLE_CONST_PAD_TOP(PAD_LARGE + 1), LV_STYLE_CONST_PAD_BOTTOM(PAD_LARGE + 1),
     LV_STYLE_CONST_PAD_LEFT(PAD_SMALL), LV_STYLE_CONST_PAD_RIGHT(PAD_SMALL),
     LV_STYLE_CONST_RADIUS(PAD_SMALL),   LV_STYLE_CONST_BORDER_WIDTH(PAD_TINY),
     LV_STYLE_PROP_INV,
@@ -137,6 +130,8 @@ static void slider_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 
   etx_solid_bg(obj, COLOR_THEME_PRIMARY2_INDEX, LV_PART_KNOB);
   etx_obj_add_style(obj, slider_knob, LV_PART_KNOB);
+  lv_obj_set_style_pad_top(obj, sliderKnobPadding(), LV_PART_KNOB);
+  lv_obj_set_style_pad_bottom(obj, sliderKnobPadding(), LV_PART_KNOB);
   etx_obj_add_style(obj, styles->border_color[COLOR_THEME_SECONDARY1_INDEX], LV_PART_MAIN);
   etx_obj_add_style(obj, styles->border_color[COLOR_THEME_FOCUS_INDEX],
                     LV_PART_KNOB | LV_STATE_FOCUSED);
@@ -167,9 +162,9 @@ static lv_obj_t* slider_create(lv_obj_t* parent)
 Slider::Slider(Window* parent, coord_t width, int32_t vmin, int32_t vmax,
                std::function<int()> getValue,
                std::function<void(int)> setValue) :
-    SliderBase(parent, width, EdgeTxStyles::UI_ELEMENT_HEIGHT, vmin, vmax, getValue, setValue)
+    SliderBase(parent, width, EdgeTxStyles::UI_ELEMENT_HEIGHT(), vmin, vmax, getValue, setValue)
 {
-  padTop(sliderTrackOffset);
+  padTop(sliderTrackOffset());
   padLeft(PAD_LARGE);
   padRight(PAD_LARGE);
 
@@ -212,7 +207,7 @@ void Slider::delayedInit()
 // Vertical Slider
 const lv_style_const_prop_t vslider_knob_props[] = {
     LV_STYLE_CONST_PAD_TOP(PAD_SMALL), LV_STYLE_CONST_PAD_BOTTOM(PAD_SMALL),
-    LV_STYLE_CONST_PAD_LEFT(sliderKnobPadding), LV_STYLE_CONST_PAD_RIGHT(sliderKnobPadding),
+    LV_STYLE_CONST_PAD_LEFT(PAD_LARGE + 1), LV_STYLE_CONST_PAD_RIGHT(PAD_LARGE + 1),
     LV_STYLE_CONST_RADIUS(PAD_SMALL),   LV_STYLE_CONST_BORDER_WIDTH(PAD_TINY),
     LV_STYLE_PROP_INV,
 };
@@ -233,6 +228,8 @@ static void vslider_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 
   etx_obj_add_style(obj, styles->bg_opacity_cover, LV_PART_KNOB);
   etx_obj_add_style(obj, vslider_knob, LV_PART_KNOB);
+  lv_obj_set_style_pad_left(obj, sliderKnobPadding(), LV_PART_KNOB);
+  lv_obj_set_style_pad_right(obj, sliderKnobPadding(), LV_PART_KNOB);
   etx_obj_add_style(obj, styles->border_color[COLOR_THEME_SECONDARY1_INDEX], LV_PART_MAIN);
   etx_obj_add_style(obj, styles->border_color[COLOR_THEME_FOCUS_INDEX],
                     LV_PART_KNOB | LV_STATE_FOCUSED);
@@ -263,9 +260,9 @@ static lv_obj_t* vslider_create(lv_obj_t* parent)
 VerticalSlider::VerticalSlider(Window* parent, coord_t height, int32_t vmin, int32_t vmax,
                std::function<int()> getValue,
                std::function<void(int)> setValue) :
-    SliderBase(parent, EdgeTxStyles::UI_ELEMENT_HEIGHT, height, vmin,vmax, getValue, setValue)
+    SliderBase(parent, EdgeTxStyles::UI_ELEMENT_HEIGHT(), height, vmin,vmax, getValue, setValue)
 {
-  padLeft(sliderTrackOffset);
+  padLeft(sliderTrackOffset());
   padTop(PAD_LARGE);
   padBottom(PAD_LARGE);
 

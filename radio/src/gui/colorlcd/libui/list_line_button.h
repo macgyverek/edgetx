@@ -37,11 +37,7 @@ class ListLineButton : public ButtonBase
 
   virtual void refresh() = 0;
 
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t BTN_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
-#else
-  static constexpr coord_t BTN_H = EdgeTxStyles::STD_FONT_HEIGHT + PAD_BORDER * 2 + PAD_TINY * 2;
-#endif
+  static coord_t BTN_H() { return compactUiEnabled() ? (EdgeTxStyles::UI_ELEMENT_HEIGHT()) : (EdgeTxStyles::STD_FONT_HEIGHT() + PAD_BORDER * 2 + PAD_TINY * 2); }
   static constexpr coord_t GRP_W = LCD_W - PAD_SMALL * 2;
 
  protected:
@@ -78,35 +74,23 @@ class InputMixButtonBase : public ListLineButton
 #endif
   static constexpr coord_t BTN_W = ListLineButton::GRP_W - LN_X - PAD_BORDER * 2 - PAD_OUTLINE;
   static constexpr coord_t WGT_X = PAD_TINY;
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t WGT_Y = 1;
-#else
-  static constexpr coord_t WGT_Y = PAD_TINY;
-#endif
+  static coord_t WGT_Y() { return compactUiEnabled() ? (1) : (PAD_TINY); }
   static LAYOUT_VAL_SCALED(WGT_W, 50)
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t WGT_H = EdgeTxStyles::STD_FONT_HEIGHT;
-#else
-  static LAYOUT_VAL_SCALED(WGT_H, 21)
-#endif
+  static coord_t WGT_H() { return compactUiEnabled() ? (EdgeTxStyles::STD_FONT_HEIGHT()) : (LAYOUT_SCALE(21)); }
   static constexpr coord_t SRC_X = WGT_X + WGT_W + PAD_TINY;
-  static constexpr coord_t SRC_Y = WGT_Y;
+  static coord_t SRC_Y() { return WGT_Y(); }
 #if WIDE_LAYOUT
   static LAYOUT_VAL_SCALED(SRC_W, 80)
 #else
   static LAYOUT_VAL_SCALED(SRC_W, 72)
 #endif
-  static constexpr coord_t SRC_H = WGT_H;
+  static coord_t SRC_H() { return WGT_H(); }
   static constexpr coord_t OPT_X = SRC_X + SRC_W + PAD_TINY;
-  static constexpr coord_t OPT_Y = WGT_Y;
+  static coord_t OPT_Y() { return WGT_Y(); }
   static LAYOUT_SIZE(OPT_W, BTN_W - PAD_BORDER * 2 - WGT_W - SRC_W - FM_CANVAS_WIDTH - PAD_TINY * 5, BTN_W - PAD_BORDER * 2 - WGT_W - SRC_W - PAD_TINY * 4)
-  static constexpr coord_t OPT_H = WGT_H;
+  static coord_t OPT_H() { return WGT_H(); }
   static LAYOUT_SIZE(FM_X, BTN_W - PAD_BORDER * 2 - PAD_TINY - FM_CANVAS_WIDTH, PAD_LARGE + PAD_SMALL)
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t FM_Y = WGT_Y;
-#else
-  static LAYOUT_SIZE(FM_Y, (WGT_Y + PAD_TINY), (WGT_Y + WGT_H + PAD_TINY))
-#endif
+  static coord_t FM_Y() { return compactUiEnabled() ? (WGT_Y()) : ((NARROW_LAYOUT ? ((WGT_Y() + WGT_H() + PAD_TINY)) : ((WGT_Y() + PAD_TINY)))); }
   static LAYOUT_VAL_SCALED(FM_W, 8)
 
  protected:

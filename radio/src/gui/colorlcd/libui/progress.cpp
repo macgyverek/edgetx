@@ -22,6 +22,7 @@
 
 static void etx_bar_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+  lv_obj_set_height(obj, EdgeTxStyles::UI_ELEMENT_HEIGHT());
   etx_solid_bg(obj, COLOR_THEME_SECONDARY2_INDEX);
   etx_obj_add_style(obj, styles->rounded, LV_PART_MAIN);
 
@@ -36,7 +37,7 @@ static const lv_obj_class_t bar_class = {
     .user_data = nullptr,
     .event_cb = nullptr,
     .width_def = LV_PCT(100),
-    .height_def = EdgeTxStyles::UI_ELEMENT_HEIGHT,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_INHERIT,
     .instance_size = sizeof(lv_bar_t),

@@ -118,8 +118,8 @@ PageGroupHeaderBase::PageGroupHeaderBase(Window* parent, coord_t height, EdgeTxI
 
     parentLabel = etx_label_create(lvobj);
     etx_txt_color(parentLabel, COLOR_THEME_PRIMARY2_INDEX);
-    lv_obj_set_pos(parentLabel, PageHeader::PAGE_TITLE_LEFT, PageHeader::PAGE_TITLE_TOP);
-    lv_obj_set_size(parentLabel, LCD_W - PageHeader::PAGE_TITLE_LEFT - PageGroup::PAGE_GROUP_BACK_BTN_W * 2 - PAD_LARGE * 2, EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_pos(parentLabel, PageHeader::PAGE_TITLE_LEFT, PageHeader::PAGE_TITLE_TOP());
+    lv_obj_set_size(parentLabel, LCD_W - PageHeader::PAGE_TITLE_LEFT - PageGroup::PAGE_GROUP_BACK_BTN_W * 2 - PAD_LARGE * 2, EdgeTxStyles::STD_FONT_HEIGHT());
     lv_label_set_text(parentLabel, parentTitle);
 #endif
 
@@ -133,16 +133,16 @@ PageGroupHeaderBase::PageGroupHeaderBase(Window* parent, coord_t height, EdgeTxI
     lv_obj_set_size(sep, LCD_W, PageGroup::PAGE_GROUP_TOP_BAR_H - EdgeTxStyles::MENU_HEADER_HEIGHT);
 
     lv_obj_set_style_pad_left(titleLabel, PAD_MEDIUM, LV_PART_MAIN);
-#if defined(X10S_COMPACT_UI)
-    lv_obj_set_style_pad_top(titleLabel, (PageGroup::PAGE_GROUP_ALT_TITLE_H - EdgeTxStyles::STD_FONT_HEIGHT) / 2, LV_PART_MAIN);
-#else
+    if (compactUiEnabled()) {
+    lv_obj_set_style_pad_top(titleLabel, (PageGroup::PAGE_GROUP_ALT_TITLE_H() - EdgeTxStyles::STD_FONT_HEIGHT()) / 2, LV_PART_MAIN);
+    } else {
     lv_obj_set_style_pad_top(titleLabel, 1, LV_PART_MAIN);
-#endif
+    }
     lv_obj_set_pos(titleLabel, 0, PageGroup::PAGE_GROUP_TOP_BAR_H);
-    lv_obj_set_size(titleLabel, LCD_W, PageGroup::PAGE_GROUP_ALT_TITLE_H);
+    lv_obj_set_size(titleLabel, LCD_W, PageGroup::PAGE_GROUP_ALT_TITLE_H());
 #else
-    lv_obj_set_pos(titleLabel, PageHeader::PAGE_TITLE_LEFT, PageHeader::PAGE_TITLE_TOP + EdgeTxStyles::STD_FONT_HEIGHT);
-    lv_obj_set_size(titleLabel, LCD_W - PageHeader::PAGE_TITLE_LEFT - PageGroup::PAGE_GROUP_BACK_BTN_W * 2 - PAD_LARGE * 2, EdgeTxStyles::STD_FONT_HEIGHT);
+    lv_obj_set_pos(titleLabel, PageHeader::PAGE_TITLE_LEFT, PageHeader::PAGE_TITLE_TOP() + EdgeTxStyles::STD_FONT_HEIGHT());
+    lv_obj_set_size(titleLabel, LCD_W - PageHeader::PAGE_TITLE_LEFT - PageGroup::PAGE_GROUP_BACK_BTN_W * 2 - PAD_LARGE * 2, EdgeTxStyles::STD_FONT_HEIGHT());
 #endif
 
     setTitle("");
@@ -262,7 +262,7 @@ class PageGroupHeader : public PageGroupHeaderBase
 {
  public:
   PageGroupHeader(PageGroup* menu, EdgeTxIcon icon, const char* parentTitle) :
-      PageGroupHeaderBase(menu, PageGroup::PAGE_GROUP_BODY_Y, icon, parentTitle, menu)
+      PageGroupHeaderBase(menu, PageGroup::PAGE_GROUP_BODY_Y(), icon, parentTitle, menu)
   {
   }
 
@@ -444,7 +444,7 @@ void PageGroupBase::setScrollY(coord_t y)
 //-----------------------------------------------------------------------------
 
 PageGroup::PageGroup(EdgeTxIcon icon, const char* title, PageDef* pages) :
-    PageGroupBase(PAGE_GROUP_BODY_Y, icon)
+    PageGroupBase(PAGE_GROUP_BODY_Y(), icon)
 {
   header = new PageGroupHeader(this, icon, title);
 
@@ -483,7 +483,7 @@ class TabsGroupHeader : public PageGroupHeaderBase
 {
  public:
   TabsGroupHeader(TabsGroup* menu, EdgeTxIcon icon, const char* parentTitle) :
-      PageGroupHeaderBase(menu, TabsGroup::TABS_GROUP_BODY_Y, icon, parentTitle, menu)
+      PageGroupHeaderBase(menu, TabsGroup::TABS_GROUP_BODY_Y(), icon, parentTitle, menu)
   {
 #if PORTRAIT && VERSION_MAJOR > 2
     lv_obj_set_pos(parentLabel, PageGroup::PAGE_GROUP_TOP_BAR_H + PAD_LARGE, PAD_MEDIUM * 2);
@@ -495,13 +495,13 @@ class TabsGroupHeader : public PageGroupHeaderBase
     lv_obj_set_size(sep, LCD_W, TabsGroup::TABS_GROUP_TOP_BAR_H - EdgeTxStyles::MENU_HEADER_HEIGHT);
 
     lv_obj_set_style_pad_left(titleLabel, PAD_MEDIUM, LV_PART_MAIN);
-#if defined(X10S_COMPACT_UI)
-    lv_obj_set_style_pad_top(titleLabel, (PageGroup::PAGE_GROUP_ALT_TITLE_H - EdgeTxStyles::STD_FONT_HEIGHT) / 2, LV_PART_MAIN);
-#else
+    if (compactUiEnabled()) {
+    lv_obj_set_style_pad_top(titleLabel, (PageGroup::PAGE_GROUP_ALT_TITLE_H() - EdgeTxStyles::STD_FONT_HEIGHT()) / 2, LV_PART_MAIN);
+    } else {
     lv_obj_set_style_pad_top(titleLabel, 1, LV_PART_MAIN);
-#endif
+    }
     lv_obj_set_pos(titleLabel, 0, TabsGroup::TABS_GROUP_TOP_BAR_H);
-    lv_obj_set_size(titleLabel, LCD_W, TabsGroup::TABS_GROUP_ALT_TITLE_H);
+    lv_obj_set_size(titleLabel, LCD_W, TabsGroup::TABS_GROUP_ALT_TITLE_H());
 #endif
 
 #if VERSION_MAJOR > 2
@@ -544,7 +544,7 @@ class TabsGroupHeader : public PageGroupHeaderBase
 //-----------------------------------------------------------------------------
 
 TabsGroup::TabsGroup(EdgeTxIcon icon, const char* parentLabel) :
-    PageGroupBase(TABS_GROUP_BODY_Y, icon)
+    PageGroupBase(TABS_GROUP_BODY_Y(), icon)
 {
   header = new TabsGroupHeader(this, icon, parentLabel);
 

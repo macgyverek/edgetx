@@ -41,7 +41,7 @@ class CurveButton : public Button
       s = strAppend(s, ":");
       strAppend(s, g_model.curves[index].name, LEN_CURVE_NAME);
     }
-    title = new StaticText(this, {PAD_SMALL, -1, width() - PAD_MEDIUM * 2, EdgeTxStyles::STD_FONT_HEIGHT}, buf, 
+    title = new StaticText(this, {PAD_SMALL, -1, width() - PAD_MEDIUM * 2, EdgeTxStyles::STD_FONT_HEIGHT()}, buf,
                            COLOR_THEME_SECONDARY1_INDEX, CENTERED | FONT(BOLD));
     etx_txt_color(title->getLvObj(), COLOR_THEME_PRIMARY2_INDEX,
                   LV_PART_MAIN | LV_STATE_USER_1);
@@ -59,7 +59,7 @@ class CurveButton : public Button
     // Preview
     preview = new CurveRenderer(
         this,
-        {PAD_MEDIUM, PAD_MEDIUM + EdgeTxStyles::STD_FONT_HEIGHT, width() - PAD_MEDIUM * 2 - PAD_SMALL,
+        {PAD_MEDIUM, PAD_MEDIUM + EdgeTxStyles::STD_FONT_HEIGHT(), width() - PAD_MEDIUM * 2 - PAD_SMALL,
          width() - PAD_MEDIUM * 2 - PAD_SMALL},
         [=](int x) -> int { return applyCustomCurve(x, index); });
 
@@ -67,15 +67,15 @@ class CurveButton : public Button
     CurveHeader &curve = g_model.curves[index];
     snprintf(buf, 32, "%s %d %s", STR_CURVE_TYPES[curve.type], 5 + curve.points,
              STR_PTS);
-    new StaticText(this, {0, height() - EdgeTxStyles::STD_FONT_HEIGHT - PAD_MEDIUM, LV_PCT(100), EdgeTxStyles::STD_FONT_HEIGHT}, buf, 
+    new StaticText(this, {0, height() - EdgeTxStyles::STD_FONT_HEIGHT() - PAD_MEDIUM, LV_PCT(100), EdgeTxStyles::STD_FONT_HEIGHT()}, buf,
                    COLOR_THEME_SECONDARY1_INDEX, CENTERED | FONT(BOLD));
   }
 
   void update() { preview->update(); }
 
   static LAYOUT_VAL_SCALED(INFO_H, 27)
-  static constexpr coord_t CURVE_BTN_W = (LCD_W - PAD_LARGE * (ModelCurvesPage::PER_ROW + 1)) / ModelCurvesPage::PER_ROW; 
-  static constexpr coord_t CURVE_BTH_H = CURVE_BTN_W + EdgeTxStyles::STD_FONT_HEIGHT * 2;
+  static constexpr coord_t CURVE_BTN_W = (LCD_W - PAD_LARGE * (ModelCurvesPage::PER_ROW + 1)) / ModelCurvesPage::PER_ROW;
+  static coord_t CURVE_BTH_H() { return CURVE_BTN_W + EdgeTxStyles::STD_FONT_HEIGHT() * 2; }
 
  protected:
   uint8_t index;
@@ -232,7 +232,7 @@ void ModelCurvesPage::build(Window *window)
 
       // Curve drawing
       auto button =
-          new CurveButton(line, rect_t{0, 0, CurveButton::CURVE_BTN_W, CurveButton::CURVE_BTH_H}, index);
+          new CurveButton(line, rect_t{0, 0, CurveButton::CURVE_BTN_W, CurveButton::CURVE_BTH_H()}, index);
       button->setPressHandler([=]() -> uint8_t {
         Menu *menu = new Menu();
         menu->setTitle(STR_CURVE);
@@ -289,7 +289,7 @@ void ModelCurvesPage::build(Window *window)
                             LV_GRID_ALIGN_SPACE_BETWEEN);
     }
 
-    addButton = new TextButton(line, rect_t{0, 0, CurveButton::CURVE_BTN_W, CurveButton::CURVE_BTH_H},
+    addButton = new TextButton(line, rect_t{0, 0, CurveButton::CURVE_BTN_W, CurveButton::CURVE_BTH_H()},
                                LV_SYMBOL_PLUS, [=]() {
                                  plusPopup(window);
                                  return 0;

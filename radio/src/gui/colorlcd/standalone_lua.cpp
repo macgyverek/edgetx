@@ -145,14 +145,14 @@ StandaloneLuaWindow::StandaloneLuaWindow(bool useLvgl, int initFn, int runFn) :
     etx_solid_bg(lbl, COLOR_THEME_PRIMARY1_INDEX);
     etx_txt_color(lbl, COLOR_THEME_PRIMARY2_INDEX);
     lv_obj_set_style_text_align(lbl, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
-    lv_obj_set_style_pad_top(lbl, (LCD_H - EdgeTxStyles::STD_FONT_HEIGHT) / 2, LV_PART_MAIN);
+    lv_obj_set_style_pad_top(lbl, (LCD_H - EdgeTxStyles::STD_FONT_HEIGHT()) / 2, LV_PART_MAIN);
     lv_label_set_text(lbl, STR_LOADING);
   } else {
     lcdBuffer = new BitmapBuffer(BMP_RGB565, LCD_W, LCD_H);
     lcdBuffer->addCanvas(this);
 
     lcdBuffer->clear();
-    lcdBuffer->drawText(LCD_W / 2, LCD_H / 2 - EdgeTxStyles::STD_FONT_HEIGHT, STR_LOADING,
+    lcdBuffer->drawText(LCD_W / 2, LCD_H / 2 - EdgeTxStyles::STD_FONT_HEIGHT(), STR_LOADING,
                       FONT(L) | COLOR_THEME_PRIMARY2 | CENTERED);
     lv_obj_clear_flag(lvobj, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_clear_flag(lvobj, LV_OBJ_FLAG_CLICK_FOCUSABLE);
@@ -337,7 +337,7 @@ void StandaloneLuaWindow::popupPaint(BitmapBuffer* dc, coord_t x, coord_t y, coo
   dc->drawSolidFilledRect(x, y + POPUP_HEADER_HEIGHT, w,
                           h - POPUP_HEADER_HEIGHT, COLOR_THEME_SECONDARY3);
 
-  dc->drawText(x + PAD_SMALL, y + POPUP_HEADER_HEIGHT + EdgeTxStyles::STD_FONT_HEIGHT, info,
+  dc->drawText(x + PAD_SMALL, y + POPUP_HEADER_HEIGHT + EdgeTxStyles::STD_FONT_HEIGHT(), info,
                COLOR_THEME_SECONDARY1);
 }
 
@@ -393,7 +393,7 @@ void StandaloneLuaWindow::showError(bool firstCall, const char* title, const cha
     etx_obj_add_style(errorModal, styles->bg_opacity_75, LV_PART_MAIN);
     errorTitle = etx_label_create(errorModal, FONT_L_INDEX);
     lv_obj_set_pos(errorTitle, ERR_TTL_X, ERR_TTL_Y);
-    lv_obj_set_size(errorTitle, LCD_W - ERR_TTL_X * 2, EdgeTxStyles::UI_ELEMENT_HEIGHT);
+    lv_obj_set_size(errorTitle, LCD_W - ERR_TTL_X * 2, EdgeTxStyles::UI_ELEMENT_HEIGHT());
     etx_txt_color(errorTitle, COLOR_THEME_PRIMARY2_INDEX);
     etx_solid_bg(errorTitle, COLOR_THEME_SECONDARY1_INDEX);
     etx_obj_add_style(errorTitle, styles->text_align_center, LV_PART_MAIN);

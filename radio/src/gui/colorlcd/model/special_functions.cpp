@@ -39,11 +39,7 @@ static const char *_failsafe_module[] = {
 };
 
 static const lv_style_const_prop_t sf_enable_state_style_props[] = {
-#if defined(X10S_COMPACT_UI)
-    LV_STYLE_CONST_OUTLINE_WIDTH(1),
-#else
     LV_STYLE_CONST_OUTLINE_WIDTH(3),
-#endif
     LV_STYLE_CONST_OUTLINE_OPA(LV_OPA_COVER),
     LV_STYLE_CONST_OUTLINE_PAD(1),
     LV_STYLE_PROP_INV,
@@ -53,13 +49,16 @@ LV_STYLE_CONST_MULTI_INIT(sf_enable_state_style, sf_enable_state_style_props);
 static void sf_enable_state_constructor(const lv_obj_class_t *class_p,
                                         lv_obj_t *obj)
 {
+  lv_obj_set_width(obj, FunctionLineButton::EN_SZ());
+  lv_obj_set_height(obj, FunctionLineButton::EN_SZ());
   etx_obj_add_style(obj, sf_enable_state_style, LV_PART_MAIN);
+  lv_obj_set_style_outline_width(obj, compactUiEnabled() ? 1 : 3, LV_PART_MAIN);
   etx_obj_add_style(obj, styles->outline_color_light, LV_PART_MAIN);
-#if defined(X10S_COMPACT_UI)
+  if (compactUiEnabled()) {
   etx_obj_add_style(obj, styles->border_thin, LV_PART_MAIN);
-#else
+  } else {
   etx_obj_add_style(obj, styles->border, LV_PART_MAIN);
-#endif
+  }
   etx_obj_add_style(obj, styles->border_color[COLOR_THEME_SECONDARY1_INDEX], LV_PART_MAIN);
   etx_obj_add_style(obj, styles->bg_opacity_cover, LV_PART_MAIN);
   etx_bg_color(obj, COLOR_THEME_ACTIVE_INDEX, LV_STATE_CHECKED);
@@ -71,8 +70,8 @@ static const lv_obj_class_t sf_enable_state = {
     .destructor_cb = nullptr,
     .user_data = nullptr,
     .event_cb = nullptr,
-    .width_def = FunctionLineButton::EN_SZ,
-    .height_def = FunctionLineButton::EN_SZ,
+    .width_def = 0,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_FALSE,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_FALSE,
     .instance_size = sizeof(lv_obj_t),
@@ -88,7 +87,7 @@ FunctionLineButton::FunctionLineButton(Window *parent, const rect_t &rect,
                                        uint8_t index, const char *prefix) :
     ListLineButton(parent, index), cfn(cfn), prefix(prefix)
 {
-  setHeight(FunctionsPage::SF_BUTTON_H);
+  setHeight(FunctionsPage::SF_BUTTON_H());
   padAll(PAD_ZERO);
 
   delayLoad();
@@ -99,25 +98,25 @@ void FunctionLineButton::delayedInit()
   lv_obj_enable_style_refresh(false);
 
   sfName = etx_label_create(lvobj);
-  lv_obj_set_pos(sfName, NM_X, NM_Y);
-  lv_obj_set_size(sfName, NM_W, EdgeTxStyles::STD_FONT_HEIGHT);
+  lv_obj_set_pos(sfName, NM_X, NM_Y());
+  lv_obj_set_size(sfName, NM_W, EdgeTxStyles::STD_FONT_HEIGHT());
 
   sfSwitch = etx_label_create(lvobj);
-  lv_obj_set_pos(sfSwitch, SW_X, SW_Y);
-  lv_obj_set_size(sfSwitch, SW_W, EdgeTxStyles::STD_FONT_HEIGHT);
+  lv_obj_set_pos(sfSwitch, SW_X, SW_Y());
+  lv_obj_set_size(sfSwitch, SW_W, EdgeTxStyles::STD_FONT_HEIGHT());
 
   sfFunc = etx_label_create(lvobj);
-  lv_obj_set_pos(sfFunc, FN_X, FN_Y);
-  lv_obj_set_size(sfFunc, FN_W, EdgeTxStyles::STD_FONT_HEIGHT);
+  lv_obj_set_pos(sfFunc, FN_X, FN_Y());
+  lv_obj_set_size(sfFunc, FN_W(), EdgeTxStyles::STD_FONT_HEIGHT());
 
   sfRepeat = etx_label_create(lvobj);
-  lv_obj_set_pos(sfRepeat, RP_X, RP_Y);
-  lv_obj_set_size(sfRepeat, RP_W, EdgeTxStyles::STD_FONT_HEIGHT);
+  lv_obj_set_pos(sfRepeat, RP_X(), RP_Y());
+  lv_obj_set_size(sfRepeat, RP_W, EdgeTxStyles::STD_FONT_HEIGHT());
 
   sfEnable = sf_enable_state_create(lvobj);
   lv_obj_clear_flag(sfEnable, LV_OBJ_FLAG_CLICKABLE);
   lv_obj_set_user_data(sfEnable, this);
-  lv_obj_set_pos(sfEnable, EN_X, EN_Y);
+  lv_obj_set_pos(sfEnable, EN_X(), EN_Y());
 
   lv_obj_update_layout(lvobj);
 
@@ -800,7 +799,7 @@ void FunctionsPage::build(Window *window)
 
     if (isActive) {
       auto button = functionButton(
-          window, rect_t{0, 0, window->width() - PAD_LARGE - PAD_SMALL, SF_BUTTON_H}, i);
+          window, rect_t{0, 0, window->width() - PAD_LARGE - PAD_SMALL, SF_BUTTON_H()}, i);
 
       lv_obj_set_grid_cell(button->getLvObj(), LV_GRID_ALIGN_CENTER, 0, 1,
                            LV_GRID_ALIGN_CENTER, 0, 1);
@@ -900,7 +899,7 @@ void FunctionsPage::build(Window *window)
 
   if (hasEmptyFunction) {
     addButton =
-        new TextButton(window, rect_t{0, 0, window->width() - PAD_SMALL * 2, SF_BUTTON_H},
+        new TextButton(window, rect_t{0, 0, window->width() - PAD_SMALL * 2, SF_BUTTON_H()},
                        LV_SYMBOL_PLUS, [=]() {
                          plusPopup(window);
                          return 0;

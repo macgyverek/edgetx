@@ -205,7 +205,7 @@ class FlightModeBtn : public ListLineButton
   {
     padAll(PAD_ZERO);
     padColumn(PAD_ZERO);
-    setHeight(BTN_H);
+    setHeight(BTN_H());
 
     delayLoad();
   }
@@ -310,7 +310,7 @@ class FlightModeBtn : public ListLineButton
         formatNumberAsString(fm.fadeOut, PREC1, 0, nullptr, "s").c_str());
   }
 
-  static LAYOUT_SIZE_SCALED(BTN_H, 36, 56)
+  static coord_t BTN_H() { return LV(36, 56); }
   static LAYOUT_SIZE(MAX_FMTRIMS, 6, 4)
   static constexpr coord_t FMID_X = PAD_TINY;
   static LAYOUT_SIZE_SCALED(FMID_Y, 6, 16)
@@ -352,9 +352,10 @@ class FlightModeBtn : public ListLineButton
 
 static void fm_id_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
-#if defined(X10S_COMPACT_UI)
+  lv_obj_set_height(obj, EdgeTxStyles::STD_FONT_HEIGHT());
+  if (compactUiEnabled()) {
   etx_font(obj, FONT_STD_INDEX);
-#endif
+  }
   etx_obj_add_style(obj, styles->text_align_left, LV_PART_MAIN);
 }
 
@@ -365,7 +366,7 @@ const lv_obj_class_t FlightModeBtn::fm_id_class = {
     .user_data = nullptr,
     .event_cb = nullptr,
     .width_def = FlightModeBtn::FMID_W,
-    .height_def = EdgeTxStyles::STD_FONT_HEIGHT,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_INHERIT,
     .instance_size = sizeof(lv_label_t),
@@ -373,6 +374,7 @@ const lv_obj_class_t FlightModeBtn::fm_id_class = {
 
 static void fm_name_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+  lv_obj_set_height(obj, EdgeTxStyles::STD_FONT_HEIGHT());
   etx_obj_add_style(obj, styles->text_align_left, LV_PART_MAIN);
   etx_font(obj, FONT_XS_INDEX);
 }
@@ -384,7 +386,7 @@ const lv_obj_class_t FlightModeBtn::fm_name_class = {
     .user_data = nullptr,
     .event_cb = nullptr,
     .width_def = FlightModeBtn::NAME_W,
-    .height_def = EdgeTxStyles::STD_FONT_HEIGHT,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_INHERIT,
     .instance_size = sizeof(lv_label_t),
@@ -392,9 +394,10 @@ const lv_obj_class_t FlightModeBtn::fm_name_class = {
 
 static void fm_switch_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
-#if defined(X10S_COMPACT_UI)
+  lv_obj_set_height(obj, EdgeTxStyles::STD_FONT_HEIGHT());
+  if (compactUiEnabled()) {
   etx_font(obj, FONT_STD_INDEX);
-#endif
+  }
   etx_obj_add_style(obj, styles->text_align_left, LV_PART_MAIN);
 }
 
@@ -405,7 +408,7 @@ const lv_obj_class_t FlightModeBtn::fm_switch_class = {
     .user_data = nullptr,
     .event_cb = nullptr,
     .width_def = FlightModeBtn::SWTCH_W,
-    .height_def = EdgeTxStyles::STD_FONT_HEIGHT,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_INHERIT,
     .instance_size = sizeof(lv_label_t),
@@ -413,9 +416,10 @@ const lv_obj_class_t FlightModeBtn::fm_switch_class = {
 
 static void fm_fade_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
-#if defined(X10S_COMPACT_UI)
+  lv_obj_set_height(obj, EdgeTxStyles::STD_FONT_HEIGHT());
+  if (compactUiEnabled()) {
   etx_font(obj, FONT_STD_INDEX);
-#endif
+  }
   etx_obj_add_style(obj, styles->text_align_right, LV_PART_MAIN);
 }
 
@@ -426,7 +430,7 @@ const lv_obj_class_t FlightModeBtn::fm_fade_class = {
     .user_data = nullptr,
     .event_cb = nullptr,
     .width_def = FlightModeBtn::FADE_W,
-    .height_def = EdgeTxStyles::STD_FONT_HEIGHT,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_INHERIT,
     .instance_size = sizeof(lv_label_t),
@@ -435,9 +439,9 @@ const lv_obj_class_t FlightModeBtn::fm_fade_class = {
 static void fm_trim_mode_constructor(const lv_obj_class_t* class_p,
                                      lv_obj_t* obj)
 {
-#if defined(X10S_COMPACT_UI)
+  if (compactUiEnabled()) {
   etx_font(obj, FONT_STD_INDEX);
-#endif
+  }
   etx_obj_add_style(obj, styles->text_align_center, LV_PART_MAIN);
 }
 
@@ -491,7 +495,7 @@ void ModelFlightModesPage::build(Window* form)
 
   for (int i = 0; i < MAX_FLIGHT_MODES; i++) {
     auto btn = new FlightModeBtn(form, i);
-    lv_obj_set_pos(btn->getLvObj(), PAD_SMALL, i * (FlightModeBtn::BTN_H + PAD_THREE) + PAD_SMALL);
+    lv_obj_set_pos(btn->getLvObj(), PAD_SMALL, i * (FlightModeBtn::BTN_H() + PAD_THREE) + PAD_SMALL);
     btn->setWidth(ListLineButton::GRP_W);
 
     btn->setPressHandler([=]() {
@@ -501,7 +505,7 @@ void ModelFlightModesPage::build(Window* form)
   }
 
   trimCheck = new TextButton(
-      form, rect_t{6, MAX_FLIGHT_MODES * (FlightModeBtn::BTN_H + PAD_THREE) + PAD_LARGE, ListLineButton::GRP_W, EdgeTxStyles::UI_ELEMENT_HEIGHT}, STR_CHECKTRIMS, [&]() -> uint8_t {
+      form, rect_t{6, MAX_FLIGHT_MODES * (FlightModeBtn::BTN_H() + PAD_THREE) + PAD_LARGE, ListLineButton::GRP_W, EdgeTxStyles::UI_ELEMENT_HEIGHT()}, STR_CHECKTRIMS, [&]() -> uint8_t {
         if (trimsCheckTimer)
           trimsCheckTimer = 0;
         else

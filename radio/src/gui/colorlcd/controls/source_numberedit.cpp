@@ -31,7 +31,7 @@ SourceNumberEdit::SourceNumberEdit(Window* parent,
                                    int16_t sourceMin,
                                    LcdFlags textFlags, int32_t voffset,
                                    int32_t vdefault) :
-    Window(parent, {0, 0, EdgeTxStyles::EDIT_FLD_WIDTH_NARROW + SRC_BTN_W + PAD_TINY * 3, EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_TINY * 2}),
+    Window(parent, {0, 0, EdgeTxStyles::EDIT_FLD_WIDTH_NARROW + SRC_BTN_W + PAD_TINY * 3, EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_TINY * 2}),
     vmin(vmin),
     vmax(vmax),
     sourceMin(sourceMin),

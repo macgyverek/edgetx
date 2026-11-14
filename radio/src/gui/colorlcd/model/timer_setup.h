@@ -29,9 +29,9 @@ class TimerWindow : public SubPage
   TimerWindow(uint8_t timer);
 
   static LAYOUT_VAL_SCALED(COUNTDOWN_W, 144)
-  static LAYOUT_SIZE(COUNTDOWN_LBL_YO, 0, (EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_TINY) / 2)
+  static coord_t COUNTDOWN_LBL_YO() { return (NARROW_LAYOUT ? ((EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_TINY) / 2) : (0)); }
   static LAYOUT_SIZE(COUNTDOWN_VAL_XO, COUNTDOWN_W + PAD_SMALL, 0)
-  static LAYOUT_SIZE(COUNTDOWN_VAL_YO, 0, EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_TINY)
+  static coord_t COUNTDOWN_VAL_YO() { return (NARROW_LAYOUT ? (EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_TINY) : (0)); }
 
  protected:
   Window* timerDirLine = nullptr;

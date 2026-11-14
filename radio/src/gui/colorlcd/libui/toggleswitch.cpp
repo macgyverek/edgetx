@@ -25,19 +25,22 @@ LV_STYLE_CONST_SINGLE_INIT(anim_fast, LV_STYLE_ANIM_TIME, 120);
 
 // Toggle switch
 const lv_style_const_prop_t switch_knob_props[] = {
-#if defined(X10S_COMPACT_UI)
-    LV_STYLE_CONST_PAD_TOP(-3), LV_STYLE_CONST_PAD_BOTTOM(-3),
-    LV_STYLE_CONST_PAD_LEFT(-3), LV_STYLE_CONST_PAD_RIGHT(-3),
-#else
     LV_STYLE_CONST_PAD_TOP(-4),  LV_STYLE_CONST_PAD_BOTTOM(-4),
     LV_STYLE_CONST_PAD_LEFT(-4), LV_STYLE_CONST_PAD_RIGHT(-4),
-#endif
     LV_STYLE_PROP_INV,
 };
 LV_STYLE_CONST_MULTI_INIT(switch_knob, switch_knob_props);
+const lv_style_const_prop_t switch_knob_compact_props[] = {
+    LV_STYLE_CONST_PAD_TOP(-3), LV_STYLE_CONST_PAD_BOTTOM(-3),
+    LV_STYLE_CONST_PAD_LEFT(-3), LV_STYLE_CONST_PAD_RIGHT(-3),
+    LV_STYLE_PROP_INV,
+};
+LV_STYLE_CONST_MULTI_INIT(switch_knob_compact, switch_knob_compact_props);
 
 static void switch_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 {
+  lv_obj_set_width(obj, ToggleSwitch::TOGGLE_W());
+  lv_obj_set_height(obj, ToggleSwitch::TOGGLE_H());
   etx_std_style(obj, LV_PART_MAIN, PAD_ZERO);
   etx_obj_add_style(obj, styles->circle, LV_PART_MAIN);
   etx_obj_add_style(obj, anim_fast, LV_PART_MAIN);
@@ -47,7 +50,7 @@ static void switch_constructor(const lv_obj_class_t* class_p, lv_obj_t* obj)
 
   etx_obj_add_style(obj, styles->bg_opacity_cover, LV_PART_KNOB);
   etx_obj_add_style(obj, styles->circle, LV_PART_KNOB);
-  etx_obj_add_style(obj, switch_knob, LV_PART_KNOB);
+  etx_obj_add_style(obj, (compactUiEnabled() ? switch_knob_compact : switch_knob), LV_PART_KNOB);
   etx_bg_color(obj, COLOR_THEME_SECONDARY1_INDEX, LV_PART_KNOB);
 
   etx_obj_add_style(obj, styles->disabled, LV_PART_KNOB | LV_STATE_DISABLED);
@@ -59,8 +62,8 @@ static const lv_obj_class_t switch_class = {
     .destructor_cb = nullptr,
     .user_data = nullptr,
     .event_cb = nullptr,
-    .width_def = ToggleSwitch::TOGGLE_W,
-    .height_def = ToggleSwitch::TOGGLE_H,
+    .width_def = 0,
+    .height_def = 0,
     .editable = LV_OBJ_CLASS_EDITABLE_INHERIT,
     .group_def = LV_OBJ_CLASS_GROUP_DEF_INHERIT,
     .instance_size = sizeof(lv_switch_t),
@@ -86,14 +89,14 @@ ToggleSwitch::ToggleSwitch(Window* parent, const rect_t& rect,
     _getValue(std::move(getValue)),
     _setValue(std::move(setValue))
 {
-#if defined(X10S_COMPACT_UI)
+  if (compactUiEnabled()) {
   // Preserve the caller's row center, including fixed-position setup lines.
-  coord_t slotHeight = rect.h > 0 ? rect.h : EdgeTxStyles::UI_ELEMENT_HEIGHT;
-  coord_t controlHeight = min<coord_t>(slotHeight, TOGGLE_H);
+  coord_t slotHeight = rect.h > 0 ? rect.h : EdgeTxStyles::UI_ELEMENT_HEIGHT();
+  coord_t controlHeight = min<coord_t>(slotHeight, TOGGLE_H());
   setHeight(controlHeight);
   setTop(rect.y + (slotHeight - controlHeight) / 2);
-  if (rect.w == 0 || rect.w > TOGGLE_W) setWidth(TOGGLE_W);
-#endif
+  if (rect.w == 0 || rect.w > TOGGLE_W()) setWidth(TOGGLE_W());
+  }
   update();
 
   lv_obj_add_event_cb(lvobj, ToggleSwitch::toggleswitch_event_handler, LV_EVENT_VALUE_CHANGED,

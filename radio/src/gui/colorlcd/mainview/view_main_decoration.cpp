@@ -129,11 +129,11 @@ rect_t ViewMainDecoration::getMainZone() const
       w -= MainViewSlider::SLIDER_BAR_SIZE;
     }
     if (showFM && (has6POS || !showSliders))
-      bh += EdgeTxStyles::STD_FONT_HEIGHT;
+      bh += EdgeTxStyles::STD_FONT_HEIGHT();
     else if (canTrimShow(TRIMS_LH) || canTrimShow(TRIMS_RH))
       bh += MainViewSlider::SLIDER_BAR_SIZE;
   } else if (showFM) {
-    bh += EdgeTxStyles::STD_FONT_HEIGHT;
+    bh += EdgeTxStyles::STD_FONT_HEIGHT();
     if (!has6POS && showSliders)
       bh -= MainViewSlider::SLIDER_BAR_SIZE;
   }

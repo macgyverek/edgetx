@@ -56,7 +56,7 @@ class V15AiTerminalWindow : public ModalWindow
     lv_obj_clear_flag(titleBar->getLvObj(), LV_OBJ_FLAG_SCROLLABLE);
 
     new StaticText(titleBar, rect_t{}, "AI Terminal", COLOR_THEME_PRIMARY2_INDEX, FONT(BOLD));
-    new TextButton(titleBar, rect_t{0, 0, EdgeTxStyles::UI_ELEMENT_HEIGHT, 0}, "X", [=]() {
+    new TextButton(titleBar, rect_t{0, 0, EdgeTxStyles::UI_ELEMENT_HEIGHT(), 0}, "X", [=]() {
       deleteLater();
       return 0;
     });

@@ -53,7 +53,7 @@ class FlashDialog: public FullScreenDialog
   explicit FlashDialog(const T & device):
     FullScreenDialog(WARNING_TYPE_INFO, STR_FLASH_DEVICE),
     device(device),
-    progress(this, {LCD_W / 2 - PROGRESS_W / 2, LCD_H / 2 + PROGRESS_YO, PROGRESS_W, EdgeTxStyles::UI_ELEMENT_HEIGHT})
+    progress(this, {LCD_W / 2 - PROGRESS_W / 2, LCD_H / 2 + PROGRESS_YO, PROGRESS_W, EdgeTxStyles::UI_ELEMENT_HEIGHT()})
   {
   }
 

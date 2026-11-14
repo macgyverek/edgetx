@@ -43,7 +43,7 @@ void RadioGpsTool::buildBody(Window* window)
   gpsLabel = new StaticText(window, {PAD_LARGE, PAD_LARGE, LV_SIZE_CONTENT, 0}, "", COLOR_THEME_PRIMARY1_INDEX, FONT(L));
   gpsQR = new QRCode(window, (window->width() - QR_SZ) / 2, (window->height() - QR_SZ) / 2, QR_SZ, "");
   new TextButton(window, 
-                {window->width() - BTN_SZ - PAD_LARGE * 2, window->height() - EdgeTxStyles::UI_ELEMENT_HEIGHT - PAD_LARGE * 2, BTN_SZ, 0},
+                {window->width() - BTN_SZ - PAD_LARGE * 2, window->height() - EdgeTxStyles::UI_ELEMENT_HEIGHT() - PAD_LARGE * 2, BTN_SZ, 0},
                 STR_REFRESH, [=]() {
                   refresh();
                   return 0;

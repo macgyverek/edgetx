@@ -68,12 +68,12 @@ void drawSplash()
 
     coord_t w = LAYOUT_SCALE(200);
     x = (LANDSCAPE ? LCD_W * 4 / 5 : LCD_W / 2) - w / 2;
-    y = LCD_H - EdgeTxStyles::STD_FONT_HEIGHT * 4;
-    new StaticText(splashScreen, {x, y, w, EdgeTxStyles::STD_FONT_HEIGHT}, ver_str.c_str(), COLOR_GREY_INDEX, CENTERED);
-    new StaticText(splashScreen, {x, y + EdgeTxStyles::STD_FONT_HEIGHT, w, EdgeTxStyles::STD_FONT_HEIGHT},
+    y = LCD_H - EdgeTxStyles::STD_FONT_HEIGHT() * 4;
+    new StaticText(splashScreen, {x, y, w, EdgeTxStyles::STD_FONT_HEIGHT()}, ver_str.c_str(), COLOR_GREY_INDEX, CENTERED);
+    new StaticText(splashScreen, {x, y + EdgeTxStyles::STD_FONT_HEIGHT(), w, EdgeTxStyles::STD_FONT_HEIGHT()},
                    nam_str.c_str(), COLOR_GREY_INDEX, CENTERED);
 #if !defined(VERSION_TAG)
-    new StaticText(splashScreen, {x, y + EdgeTxStyles::STD_FONT_HEIGHT * 2, w, EdgeTxStyles::STD_FONT_HEIGHT},
+    new StaticText(splashScreen, {x, y + EdgeTxStyles::STD_FONT_HEIGHT() * 2, w, EdgeTxStyles::STD_FONT_HEIGHT()},
                    git_str.c_str(), COLOR_GREY_INDEX, CENTERED);
 #endif
   }
@@ -233,7 +233,7 @@ void drawFatalErrorScreen(const char* message)
     fatalErrorWindow->setWindowFlag(OPAQUE);
     etx_solid_bg(fatalErrorWindow->getLvObj(), COLOR_BLACK_INDEX);
 
-    new StaticText(fatalErrorWindow, rect_t{0, LCD_H / 2 - EdgeTxStyles::STD_FONT_HEIGHT, LCD_W, EdgeTxStyles::STD_FONT_HEIGHT * 2},
+    new StaticText(fatalErrorWindow, rect_t{0, LCD_H / 2 - EdgeTxStyles::STD_FONT_HEIGHT(), LCD_W, EdgeTxStyles::STD_FONT_HEIGHT() * 2},
                    message, COLOR_WHITE_INDEX, FONT(XL) | CENTERED);
   }
 

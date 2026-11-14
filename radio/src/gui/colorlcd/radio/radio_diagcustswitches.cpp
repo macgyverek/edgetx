@@ -66,7 +66,7 @@ class RadioCustSwitchesDiagsWindow : public Window
                    "Led");
     for (uint8_t i = 0, r = 0; i < switchGetMaxSwitches(); i += 1) {
       if (switchIsCustomSwitch(i)) {
-        coord_t y = (r + 2) * EdgeTxStyles::STD_FONT_HEIGHT;
+        coord_t y = (r + 2) * EdgeTxStyles::STD_FONT_HEIGHT();
           std::string s(CHAR_SWITCH);
           s += switchGetDefaultName(i);
           new StaticText(this, {PAD_LARGE, y, FS_LBL_WIDTH, LV_SIZE_CONTENT}, s);

@@ -1169,7 +1169,12 @@ PACK(struct RadioData {
   NOBACKUP(uint8_t usbChargeDisabled:1);
   NOBACKUP(uint8_t spare:2 SKIP);
 #else
+#if defined(X10S_COMPACT_UI)
+  NOBACKUP(uint8_t compactUi:1);
+  NOBACKUP(uint8_t spare:2 SKIP);
+#else
   NOBACKUP(uint8_t spare:3 SKIP);
+#endif
 #endif
 #elif LCD_W == 128
   uint8_t invertLCD:1;          // Invert B&W LCD display

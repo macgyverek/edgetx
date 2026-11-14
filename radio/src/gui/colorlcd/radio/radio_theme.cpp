@@ -652,14 +652,14 @@ void ThemeSetupPage::build(Window *window)
   rw->padAll(PAD_ZERO);
   rw->setFlexLayout(LV_FLEX_FLOW_COLUMN, PAD_ZERO, r.w);
 
-  r.h -= 2 * EdgeTxStyles::STD_FONT_HEIGHT;
+  r.h -= 2 * EdgeTxStyles::STD_FONT_HEIGHT();
 
   // setup FileCarosell()
   auto fileNames = theme != nullptr ? theme->getThemeImageFileNames()
                                     : std::vector<std::string>();
   fileCarosell = new FileCarosell(rw, r, fileNames);
 
-  r.h = EdgeTxStyles::STD_FONT_HEIGHT;
+  r.h = EdgeTxStyles::STD_FONT_HEIGHT();
 
   // author and name of theme on right side of screen
   nameText = new StaticText(rw, r, "");

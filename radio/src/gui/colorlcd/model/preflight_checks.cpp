@@ -54,7 +54,7 @@ class SwitchWarnMatrix : public ButtonMatrix
     lv_obj_set_width(lvobj, min((int)btn_cnt, SW_BTNS) * SW_BTN_W + PAD_SMALL);
 
     uint8_t rows = ((btn_cnt - 1) / SW_BTNS) + 1;
-    setHeight((rows * SW_BTN_H) + PAD_SMALL);
+    setHeight((rows * SW_BTN_H()) + PAD_SMALL);
 
     padAll(PAD_SMALL);
   }
@@ -99,11 +99,7 @@ class SwitchWarnMatrix : public ButtonMatrix
 
   static LAYOUT_SIZE(SW_BTNS, 8, 4)
   static LAYOUT_SIZE_SCALED(SW_BTN_W, 56, 72)
-#if defined(X10S_COMPACT_UI)
-  static constexpr coord_t SW_BTN_H = EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_SMALL;
-#else
-  static LAYOUT_VAL_SCALED(SW_BTN_H, 36)
-#endif
+  static coord_t SW_BTN_H() { return compactUiEnabled() ? (EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_SMALL) : (LAYOUT_SCALE(36)); }
 
  private:
   uint8_t sw_idx[MAX_SWITCHES];
@@ -159,7 +155,7 @@ class PotWarnMatrix : public ButtonMatrix
     lv_obj_set_width(lvobj, min((int)btn_cnt, SwitchWarnMatrix::SW_BTNS) * SwitchWarnMatrix::SW_BTN_W + PAD_SMALL);
 
     uint8_t rows = ((btn_cnt - 1) / SwitchWarnMatrix::SW_BTNS) + 1;
-    setHeight((rows * SwitchWarnMatrix::SW_BTN_H) + PAD_SMALL);
+    setHeight((rows * SwitchWarnMatrix::SW_BTN_H()) + PAD_SMALL);
 
     padAll(PAD_SMALL);
   }
@@ -240,7 +236,7 @@ PreflightChecks::PreflightChecks() : SubPage(ICON_MODEL_SETUP, STR_MAIN_MENU_MOD
                       });
 
       // Custom Throttle warning value
-      customThrottleValue = new NumberEdit(parent, {x + ToggleSwitch::TOGGLE_W + PAD_SMALL, y, 0, 0}, -100, 100,
+      customThrottleValue = new NumberEdit(parent, {x + ToggleSwitch::TOGGLE_W() + PAD_SMALL, y, 0, 0}, -100, 100,
                                           GET_SET_DEFAULT(g_model.customThrottleWarningPosition));
       customThrottleValue->show(g_model.enableCustomThrottleWarning);
     });

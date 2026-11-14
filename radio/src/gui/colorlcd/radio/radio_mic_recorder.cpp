@@ -38,10 +38,10 @@
 
 
 static constexpr coord_t MIC_BTN_W = 260;
-static constexpr coord_t MIC_BTN_H = EdgeTxStyles::UI_ELEMENT_HEIGHT * 2 + PAD_LARGE;
+static coord_t MIC_BTN_H() { return EdgeTxStyles::UI_ELEMENT_HEIGHT() * 2 + PAD_LARGE; }
 
 // Review needs two rows in the space the single record button occupies.
-static constexpr coord_t REV_BTN_H = EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_MEDIUM;
+static coord_t REV_BTN_H() { return EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_MEDIUM; }
 
 // Mirrored peak envelope, drawn as two polylines around a centre line. Fed one
 // column at a time while recording, then re-filled from the finished file.
@@ -419,11 +419,11 @@ void RadioMicRecorder::buildBody(Window* window)
   const coord_t w = window->width();
   const coord_t h = window->height();
 
-  const coord_t btnY = h - MIC_BTN_H - PAD_LARGE * 2;
-  const coord_t rowY2 = h - REV_BTN_H - PAD_LARGE;      // play / save / record
-  const coord_t rowY1 = rowY2 - REV_BTN_H - PAD_SMALL;  // the trim actions
-  const coord_t bigH = EdgeTxStyles::UI_ELEMENT_HEIGHT + PAD_MEDIUM;
-  const coord_t infoH = EdgeTxStyles::STD_FONT_HEIGHT;
+  const coord_t btnY = h - MIC_BTN_H() - PAD_LARGE * 2;
+  const coord_t rowY2 = h - REV_BTN_H() - PAD_LARGE;      // play / save / record
+  const coord_t rowY1 = rowY2 - REV_BTN_H() - PAD_SMALL;  // the trim actions
+  const coord_t bigH = EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_MEDIUM;
+  const coord_t infoH = EdgeTxStyles::STD_FONT_HEIGHT();
   const coord_t infoY = rowY1 - infoH - PAD_SMALL;
   const coord_t waveY = PAD_SMALL + bigH + PAD_SMALL;
 
@@ -447,7 +447,7 @@ void RadioMicRecorder::buildBody(Window* window)
 
   actionButton = new TextButton(
       window,
-      {(w - MIC_BTN_W) / 2, btnY, MIC_BTN_W, MIC_BTN_H},
+      {(w - MIC_BTN_W) / 2, btnY, MIC_BTN_W, MIC_BTN_H()},
       "", [this]() {
         onActionPressed();
         return 0;
@@ -459,50 +459,50 @@ void RadioMicRecorder::buildBody(Window* window)
                            (coord_t)(PAD_LARGE * 3 + revW * 2)};
 
   autoTrimButton = new TextButton(
-      window, {revX[0], rowY1, revW, REV_BTN_H}, STR_AUTO_TRIM, [this]() {
+      window, {revX[0], rowY1, revW, REV_BTN_H()}, STR_AUTO_TRIM, [this]() {
         onAutoTrim();
         return 0;
       });
 
   trimStartButton = new TextButton(
-      window, {revX[1], rowY1, revW, REV_BTN_H}, STR_TRIM_START, [this]() {
+      window, {revX[1], rowY1, revW, REV_BTN_H()}, STR_TRIM_START, [this]() {
         enterTrim(TrimMode::START);
         return 0;
       });
 
   trimEndButton = new TextButton(
-      window, {revX[2], rowY1, revW, REV_BTN_H}, STR_TRIM_END, [this]() {
+      window, {revX[2], rowY1, revW, REV_BTN_H()}, STR_TRIM_END, [this]() {
         enterTrim(TrimMode::END);
         return 0;
       });
 
   playButton = new TextButton(
-      window, {revX[0], rowY2, revW, REV_BTN_H}, STR_PLAY_FILE, [this]() {
+      window, {revX[0], rowY2, revW, REV_BTN_H()}, STR_PLAY_FILE, [this]() {
         onPlayPressed();
         return 0;
       });
 
   saveButton = new TextButton(
-      window, {revX[1], rowY2, revW, REV_BTN_H}, STR_SAVE_AS, [this]() {
+      window, {revX[1], rowY2, revW, REV_BTN_H()}, STR_SAVE_AS, [this]() {
         askSaveAs();
         return 0;
       });
 
   redoButton = new TextButton(
-      window, {revX[2], rowY2, revW, REV_BTN_H}, STR_RECORD, [this]() {
+      window, {revX[2], rowY2, revW, REV_BTN_H()}, STR_RECORD, [this]() {
         discardTake();
         enterCountdown();
         return 0;
       });
 
   applyButton = new TextButton(
-      window, {revX[0], rowY2, revW, REV_BTN_H}, STR_OK, [this]() {
+      window, {revX[0], rowY2, revW, REV_BTN_H()}, STR_OK, [this]() {
         onApplyTrim();
         return 0;
       });
 
   cancelButton = new TextButton(
-      window, {revX[1], rowY2, revW, REV_BTN_H}, STR_CANCEL, [this]() {
+      window, {revX[1], rowY2, revW, REV_BTN_H()}, STR_CANCEL, [this]() {
         exitTrim();
         return 0;
       });

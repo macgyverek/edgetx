@@ -132,10 +132,10 @@ class Battery6SDialog : public HRSTool
     y += H4;
 
     lblCellRangeDetail = new HRSText(leftCard, {PAD_SMALL, y, 0, 0}, "--.--V ~ --.--V", HRS_COLOR_NEON_GREEN, FONT(STD));
-    y += EdgeTxStyles::UI_ELEMENT_HEIGHT;
+    y += EdgeTxStyles::UI_ELEMENT_HEIGHT();
 
     new HRSText(leftCard, {PAD_SMALL, y, 0, 0}, "SOC ref (6S eq.): \n19.8V-25.2V", HRS_COLOR_MUTED, FONT(XS));
-    y += EdgeTxStyles::UI_ELEMENT_HEIGHT;
+    y += EdgeTxStyles::UI_ELEMENT_HEIGHT();
 
     new HRSText(leftCard, {PAD_SMALL, y, 0, 0}, "SOC ref (cell): \n3.30V-4.20V", HRS_COLOR_MUTED, FONT(XS));
   }

@@ -60,7 +60,7 @@ BaseDialog::BaseDialog(const char* title,
 
   form = new BaseDialogForm(content, width, flexLayout);
   if (maxHeight != LV_SIZE_CONTENT)
-    lv_obj_set_style_max_height(form->getLvObj(), maxHeight - EdgeTxStyles::UI_ELEMENT_HEIGHT, LV_PART_MAIN);
+    lv_obj_set_style_max_height(form->getLvObj(), maxHeight - EdgeTxStyles::UI_ELEMENT_HEIGHT(), LV_PART_MAIN);
 }
 
 void BaseDialog::setTitle(const char* title)
@@ -74,7 +74,7 @@ ProgressDialog::ProgressDialog(const char* title,
                                std::function<void()> onClose) :
     BaseDialog(title, false), onClose(std::move(onClose))
 {
-  progress = new Progress(form, rect_t{0, 0, LV_PCT(100), EdgeTxStyles::UI_ELEMENT_HEIGHT});
+  progress = new Progress(form, rect_t{0, 0, LV_PCT(100), EdgeTxStyles::UI_ELEMENT_HEIGHT()});
   updateProgress(0);
 }
 

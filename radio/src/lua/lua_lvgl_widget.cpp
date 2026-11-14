@@ -2654,7 +2654,7 @@ class LvglDialog : public BaseDialog
     BaseDialog(title.c_str(), true, w, h, false),
     onClose(std::move(onClose))
   {
-    form->setHeight(h - EdgeTxStyles::UI_ELEMENT_HEIGHT);
+    form->setHeight(h - EdgeTxStyles::UI_ELEMENT_HEIGHT());
   }
 
   Window *getBody() { return form; }
@@ -2797,7 +2797,7 @@ void LvglWidgetChoice::clearRefs(lua_State *L)
 
 void LvglWidgetChoice::build(lua_State *L)
 {
-  if (h == LV_SIZE_CONTENT) h = EdgeTxStyles::UI_ELEMENT_HEIGHT;
+  if (h == LV_SIZE_CONTENT) h = EdgeTxStyles::UI_ELEMENT_HEIGHT();
   auto c = new Choice(
       lvglManager->getCurrentParent(), {x, y, w, h}, values, 0, values.size() - 1,
       [=]() { return pcallGetIntVal(L, getFunction) - 1; },

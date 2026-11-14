@@ -48,8 +48,8 @@ static constexpr coord_t L3_W = ModelLabelsWindow::MDLS_W - PAD_OUTLINE * 2;
 ModelButtonLayout modelLayouts[] = {
     {L0_W, L0_H, true, FONT(STD), 2},
     {L1_W, L1_H, true, FONT(XS), 3},
-    {L0_W, EdgeTxStyles::UI_ELEMENT_HEIGHT, false, FONT(STD), 2},
-    {L3_W, EdgeTxStyles::UI_ELEMENT_HEIGHT, false, FONT(STD), 1},
+    {L0_W, EdgeTxStyles::UI_ELEMENT_HEIGHT(), false, FONT(STD), 2},
+    {L3_W, EdgeTxStyles::UI_ELEMENT_HEIGHT(), false, FONT(STD), 1},
 };
 
 class ModelButton : public Button
@@ -91,7 +91,7 @@ class ModelButton : public Button
       etx_obj_add_style(modelName->getLvObj(), styles->bg_opacity_75, LV_PART_MAIN);
       modelName->padTop(fo);
     } else {
-      modelName = new StaticText(this, {PAD_TINY, PAD_SMALL, w, EdgeTxStyles::STD_FONT_HEIGHT}, modelCell->modelName,
+      modelName = new StaticText(this, {PAD_TINY, PAD_SMALL, w, EdgeTxStyles::STD_FONT_HEIGHT()}, modelCell->modelName,
                                  COLOR_THEME_SECONDARY1_INDEX, font);
     }
     lv_label_set_long_mode(modelName->getLvObj(), LV_LABEL_LONG_DOT);
@@ -702,7 +702,7 @@ void ModelLabelsWindow::buildHead(Window *hdr)
 
 #if !PORTRAIT
   // new model button
-  new TextButton(hdr, {LCD_W - PageGroup::PAGE_GROUP_BACK_BTN_W - NEW_BTN_W - PAD_LARGE, PAD_MEDIUM, NEW_BTN_W, EdgeTxStyles::UI_ELEMENT_HEIGHT}, STR_NEW, [=]() {
+  new TextButton(hdr, {LCD_W - PageGroup::PAGE_GROUP_BACK_BTN_W - NEW_BTN_W - PAD_LARGE, PAD_MEDIUM, NEW_BTN_W, EdgeTxStyles::UI_ELEMENT_HEIGHT()}, STR_NEW, [=]() {
     auto menu = new Menu();
     menu->setTitle(STR_CREATE_NEW);
     menu->addLine(STR_NEW_MODEL, [=]() { newModel(); });
@@ -710,7 +710,7 @@ void ModelLabelsWindow::buildHead(Window *hdr)
     return 0;
   });
 
-  mdlLayout = new ModelLayoutButton(this, LCD_W - PageGroup::PAGE_GROUP_BACK_BTN_W - LAYOUT_BTN_XO, PAD_MEDIUM, g_eeGeneral.modelSelectLayout, [=]() {
+  mdlLayout = new ModelLayoutButton(this, LCD_W - PageGroup::PAGE_GROUP_BACK_BTN_W - LAYOUT_BTN_XO(), PAD_MEDIUM, g_eeGeneral.modelSelectLayout, [=]() {
     uint8_t l = mdlLayout->getLayout();
     l = (l + 1) & 3;
     mdlLayout->setLayout(l);
@@ -737,7 +737,7 @@ void ModelLabelsWindow::buildBody(Window *window)
 
   // Labels
   lblselector =
-      new ListBox(window, rect_t{LABELS_X, LABELS_Y, LABELS_WIDTH, LABELS_HEIGHT}, getLabels());
+      new ListBox(window, rect_t{LABELS_X, LABELS_Y, LABELS_WIDTH, LABELS_HEIGHT()}, getLabels());
   lblselector->setSmallSelectMarker();
   auto lbl_obj = lblselector->getLvObj();
   etx_scrollbar(lbl_obj);
@@ -746,14 +746,14 @@ void ModelLabelsWindow::buildBody(Window *window)
 
   // Sort Button
   new Choice(
-      window, {LABELS_X, LABELS_Y + LABELS_HEIGHT + PAD_SMALL, SORT_BUTTON_W, 0}, STR_SORT_ORDERS, NAME_ASC, DATE_DES,
+      window, {LABELS_X, LABELS_Y + LABELS_HEIGHT() + PAD_SMALL, SORT_BUTTON_W, 0}, STR_SORT_ORDERS, NAME_ASC, DATE_DES,
       [=]() { return mdlselector->getSortOrder(); },
       [=](int newValue) { mdlselector->setSortOrder((ModelsSortBy)newValue); },
       STR_SORT_MODELS_BY);
 
 #if PORTRAIT
   // new model button
-  new TextButton(window, {LCD_W - NEW_BTN_W - PAD_LARGE, LABELS_Y + LABELS_HEIGHT + PAD_SMALL, NEW_BTN_W, EdgeTxStyles::UI_ELEMENT_HEIGHT}, STR_NEW, [=]() {
+  new TextButton(window, {LCD_W - NEW_BTN_W - PAD_LARGE, LABELS_Y + LABELS_HEIGHT() + PAD_SMALL, NEW_BTN_W, EdgeTxStyles::UI_ELEMENT_HEIGHT()}, STR_NEW, [=]() {
     auto menu = new Menu();
     menu->setTitle(STR_CREATE_NEW);
     menu->addLine(STR_NEW_MODEL, [=]() { newModel(); });
@@ -761,7 +761,7 @@ void ModelLabelsWindow::buildBody(Window *window)
     return 0;
   });
 
-  mdlLayout = new ModelLayoutButton(window, LCD_W - LAYOUT_BTN_XO, LABELS_Y + LABELS_HEIGHT + PAD_SMALL, g_eeGeneral.modelSelectLayout, [=]() {
+  mdlLayout = new ModelLayoutButton(window, LCD_W - LAYOUT_BTN_XO(), LABELS_Y + LABELS_HEIGHT() + PAD_SMALL, g_eeGeneral.modelSelectLayout, [=]() {
     uint8_t l = mdlLayout->getLayout();
     l = (l + 1) & 3;
     mdlLayout->setLayout(l);

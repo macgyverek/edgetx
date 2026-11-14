@@ -48,13 +48,8 @@ class ToggleSwitch : public FormField
 
   void update() const;
 
-#if defined(X10S_COMPACT_UI)
-  static LAYOUT_VAL_SCALED(TOGGLE_W, 44)
-  static LAYOUT_VAL_SCALED(TOGGLE_H, 20)
-#else
-  static LAYOUT_VAL_SCALED(TOGGLE_W, 52)
-  static constexpr coord_t TOGGLE_H = EdgeTxStyles::UI_ELEMENT_HEIGHT;
-#endif
+  static coord_t TOGGLE_W() { return compactUiEnabled() ? (LAYOUT_SCALE(44)) : (LAYOUT_SCALE(52)); }
+  static coord_t TOGGLE_H() { return compactUiEnabled() ? (LAYOUT_SCALE(20)) : (EdgeTxStyles::UI_ELEMENT_HEIGHT()); }
 
  protected:
   std::function<uint8_t()> _getValue;
