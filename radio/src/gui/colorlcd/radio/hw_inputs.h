@@ -61,9 +61,9 @@ class HWPots : public Window
   static coord_t P_INV_W() { return ToggleSwitch::TOGGLE_W(); }
   static coord_t P_ROW_H() { return (LANDSCAPE ? (EdgeTxStyles::UI_ELEMENT_HEIGHT() + PAD_OUTLINE) : (LAYOUT_SCALE(72))); }
   static LAYOUT_ORIENTATION_SCALED(P_OFST_Y, 0, 36)
-  static LAYOUT_ORIENTATION(POTS_WINDOW_WIDTH,
-                              P_LBL_W + P_NM_W + P_TYP_W + P_INV_W() + PAD_TINY * 2 + PAD_SMALL * 5 + PAD_SCROLL,
-                              P_LBL_W + P_NM_W + P_INV_W() + PAD_TINY * 2 + PAD_SMALL * 4 + PAD_SCROLL)
+  static coord_t POTS_WINDOW_WIDTH() {
+    return LANDSCAPE ? (P_LBL_W + P_NM_W + P_TYP_W + P_INV_W() + PAD_TINY * 2 + PAD_SMALL * 5 + PAD_SCROLL) : (P_LBL_W + P_NM_W + P_INV_W() + PAD_TINY * 2 + PAD_SMALL * 4 + PAD_SCROLL);
+  }
   #define P_Y(i) (i * P_ROW_H() + PAD_TINY)
 
  protected:
