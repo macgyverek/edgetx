@@ -189,7 +189,7 @@ void RadioHardwarePage::build(Window* window)
   new SetupButtonGroup(window, {0, 0, LCD_W - padding * 2, 0}, STR_INPUTS, BTN_COLS, PAD_ZERO, {
     {STR_DEF(STR_MENUCALIBRATION), []() { new RadioCalibrationPage(); }},
     {STR_DEF(STR_STICKS), []() { new HWInputDialog<HWSticks>(STR_STICKS); }},
-    {STR_DEF(STR_POTS), []() { new HWInputDialog<HWPots>(STR_POTS, HWPots::POTS_WINDOW_WIDTH); }},
+    {STR_DEF(STR_POTS), []() { new HWInputDialog<HWPots>(STR_POTS, HWPots::POTS_WINDOW_WIDTH()); }},
     {STR_DEF(STR_SWITCHES), []() { new HWInputDialog<HWSwitches>(STR_SWITCHES, HWSwitches::SW_WINDOW_WIDTH); }},
 #if defined(FUNCTION_SWITCHES)
     {STR_DEF(STR_FUNCTION_SWITCHES), []() { new RadioFunctionSwitches(); }},
