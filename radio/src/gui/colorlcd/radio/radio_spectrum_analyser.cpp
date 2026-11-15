@@ -30,6 +30,10 @@ static coord_t SPECTRUM_HEIGHT() { return LCD_H - EdgeTxStyles::MENU_HEADER_HEIG
                                     SCALE_HEIGHT -
                                     EdgeTxStyles::UI_ELEMENT_HEIGHT() - PAD_OUTLINE * 2; }
 
+// Reserve enough grid points for either style. Only the active height is drawn.
+constexpr coord_t SPECTRUM_MAX_HEIGHT = LCD_H - EdgeTxStyles::MENU_HEADER_HEIGHT -
+    SCALE_HEIGHT - LAYOUT_SCALE(24) - PAD_OUTLINE * 2;
+
 // Empirical full-scale value of bars/max/peak samples. Used to map sample
 // values to chart pixels so bars fill the available height on any LCD.
 constexpr uint8_t SPECTRUM_FULL_SCALE = 90;
@@ -306,7 +310,7 @@ class SpectrumWindow : public Window
   lv_point_t maxPts[2 * LCD_W / 4];
   lv_point_t barPts[2 * LCD_W / 4];
   lv_point_t peakPts[2 * LCD_W / 4];
-  lv_point_t hAxisPts[2 * SPECTRUM_HEIGHT() / LINE_SPACE];
+  lv_point_t hAxisPts[2 * SPECTRUM_MAX_HEIGHT / LINE_SPACE];
   lv_point_t vAxisPts[2 * 8];
   lv_obj_t* maxLines[LCD_W / 4];
   lv_obj_t* barLines[LCD_W / 4];
