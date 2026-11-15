@@ -167,7 +167,7 @@ void RadioCalibrationPage::buildBody(Window *window)
 
   potsBtn = new TextButton(window, {POTS_X, PAD_LARGE, POTS_W, 0}, STR_POTS,
                  [=]() -> uint8_t {
-                   new HWInputDialog<HWPots>(STR_POTS, HWPots::POTS_WINDOW_WIDTH);
+                   new HWInputDialog<HWPots>(STR_POTS, HWPots::POTS_WINDOW_WIDTH());
                    return 0;
                  });
 
